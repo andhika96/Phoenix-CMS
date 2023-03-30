@@ -1,0 +1,7 @@
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.28",
+        "firebase/php-jwt": "^6.4",
+        "ramsey/uuid": "^4.2"
+    }
+}

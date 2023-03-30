@@ -1,0 +1,4 @@
+name = Account
+version = 1.0.0
+type = core
+description = Account page for user
