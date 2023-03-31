@@ -69,10 +69,9 @@
 			<script src="'.base_url('assets/js/vuejs-2.7.14.min.js').'"></script>
 			<script src="'.base_url('assets/js/vuejs-paginate-2.1.0.min.js').'"></script>
 			<script src="'.base_url('assets/js/vue-lazyload-1.3.3.min.js').'"></script>
-			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.12').'"></script>
+			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.13').'"></script>
 
 			<script src="'.base_url('assets/js/jquery-3.6.0.min.js').'"></script>
-			<script src="'.base_url('assets/js/js.cookie-2.2.1.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootbox/5.5.2/bootbox.all.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootstrap/5.2.3/js/bootstrap.bundle.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/fontawesome/5.15.3/js/all.min.js').'"></script>

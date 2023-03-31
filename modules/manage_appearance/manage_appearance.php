@@ -816,6 +816,7 @@ class manage_appearance extends Aruna_Controller
 
 		$row_layout['content_title'] = isset($row_layout['content_title']) ? $row_layout['content_title'] : '';
 		$row_layout['content_description'] = isset($row_layout['content_description']) ? $row_layout['content_description'] : '';
+		$row_layout['background_overlay'] = isset($row_layout['background_overlay']) ? $row_layout['background_overlay'] : '';
 
 		$size_type[0] = (isset($row_layout['size_type']) && $row_layout['size_type'] == 'small') ? 'selected' : FALSE;
 		$size_type[1] = (isset($row_layout['size_type']) && $row_layout['size_type'] == 'medium') ? 'selected' : FALSE;

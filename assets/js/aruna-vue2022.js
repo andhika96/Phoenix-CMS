@@ -138,7 +138,7 @@ const Vue2Form = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 				}
 
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(error =>
 			{
@@ -154,7 +154,7 @@ const Vue2Form = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			});
 		},
@@ -241,7 +241,7 @@ const Vue2Form = new Vue(
 					document.getElementsByClassName("btn-loading-signup")[0].remove();
 				}
 
-				document.getElementsByClassName("btn-token-signup")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-signup")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(error =>
 			{
@@ -257,7 +257,7 @@ const Vue2Form = new Vue(
 					document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-signup")[0].remove();
 
-					document.getElementsByClassName("btn-token-signup")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-signup")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			});
 		}
@@ -382,7 +382,7 @@ const Vue2FormArticle = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 				}
 
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(error =>
 			{
@@ -398,7 +398,7 @@ const Vue2FormArticle = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			});
 		},
@@ -626,7 +626,7 @@ const Vue2Croppie = new Vue(
 						document.getElementsByClassName("btn-loading-submit")[0].remove();
 					}
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				})
 				.catch(response => 
 				{ 
@@ -806,7 +806,7 @@ const Vue2ListData = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 				}
 
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(response =>
 			{
@@ -991,6 +991,18 @@ const Vue2ListData = new Vue(
 				})
 				.finally(() => 
 				{ 
+					if (document.querySelector("#color-picker") !== undefined)
+					{
+						$(document).ready(function() 
+						{
+							$("#color-picker").spectrum({
+								type: "component",
+								showInput: true,
+								showInitial: true
+							});
+						});
+					}
+
 					this.loadingCoverimagePage = false;
 				});
 			}
@@ -1985,7 +1997,7 @@ const Vue2ListUsers = new Vue(
 
 				if (document.querySelector(".btn-token-submit") !== null)
 				{
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			}
 		},
@@ -2073,7 +2085,7 @@ const Vue2ListUsers = new Vue(
 
 				if (document.querySelector(".btn-token-submit") !== null)
 				{
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			}
 		},
@@ -2151,7 +2163,7 @@ const Vue2ListUsers = new Vue(
 
 				if (document.querySelector(".btn-token-submit") !== null)
 				{
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				}
 			}
 		},
@@ -2244,7 +2256,7 @@ const Vue2ListUsers = new Vue(
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 				}
 
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(response => 
 			{ 
@@ -2564,7 +2576,7 @@ const Vue2Translate = new Vue(
 					});
 				}
 
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", Cookies.get("csrf_phoenix_cms_2023"));
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
 			.catch(response =>
 			{

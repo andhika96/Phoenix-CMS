@@ -12,6 +12,8 @@
 
 	defined('MODULEPATH') OR exit('No direct script access allowed');
 
+	section_header(add_coverimage('event'));
+
 	section_content($layout_view);
 
 ?>
