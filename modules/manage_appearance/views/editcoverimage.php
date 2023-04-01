@@ -12,14 +12,14 @@
 
 	defined('MODULEPATH') OR exit('No direct script access allowed');
 
-	section_content(breadcrumb([t('Manage Appearance') => '', t('Cover Image') => site_url('manage_appearance/coverimage'), t('Edit Cover Image') => '']));
+	section_content(breadcrumb([t('Manage Appearance') => '', t('Cover Image') => site_url('manage_appearance/coverimage'), t('Edit Cover Image {1}', ucfirst($row['uri'])) => '']));
 
 	section_content('
 	<div class="container-fluid px-0 mb-5">
 		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm" id="ar-app-listdata">
 			<div class="h5 pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center">
 				<div>
-					<i class="fad fa-images fa-fw me-2"></i> '.t('Edit Cover Image').'
+					<i class="fad fa-images fa-fw me-2"></i> '.t('Edit Cover Image {1}', ucfirst($row['uri'])).'
 				</div> 
 
 				<div class="d-none">
@@ -52,7 +52,7 @@
 									</div>
 								</div>
 
-								<label class="form-label">For Web (1440px X 720px)</label>								
+								<label class="form-label">For Web</label>								
 
 								<div class="input-group mb-4">
 									<input type="file" :name="\'image_web_\'+index+\'\'" class="form-control font-size-inherit" id="formFileImageWeb" aria-label="Form Image For Web" aria-describedby="button-addon2" v-model="info.image_web_for_file">
@@ -62,7 +62,7 @@
 									</span>
 								</div>
 
-								<label class="form-label">For Mobile (450px X 400px)</label>									
+								<label class="form-label">For Mobile</label>									
 
 								<div class="input-group">
 									<input type="file" :name="\'image_mobile_\'+index+\'\'" class="form-control font-size-inherit" id="formFileImageMobile" aria-label="Form Image For Mobile" aria-describedby="button-addon2" v-model="info.image_mobile_for_file">
@@ -93,10 +93,10 @@
 
 											<select name="size_type" class="form-select font-size-inherit" aria-label="Select Size Cover Image">
 												<option value="">Select Size</option>
-												<option value="small" '.$size_type[0].'>Small</option>
-												<option value="medium" '.$size_type[1].'>Medium</option>
-												<option value="large" '.$size_type[2].'>Large</option>
-												<option value="full" '.$size_type[3].'>Full Screen</option>
+												<option value="small" '.$size_type[0].'>Small (412px X 240px)</option>
+												<option value="medium" '.$size_type[1].'>Medium (412px X 440px)</option>
+												<option value="large" '.$size_type[2].'>Large (412px X 640px)</option>
+												<option value="full" '.$size_type[3].'>Full Screen (412px X 840px)</option>
 											</select>
 										</div>
 

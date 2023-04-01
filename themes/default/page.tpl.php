@@ -31,7 +31,7 @@
 		</head>
 
 		<body>
-			<header class="ph-navbar navbar navbar-expand-lg bg-light shadow-sm border-bottom">
+			<header class="ph-navbar navbar navbar-expand-lg bg-light '.get_section_header('section_type').' shadow-sm border-bottom">
 				<div class="container">
 					<a class="navbar-brand" href="#">
 						<img src="'.base_url(get_logo(1, 'image')).'" class="d-none d-md-block" style="width: '.get_logo(1, 'size').'">
@@ -75,12 +75,12 @@
 			<script src="'.base_url('assets/plugins/bootbox/5.5.2/bootbox.all.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootstrap/5.2.3/js/bootstrap.bundle.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/fontawesome/5.15.3/js/all.min.js').'"></script>
-			<script src="'.base_url('assets/plugins/parallax/1.5.0/parallax.min.js').'"></script>
 			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.1').'"></script>
 			<script src="'.base_url('assets/js/simplebar-5.3.6.min.js').'"></script>
+			<script src="'.base_url('assets/plugins/parallax/1.5.0/parallax.js').'"></script>
 
 			<script>
-				$(document).ready(function() { $(".parallax-window").parallax({ "positionY": "center" }); });
+			$(document).ready(function() { $(".parallax-window").parallax({ "positionY": "center", "androidFix": false }); });
 			</script>			
 
 			'.load_js().'	

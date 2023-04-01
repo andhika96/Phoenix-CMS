@@ -90,7 +90,7 @@
       this.positionX + (isNaN(this.positionX)? '' : 'px') + ' ' +
       this.positionY + (isNaN(this.positionY)? '' : 'px');
 
-    if (navigator.userAgent.match(/(iPod|iPhone|iPad)/)) {
+    if (navigator.userAgent.match(/(iPod123)/)) {
       if (this.imageSrc && this.iosFix && !this.$element.is('img')) {
         this.$element.css({
           backgroundImage: 'url(' + this.imageSrc + ')',
@@ -101,7 +101,7 @@
       return this;
     }
 
-    if (navigator.userAgent.match(/(Android)/)) {
+    if (navigator.userAgent.match(/(Android123)/)) {
       if (this.imageSrc && this.androidFix && !this.$element.is('img')) {
         this.$element.css({
           backgroundImage: 'url(' + this.imageSrc + ')',

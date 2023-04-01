@@ -26,8 +26,21 @@ class widget_content
 			}
 			</style>
 
-			<div class="ph-cover-image">
-				<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].'" style="background-image: url('.base_url($row_image['image_web']).'" alt="Background Image">
+			<div class="ph-cover-image d-none d-md-block">
+				<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].'" style="background-image: url('.base_url($row_image['image_web']).')" alt="Background Image">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8 mx-auto text-center">
+								<h2>'.$row_layout['content_title'].'</h2>
+								<h4 class="font-weight-light">'.$row_layout['content_description'].'</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="ph-cover-image d-block d-md-none">
+				<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].'" style="background-image: url('.base_url($row_image['image_mobile']).'" alt="Background Image">
 					<div class="container">
 						<div class="row">
 							<div class="col-md-8 mx-auto text-center">
@@ -49,13 +62,30 @@ class widget_content
 			}
 			</style>
 			
-			<div class="ph-cover-image">
-				<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].' parallax-window" data-parallax="scroll" data-image-src="'.base_url($row_image['image_web']).'" alt="Background Image">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-8 mx-auto text-center">
-								<h2>'.$row_layout['content_title'].'</h2>
-								<h4 class="font-weight-light">'.$row_layout['content_description'].'</h4>
+			<div class="d-none d-md-block">
+				<div class="ph-cover-image">
+					<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].' parallax-window" data-parallax="scroll" data-image-src="'.base_url($row_image['image_web']).'" alt="Background Image">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-8 mx-auto text-center">
+									<h2>'.$row_layout['content_title'].'</h2>
+									<h4 class="font-weight-light">'.$row_layout['content_description'].'</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="d-block d-md-none">
+				<div class="ph-cover-image">
+					<div class="ph-background ph-cover-image-filter ph-size-'.$row_layout['size_type'].' parallax-window" data-parallax="scroll" data-image-src="'.base_url($row_image['image_mobile']).'" alt="Background Image">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-8 mx-auto text-center">
+									<h2>'.$row_layout['content_title'].'</h2>
+									<h4 class="font-weight-light">'.$row_layout['content_description'].'</h4>
+								</div>
 							</div>
 						</div>
 					</div>

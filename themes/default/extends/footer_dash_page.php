@@ -30,10 +30,6 @@
 			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.14').'"></script>
 			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.1').'"></script>
 
-			<script>
-
-			</script>
-
 			'.load_js().'			
 		</body>
 	</html>');
