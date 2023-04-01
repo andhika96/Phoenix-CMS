@@ -152,10 +152,22 @@
 				</div>
 
 				<div class="row g-2 mb-4">
-					<label for="LabelforLinkBorderRadius" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Link Border Radius').'</label>
+					<label for="LabelforBorderRadiusLink" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Border Radius Link').'</label>
 					
-					<div class="col-md-4">
-						<input type="text" name="link_border_radius" class="form-control font-size-inherit" value="'.$row['link_border_radius'].'">
+					<div class="col-md-1">
+						<input type="text" name="border_top_left_radius_link" class="form-control font-size-inherit" placeholder="Top Left" value="'.$row['border_top_left_radius_link'].'">
+					</div>
+					
+					<div class="col-md-1">
+						<input type="text" name="border_top_right_radius_link" class="form-control font-size-inherit" placeholder="Top Right" value="'.$row['border_top_right_radius_link'].'">
+					</div>
+					
+					<div class="col-md-1">
+						<input type="text" name="border_bottom_left_radius_link" class="form-control font-size-inherit" placeholder="Bottom Left" value="'.$row['border_bottom_left_radius_link'].'">
+					</div>
+
+					<div class="col-md-1">
+						<input type="text" name="border_bottom_right_radius_link" class="form-control font-size-inherit" placeholder="Bottom Right" value="'.$row['border_bottom_right_radius_link'].'">
 					</div>
 				</div>
 

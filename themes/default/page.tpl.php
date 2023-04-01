@@ -39,7 +39,7 @@
 			.ph-navbar .nav-link
 			{
 				color: '.get_section_header('link_color').';
-				border-radius: '.get_section_header('link_border_radius').';
+				'.get_section_header('border_radius_link').'
 				background-color: '.get_section_header('background_link_color').';
 			}
 

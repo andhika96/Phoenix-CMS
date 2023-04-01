@@ -673,6 +673,18 @@
 			return $padding;
 		}
 
+		if ($column == 'border_radius_link')
+		{
+			$border = '';
+
+			$border .= ( ! empty($row['border_top_left_radius_link'])) ? 'border-top-left-radius: '.$row['border_top_left_radius_link'].';' : '';
+			$border .= ( ! empty($row['border_top_right_radius_link'])) ? 'border-top-right-radius: '.$row['border_top_right_radius_link'].';' : '';
+			$border .= ( ! empty($row['border_bottom_left_radius_link'])) ? 'border-bottom-left-radius: '.$row['border_bottom_left_radius_link'].';' : '';			
+			$border .= ( ! empty($row['border_bottom_right_radius_link'])) ? 'border-bottom-right-radius: '.$row['border_bottom_right_radius_link'].';' : '';
+			
+			return $border;
+		}
+
 		return $row[$column];
 	}
 
