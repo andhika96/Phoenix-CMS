@@ -102,7 +102,7 @@
 									<div class="details">
 										<div class="wrapper">
 											<h4 class="title text-truncate mb-3">
-												<a :href="\''.site_url('event/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
+												<a :href="\''.site_url('news/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
 											</h4> 
 											
 											<div class="my-3">{{ info.get_date }}</div> 

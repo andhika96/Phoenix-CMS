@@ -648,6 +648,31 @@
 			return $menu_position;
 		}
 
+		if ($column == 'section_type')
+		{
+			if ($row['section_type'] == 'default')
+			{
+				return '';
+			}
+		}
+
+		if ($column == 'margin_link')
+		{
+			return 'margin: '.$row['margin_top_link'].' '.$row['margin_right_link'].' '.$row['margin_bottom_link'].' '.$row['margin_left_link'];
+		}
+
+		if ($column == 'padding_link')
+		{
+			$padding = '';
+
+			$padding .= ( ! empty($row['padding_top_link'])) ? 'padding-top: '.$row['padding_top_link'].';' : '';
+			$padding .= ( ! empty($row['padding_right_link'])) ? 'padding-right: '.$row['padding_right_link'].';' : '';
+			$padding .= ( ! empty($row['padding_bottom_link'])) ? 'padding-bottom: '.$row['padding_bottom_link'].';' : '';
+			$padding .= ( ! empty($row['padding_left_link'])) ? 'padding-left: '.$row['padding_left_link'].';' : '';
+
+			return $padding;
+		}
+
 		return $row[$column];
 	}
 
@@ -1273,36 +1298,51 @@
 		$res_parent = $Aruna->db->sql_select("select pm.id, pm.roles as pm_roles, pm.parent_name as pm_name, pm.parent_code as pm_code, pm.icon as pm_icon, m.* from ml_menu_parent as pm right join ml_menu as m on m.menu_parent_id = pm.id where m.status = 0 group by m.menu_parent_code order by m.id asc");
 		while ($row_parent = $Aruna->db->sql_fetch_single($res_parent))
 		{
+			$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name");
+			$bindParam_module = $Aruna->db->sql_bindParam(['name' => $row_parent['pm_code']], $res_module);
+			$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
+
+			// Prevent from Automatic conversion of false to array is deprecated
+			$row_module = ($row_module !== FALSE) ? $row_module : [];
+
+			$row_module['actived'] = isset($row_module['actived']) ? $row_module['actived'] : '';
+
 			if ($row_parent['menu_parent_code'] == 'uncategorized_'.$row_parent['pm_code'])
 			{
-				if (in_array(get_user('roles'), explode(",", $row_parent['roles'])))
+				if ($row_module['actived'] == 1)
 				{
-					$output .= '<a href="'.site_url($row_parent['url']).'" class="list-group-item">'.$row_parent['icon'].' '.t($row_parent['menu_name']).'</a>';
+					if (in_array(get_user('roles'), explode(",", $row_parent['roles'])))
+					{
+						$output .= '<a href="'.site_url($row_parent['url']).'" class="list-group-item">'.$row_parent['icon'].' '.t($row_parent['menu_name']).'</a>';
+					}
 				}
 			}
 			else
 			{
-				if (in_array(get_user('roles'), explode(",", $row_parent['pm_roles'] ?? '')))
+				if ($row_module['actived'] == 1)
 				{
-					$output .= '										
-					<a href="#" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#Collapse'.$row_parent['pm_code'].'" role="button" aria-expanded="false" aria-controls="Collapse'.$row_parent['pm_code'].'"><span class="text-truncate">'.$row_parent['pm_icon'].' '.t($row_parent['pm_name']).'</span></a>
+					if (in_array(get_user('roles'), explode(",", $row_parent['pm_roles'] ?? '')))
+					{
+						$output .= '										
+						<a href="javascript:void(0)" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#Collapse'.$row_parent['pm_code'].'" role="button" aria-expanded="false" aria-controls="Collapse'.$row_parent['pm_code'].'"><span class="text-truncate">'.$row_parent['pm_icon'].' '.t($row_parent['pm_name']).'</span></a>
 
-					<div class="collapse multi-collapse list-group-sub" id="Collapse'.$row_parent['pm_code'].'">
-						<div class="list-group list-group-flush">';
-				
-							$res_menu = $Aruna->db->sql_prepare("select * from ml_menu where menu_parent_id = :menu_parent_id and status = 0 order by id");
-							$bindParam_menu = $Aruna->db->sql_bindParam(['menu_parent_id' => $row_parent['menu_parent_id']], $res_menu);
-							while ($row_menu = $Aruna->db->sql_fetch_single($bindParam_menu))
-							{
-								if (in_array(get_user('roles'), explode(",", $row_menu['roles'])))
+						<div class="collapse multi-collapse list-group-sub" id="Collapse'.$row_parent['pm_code'].'">
+							<div class="list-group list-group-flush">';
+					
+								$res_menu = $Aruna->db->sql_prepare("select * from ml_menu where menu_parent_id = :menu_parent_id and status = 0 order by id");
+								$bindParam_menu = $Aruna->db->sql_bindParam(['menu_parent_id' => $row_parent['menu_parent_id']], $res_menu);
+								while ($row_menu = $Aruna->db->sql_fetch_single($bindParam_menu))
 								{
-									$output .= '<a href="'.site_url($row_menu['url']).'" class="list-group-item list-group-item-action ps-5">'.$row_menu['icon'].' '.t($row_menu['menu_name']).'</a>';
+									if (in_array(get_user('roles'), explode(",", $row_menu['roles'])))
+									{
+										$output .= '<a href="'.site_url($row_menu['url']).'" class="list-group-item list-group-item-action ps-5">'.$row_menu['icon'].' '.t($row_menu['menu_name']).'</a>';
+									}
 								}
-							}
 
-					$output .= '
-						</div>
-					</div>';
+						$output .= '
+							</div>
+						</div>';
+					}
 				}
 			}
 		}
@@ -1376,8 +1416,8 @@
 			if ($module['actived'] == 1)
 			{
 				$output .= '
-				<li class="nav-item">
-					<a class="nav-link" href="'.site_url($module['name']).'">'.$this_modules[$module['name']]['name'].'</a>
+				<li class="nav-item" style="'.get_section_header('margin_link').'">
+					<a class="nav-link '.getNavMenu($module['name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($module['name']).'">'.$this_modules[$module['name']]['name'].'</a>
 				</li>';
 			}
 		}

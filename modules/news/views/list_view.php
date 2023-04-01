@@ -59,7 +59,7 @@
 										<div class="text-muted text-small d-inline-block mb-3"><i class="fas fa-clock fa-fw"></i> {{ info.get_date }}</div> 
 
 										<h3 class="title mb-3">
-											<a :href="\''.site_url('event/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
+											<a :href="\''.site_url('news/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
 										</h3> 
 										
 										<p class="mb-3">{{ info.content }}</p>

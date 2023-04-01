@@ -32,6 +32,8 @@ class news extends Aruna_Controller
 
 	public function index()
 	{
+		set_title(t('News'));
+
 		if (get_layout('news', 'view_type') == 'grid')
 		{
 			$data['layout_view'] = $this->grid_view();
@@ -97,7 +99,11 @@ class news extends Aruna_Controller
 		$row = ($row !== FALSE) ? $row : [];
 
 		$row['uri'] = isset($row['uri']) ? $row['uri'] : '';
+		$row['title'] = isset($row['title']) ? $row['title'] : '';
 		$row['content'] = isset($row['content']) ? $row['content'] : '';
+		$row['created'] = isset($row['created']) ? $row['created'] : time();
+
+		set_title($row['title']);
 
 		if ( ! $row['uri'])
 		{

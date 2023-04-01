@@ -27,10 +27,38 @@
 			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.1').'">
 			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v=0.0.3').'">
 
-			<title>Aruna Development Project</title>
+			<title>'.get_ctitle().'</title>
+
+			<style>
+			/* Default Custom CSS from PHOENIX CMS*/
+			.ph-navbar
+			{
+				background-color: '.get_section_header('background_color').' !important;
+			}
+
+			.ph-navbar .nav-link
+			{
+				color: '.get_section_header('link_color').';
+				border-radius: '.get_section_header('link_border_radius').';
+				background-color: '.get_section_header('background_link_color').';
+			}
+
+			.ph-navbar .nav-link:hover
+			{
+				color: '.get_section_header('link_color_hover').';
+				background-color: '.get_section_header('background_link_color_hover').';
+			}
+
+			.ph-navbar .nav-link.active, 
+			.ph-navbar .show > .nav-link
+			{
+				color: '.get_section_header('link_color_active').';
+				background-color: '.get_section_header('background_link_color_active').';
+			}
+			</style>
 		</head>
 
-		<body>
+		<body class="ph-custom-css">
 			<header class="ph-navbar navbar navbar-expand-lg bg-light '.get_section_header('section_type').' shadow-sm border-bottom">
 				<div class="container">
 					<a class="navbar-brand" href="#">
@@ -44,8 +72,8 @@
 
 					<div class="collapse navbar-collapse '.get_section_header('menu_position').'" id="navbarNavDropdown">
 						<ul class="navbar-nav">
-							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="'.site_url().'">Home</a>
+							<li class="nav-item" style="'.get_section_header('margin_link').'">
+								<a class="nav-link '.getNavMenu().'" style="'.get_section_header('padding_link').'" aria-current="page" href="'.site_url().'">Home</a>
 							</li>
 
 							'.get_list_menu_header().'

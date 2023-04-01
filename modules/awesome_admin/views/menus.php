@@ -33,7 +33,7 @@
 			<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
 
 			<div id="ar-form-submit" class="ar-fetch-listdata-getrolemenus" data-url="'.site_url('awesome_admin/getListRoleofMenus').'">
-				<form action="'.site_url('awesome_admin/menus').'" method="post" enctype="multipart/form-data" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" ref="formHTML">
+				<form action="'.site_url('awesome_admin/menus').'" method="post" enctype="multipart/form-data" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" with-list-slideshow-page="false" with-list-coverimage-page="false" ref="formHTML">
 					<table class="table">
 						<thead>
 							<tr>

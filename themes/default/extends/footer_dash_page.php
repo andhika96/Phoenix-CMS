@@ -30,6 +30,20 @@
 			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.14').'"></script>
 			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.1').'"></script>
 
+			<script>
+			if (document.querySelector(".color-picker-for-jquery") !== undefined)
+			{
+				$(document).ready(function() 
+				{
+					$(".color-picker-for-jquery").spectrum({
+						type: "component",
+						showInput: true,
+						showInitial: true
+					});
+				});
+			}
+			</script>
+
 			'.load_js().'			
 		</body>
 	</html>');
