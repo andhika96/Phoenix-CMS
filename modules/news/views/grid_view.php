@@ -95,14 +95,16 @@
 							<div class="ph-event">
 								<div>
 									<div class="thumbnail">
-										<div class="tag">{{ info.category }}</div>
-										<div class="image" :style="{ \'background-image\': \'url(\' + info.thumb_s + \')\' }"></div>
+										<a :href="\''.site_url('news/\'+info.uri+\'').'\'" class="stretched-link">
+											<div class="tag">{{ info.category }}</div>
+											<div class="image" :style="{ \'background-image\': \'url(\' + info.thumb_s + \')\' }"></div>
+										</a>
 									</div> 
 								
 									<div class="details">
 										<div class="wrapper">
 											<h4 class="title text-truncate mb-3">
-												<a :href="\''.site_url('news/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
+												<a :href="\''.site_url('news/\'+info.uri+\'').'\'" class="stretched-link"><span>{{ info.title }}</span></a>
 											</h4> 
 											
 											<div class="my-3">{{ info.get_date }}</div> 

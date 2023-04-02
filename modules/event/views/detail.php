@@ -18,45 +18,64 @@
 	<!--- Custom CSS --->
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/monokai-sublime.min.css">
 
+	<style>
+	.ph-sticky-top-event-right-side
+	{
+		top: 97px;
+		z-index: 1010 !important;
+	}
+	</style>
+
 	<div class="container my-4 my-lg-5">
 		<div class="row">
-			<div class="col-xl-10 mx-auto">
+			<div class="col-lg-8">
 				<div class="mb-4">
 					<h1 class="h2">'.$row['title'].'</h1>
 				</div>
+			</div>
 
-				<!--- User Info --->
-				<div class="border-top border-bottom py-4 mb-4">
-					<div class="row align-items-md-center">
-						<div class="col-md-7 mb-3 mb-md-0">
-							<div class="media align-items-center">
-								'.avatar_alt($row['userid'], 50, 'rounded-circle mr-3').'
-							
-								<div class="media-body">
-									<span class="h6 font-weight-bold mb-2">'.get_client($row['userid'], 'fullname').'</span>
-									<span class="text-muted d-block">'.$row['get_date'].'</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-5">
-							<div class="d-flex justify-content-md-end align-items-center">
-								<span class="text-muted font-weight-bold mr-2">Share Post:</span>
-
-								'.anchor_popup('https://www.facebook.com/sharer/sharer.php?u='.site_url('blog/'.$row['uri']), '<i class="fab fa-facebook-f"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'btn btn-outline-sb btn-outline-sb-facebook']).'
-								'.anchor_popup('http://www.twitter.com/intent/tweet?url='.site_url('blog/'.$row['uri']).'&text=['.$row['title'].']', '<i class="fab fa-twitter"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'btn btn-outline-sb btn-outline-sb-twitter ml-2']).'
-							</div>
-						</div>
-					</div>
-				</div>
-				<!--- End of User Info --->
-
+			<div class="col-lg-8">
 				<div class="ph-text-article">
 					<div class="d-flex justify-content-center align-items-center bg-light rounded shadow-sm mb-3">
 						'.$row['thumb_l'].'
 					</div>
 
 					'.$content.'
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="border rounded p-4 shadow-sm ph-sticky-top-event-right-side sticky-lg-top">
+
+					<div class="mb-4">
+						<div class="d-flex align-items-center">
+							<div class="flex-shrink-0">
+								'.avatar_alt($row['userid'], 50, 'rounded-circle mr-3').'
+							</div>
+							
+							<div class="flex-grow-1 ms-3">
+								<span class="h6 font-weight-bold mb-2">'.get_client($row['userid'], 'fullname').'</span>
+								<span class="text-muted d-block">Published: '.$row['get_date'].'</span>
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item border-bottom-0 px-0">
+								<span class="fw-bold">Event Date:</span> <span class="float-end">'.get_date($row['event_date']).'</span>
+							</li>
+
+							<li class="list-group-item border-bottom-0 px-0">
+								<span class="fw-bold">Event Location:</span> <span class="float-end">'.$row['event_location'].'</span>
+							</li>
+
+							<li class="list-group-item border-bottom-0 px-0">
+								<span class="fw-bold">Event Address:</span> <span class="float-end">'.$row['event_address'].'</span>
+							</li>
+						</ul>
+					</div>
+
 				</div>
 			</div>
 		</div>

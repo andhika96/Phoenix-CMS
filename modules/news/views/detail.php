@@ -29,7 +29,6 @@
 				<div class="border-top border-bottom py-4 mb-4">
 					<div class="row align-items-md-center">
 						<div class="col-md-7 mb-3 mb-md-0">
-
 							<div class="d-flex align-items-center">
 								<div class="flex-shrink-0">
 									'.avatar_alt($row['userid'], 50, 'rounded-circle mr-3').'

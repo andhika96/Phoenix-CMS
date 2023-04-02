@@ -113,3 +113,11 @@ ERROR - 2023-04-02 03:00:00 --> Severity: 8192 --> Automatic conversion of false
 ERROR - 2023-04-02 03:58:38 --> Severity: error --> Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'border_top_radius_link' in 'field list' D:\Xampp_8.2.0\htdocs\cms\aruna\libraries\Database.php 950
 ERROR - 2023-04-02 03:58:45 --> Severity: error --> Exception: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'border_top_radius_link' in 'field list' D:\Xampp_8.2.0\htdocs\cms\aruna\libraries\Database.php 950
 ERROR - 2023-04-02 04:00:32 --> Severity: error --> Exception: syntax error, unexpected double-quoted string " aria-current=", expecting ")" D:\Xampp_8.2.0\htdocs\cms\themes\default\page.tpl.php 76
+ERROR - 2023-04-02 16:02:26 --> Severity: Warning --> Undefined array key "userid" D:\Xampp_8.2.0\htdocs\cms\modules\news\views\detail.php 34
+ERROR - 2023-04-02 16:02:26 --> Severity: 8192 --> Automatic conversion of false to array is deprecated D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 214
+ERROR - 2023-04-02 16:02:26 --> Severity: Warning --> Undefined array key "userid" D:\Xampp_8.2.0\htdocs\cms\modules\news\views\detail.php 38
+ERROR - 2023-04-02 16:02:26 --> Severity: 8192 --> Automatic conversion of false to array is deprecated D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 501
+ERROR - 2023-04-02 16:02:42 --> Severity: Warning --> Undefined array key "userid" D:\Xampp_8.2.0\htdocs\cms\modules\news\views\detail.php 34
+ERROR - 2023-04-02 16:02:42 --> Severity: 8192 --> Automatic conversion of false to array is deprecated D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 214
+ERROR - 2023-04-02 16:02:42 --> Severity: Warning --> Undefined array key "userid" D:\Xampp_8.2.0\htdocs\cms\modules\news\views\detail.php 38
+ERROR - 2023-04-02 16:02:42 --> Severity: 8192 --> Automatic conversion of false to array is deprecated D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 501

@@ -65,18 +65,12 @@
 							</select>
 						</div>
 
-						<div class="col-md-4 mb-3 mb-md-0">
+						<div class="col-md-6 mb-3 mb-md-0">
 							<label class="form-label">Thumbnail</label>
 							<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
 						</div>
 
-						<div class="col-md-4 mb-3 mb-md-0">
-							<label class="form-label">'.t('Event Date').'</label>
-
-							<input type="text" name="event_date" placeholder="Event date" class="form-control font-size-inherit ar-event-date" value="'.$event_date.'">
-						</div>
-
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label">Schedule posts '.$scheduled.'</label>
 
 							<div class="input-group mb-2">
@@ -86,6 +80,25 @@
 
 								<input type="text" name="schedule_pub" placeholder="Schedule posts" class="form-control form-control-schedule-posts font-size-inherit ar-schedule-pub2" value="'.$value_form.'" '.$active_form.'>
 							</div>
+						</div>
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Date').'</label>
+
+							<input type="text" name="event_date" placeholder="Event date" class="form-control font-size-inherit ar-event-date" value="'.$event_date.'">
+						</div>
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Location').'</label>
+
+							<input type="text" name="event_location" placeholder="Event location" class="form-control font-size-inherit" value="'.$row['event_location'].'">
+						</div>
+
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Address').'</label>
+
+							<input type="text" name="event_address" placeholder="Event address" class="form-control font-size-inherit" value="'.$row['event_address'].'">
 						</div>
 					</div>
 				</div>

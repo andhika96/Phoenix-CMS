@@ -49,8 +49,10 @@
 							<div class="ph-event d-block d-md-inline-flex w-100 mb-4" v-for="(info, index) in getData" v-bind:key="info.id">
 
 								<div class="thumbnail">
-									<div class="tag">{{ info.category }}</div>
-									<div class="image" :style="{ \'background-image\': \'url(\' + info.thumb_s + \')\' }"></div>
+									<a :href="\''.site_url('event/\'+info.uri+\'').'\'" class="stretched-link">
+										<div class="tag">{{ info.category }}</div>
+										<div class="image" :style="{ \'background-image\': \'url(\' + info.thumb_s + \')\' }"></div>
+									</a>
 								</div> 
 								
 								<div class="details">
@@ -59,7 +61,7 @@
 										<div class="text-muted text-small d-inline-block mb-3"><i class="fas fa-clock fa-fw"></i> {{ info.get_date }}</div> 
 
 										<h3 class="title mb-3">
-											<a :href="\''.site_url('event/\'+info.uri+\'').'\'"><span>{{ info.title }}</span></a>
+											<a :href="\''.site_url('event/\'+info.uri+\'').'\'" class="stretched-link"><span>{{ info.title }}</span></a>
 										</h3> 
 										
 										<p class="mb-3">{{ info.content }}</p>

@@ -55,18 +55,12 @@
 							</select>
 						</div>
 
-						<div class="col-md-4 mb-3 mb-md-0">
+						<div class="col-md-6 mb-3 mb-md-0">
 							<label class="form-label">'.t('Thumbnail').'</label>
 							<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
 						</div>
 
-						<div class="col-md-4 mb-3 mb-md-0">
-							<label class="form-label">'.t('Event Date').'</label>
-
-							<input type="text" name="event_date" placeholder="Event date" class="form-control font-size-inherit ar-event-date">
-						</div>
-
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label class="form-label">'.t('Schedule Posts').'</label>
 
 							<div class="input-group mb-3">
@@ -76,6 +70,25 @@
 
 								<input type="text" name="schedule_pub" placeholder="Schedule posts" class="form-control form-control-schedule-posts font-size-inherit ar-schedule-pub" disabled>
 							</div>
+						</div>
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Date').'</label>
+
+							<input type="text" name="event_date" placeholder="Event date" class="form-control font-size-inherit ar-event-date">
+						</div>
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Location').'</label>
+
+							<input type="text" name="event_location" placeholder="Event location" class="form-control font-size-inherit">
+						</div>
+
+
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">'.t('Event Address').'</label>
+
+							<input type="text" name="event_address" placeholder="Event address" class="form-control font-size-inherit">
 						</div>
 					</div>
 				</div>

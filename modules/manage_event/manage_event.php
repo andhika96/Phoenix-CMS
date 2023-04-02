@@ -284,17 +284,19 @@ class manage_event extends Aruna_Controller
 				$event_date 	= strtotime($this->input->post('event_date'));
 
 				$data = [
-					'title' 		=> $this->input->post('title'),
-					'cid'	 		=> $this->input->post('category'),
-					'content' 		=> $this->input->post('content', FALSE),
-					'userid'		=> get_user('id'),
-					'thumb_s'		=> $thumb_s,
-					'thumb_s2'		=> $thumb_s2,
-					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
-					'event_date'	=> $event_date,
-					'schedule_pub'	=> $schedule_pub,
-					'created'	 	=> time()
+					'title' 			=> $this->input->post('title'),
+					'cid'	 			=> $this->input->post('category'),
+					'content' 			=> $this->input->post('content', FALSE),
+					'event_location'	=> $this->input->post('event_location'),
+					'event_address'	 	=> $this->input->post('event_address'),
+					'userid'			=> get_user('id'),
+					'thumb_s'			=> $thumb_s,
+					'thumb_s2'			=> $thumb_s2,
+					'thumb_l'			=> $thumb_l,
+					'uri'				=> $uri,
+					'event_date'		=> $event_date,
+					'schedule_pub'		=> $schedule_pub,
+					'created'	 		=> time()
 				];
 				
 				if ($status_upload == 0)
@@ -515,16 +517,18 @@ class manage_event extends Aruna_Controller
 				$event_date 	= strtotime($this->input->post('event_date'));
 
 				$data = [
-					'title' 		=> $this->input->post('title'),
-					'cid'	 		=> $this->input->post('category'),
-					'content' 		=> $this->input->post('content', FALSE),
-					'userid'		=> get_user('id'),
-					'thumb_s'		=> $thumb_s,
-					'thumb_s2'		=> $thumb_s2,
-					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
-					'event_date'	=> $event_date,
-					'schedule_pub'	=> $schedule_pub
+					'title' 			=> $this->input->post('title'),
+					'cid'	 			=> $this->input->post('category'),
+					'content' 			=> $this->input->post('content', FALSE),
+					'event_location'	=> $this->input->post('event_location'),
+					'event_address'	 	=> $this->input->post('event_address'),
+					'userid'			=> get_user('id'),
+					'thumb_s'			=> $thumb_s,
+					'thumb_s2'			=> $thumb_s2,
+					'thumb_l'			=> $thumb_l,
+					'uri'				=> $uri,
+					'event_date'		=> $event_date,
+					'schedule_pub'		=> $schedule_pub
 				];
 				
 				if ($status_upload == 0)
