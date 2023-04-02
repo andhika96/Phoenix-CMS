@@ -175,6 +175,9 @@
 		$bindParam = $Aruna->db->sql_bindParam(['user_id' => $userid], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
 		$row['avatar'] = isset($row['avatar']) ? $row['avatar'] : '';
 
 		if ( ! $row['avatar'])
@@ -327,6 +330,9 @@
 		$bindParam = $Aruna->db->sql_bindParam(['id' => $id], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
 		$row['name'] = isset($row['name']) ? $row['name'] : NULL;
 	
 		return $row['name'];
@@ -473,6 +479,9 @@
 		$bindParam = $Aruna->db->sql_bindParam([$key => $value], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
 		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
 	
 		return $row[$coloum];
@@ -498,6 +507,9 @@
 		$bindParam = $Aruna->db->sql_bindParam(['id' => $key], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
 		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
 	
 		return $row[$coloum];
@@ -510,6 +522,9 @@
 		$res = $Aruna->db->sql_prepare("select * from ml_user_information where user_id = :user_id");
 		$bindParam = $Aruna->db->sql_bindParam(['user_id' => $key], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
 
 		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
 	
@@ -536,6 +551,9 @@
 		$res = $Aruna->db->sql_prepare("select * from ml_accounts where id = :id and username = :username and token = :token");
 		$bindParam = $Aruna->db->sql_bindParam(['id' => $id, 'username' => $username, 'token' => $token], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
 
 		$row[$key] = isset($row[$key]) ? $row[$key] : NULL;
 	
