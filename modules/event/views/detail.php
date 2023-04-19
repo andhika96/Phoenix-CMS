@@ -73,6 +73,16 @@
 							<li class="list-group-item border-bottom-0 px-0">
 								<span class="fw-bold">Event Address:</span> <span class="float-end">'.$row['event_address'].'</span>
 							</li>
+
+							<li class="list-group-item border-bottom-0 px-0">
+								<span class="fw-bold">Share:</span> 
+
+								<span class="float-end">
+									'.anchor_popup('https://www.facebook.com/sharer/sharer.php?u='.site_url('event/'.$row['uri']), '<i class="fab fa-facebook-square fa-lg"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'me-3']).'
+									'.anchor_popup('http://www.twitter.com/intent/tweet?url='.site_url('event/'.$row['uri']).'&text=['.$row['title'].']', '<i class="fab fa-twitter fa-lg"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'me-3']).'
+									'.anchor_popup('whatsapp://send?text='.site_url('event/'.$row['uri']), '<i class="fab fa-whatsapp fa-lg"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100']).'
+								</span>
+							</li>
 						</ul>
 					</div>
 

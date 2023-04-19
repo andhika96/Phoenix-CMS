@@ -62,4 +62,17 @@
 	$route['event/getListPosts'] 	= 'event/getListPosts';
 	$route['event/(:any)'] 			= 'event/detail/$1';
 
+	$route['promotion/index'] 			= 'promotion/index';
+	$route['promotion/list_view'] 		= 'promotion/list_view';
+	$route['promotion/grid_view'] 		= 'promotion/grid_view';
+	$route['promotion/getListPosts'] 	= 'promotion/getListPosts';
+	$route['promotion/(:any)'] 			= 'promotion/detail/$1';
+
+	$route['portofolio/index'] 			= 'portofolio/index';
+	$route['portofolio/list_view'] 		= 'portofolio/list_view';
+	$route['portofolio/grid_view'] 		= 'portofolio/grid_view';
+	$route['portofolio/getListPosts'] 	= 'portofolio/getListPosts';
+	$route['portofolio/getDetail'] 		= 'portofolio/getDetail';
+	$route['portofolio/(:any)'] 		= 'portofolio/detail/$1';
+
 ?>

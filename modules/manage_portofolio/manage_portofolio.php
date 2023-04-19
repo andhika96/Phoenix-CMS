@@ -166,6 +166,7 @@ class manage_portofolio extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('check_schedule_posts') == 1)
 		{
@@ -286,6 +287,7 @@ class manage_portofolio extends Aruna_Controller
 					'title' 		=> $this->input->post('title'),
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
+					'status' 		=> $this->input->post('status'),
 					'userid'		=> get_user('id'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
@@ -365,6 +367,7 @@ class manage_portofolio extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
@@ -497,6 +500,7 @@ class manage_portofolio extends Aruna_Controller
 					'title' 		=> $this->input->post('title'),
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
+					'status' 		=> $this->input->post('status'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
@@ -522,6 +526,89 @@ class manage_portofolio extends Aruna_Controller
 		return view('editpost', $data);
 	}
 
+	public function layout()
+	{
+		set_title('Layout News Settings');
+
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		$res_layout = $this->db->sql_prepare("select * from ml_layout where page = :page and section = :section");
+		$bindParam_layout = $this->db->sql_bindParam(['page' => 'portofolio', 'section' => 'main_content'], $res_layout);
+		$row_layout = $this->db->sql_fetch_single($bindParam_layout);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row_layout = ($row_layout !== FALSE) ? $row_layout : [];
+
+		$row_layout['content_title'] = isset($row_layout['content_title']) ? $row_layout['content_title'] : '';
+		$row_layout['content_description'] = isset($row_layout['content_description']) ? $row_layout['content_description'] : '';
+
+		$view_type[0] = (isset($row_layout['view_type']) && $row_layout['view_type'] == 'list') ? 'selected' : FALSE;
+		$view_type[1] = (isset($row_layout['view_type']) && $row_layout['view_type'] == 'grid') ? 'selected' : FALSE;
+
+		$is_hide_category[0] = (isset($row_layout['is_hide_category']) && $row_layout['is_hide_category'] == 0) ? 'selected' : FALSE;
+		$is_hide_category[1] = (isset($row_layout['is_hide_category']) && $row_layout['is_hide_category'] == 1) ? 'selected' : FALSE;
+
+		$is_hide_sidebar[0] = (isset($row_layout['is_hide_sidebar']) && $row_layout['is_hide_sidebar'] == 0) ? 'selected' : FALSE;
+		$is_hide_sidebar[1] = (isset($row_layout['is_hide_sidebar']) && $row_layout['is_hide_sidebar'] == 1) ? 'selected' : FALSE;
+
+		$sidebar_position[0] = (isset($row_layout['sidebar_position']) && $row_layout['sidebar_position'] == 'left') ? 'selected' : FALSE;
+		$sidebar_position[1] = (isset($row_layout['sidebar_position']) && $row_layout['sidebar_position'] == 'right') ? 'selected' : FALSE;
+
+		$disable_sidebar_position = (isset($row_layout['is_hide_sidebar']) && $row_layout['is_hide_sidebar'] == 1) ? 'disabled' : 'disabled';
+		$notice_disable_sidebar_position = (isset($row_layout['is_hide_sidebar']) && $row_layout['is_hide_sidebar'] == 1) ? '<div class="text-small text-danger mt-1">This form select Position Sidebar is disabled because sidebar hide setting is active</div>' : '';
+
+		$this->form_validation->set_rules('view_type', 'View Type', 'required');
+		$this->form_validation->set_rules('is_hide_category', 'Hide Category', 'required');
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			if ($this->form_validation->run($this) == FALSE)
+			{
+				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				exit;
+			}
+			else
+			{
+				$sidebar_position = ($this->input->post('sidebar_position') !== NULL) ? $this->input->post('sidebar_position') : '';
+				$is_hide_sidebar = ($this->input->post('is_hide_sidebar') !== NULL) ? $this->input->post('is_hide_sidebar') : '';
+
+				$layout_data = [
+					'page'					=> 'portofolio',
+					'section'				=> 'main_content',
+					'view_type'				=> $this->input->post('view_type'),
+					'is_hide_category'		=> $this->input->post('is_hide_category'),
+					'is_hide_sidebar'		=> $is_hide_sidebar,
+					'sidebar_position'		=> $sidebar_position,
+					'created'				=> time()
+				];
+
+				if ( ! $this->db->sql_counts($bindParam_layout))
+				{
+					$this->db->sql_insert($layout_data, 'ml_layout');
+				}
+				else
+				{
+					$this->db->sql_update($layout_data, 'ml_layout', ['id' => $row_layout['id']]);
+				}
+
+				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				exit;
+			}
+		}
+
+		$data['row_layout']							= $row_layout;
+		$data['view_type'] 							= $view_type;
+		$data['is_hide_category']					= $is_hide_category;
+		$data['is_hide_sidebar']					= $is_hide_sidebar;
+		$data['sidebar_position']					= $sidebar_position;
+		$data['disable_sidebar_position'] 			= $disable_sidebar_position;
+		$data['notice_disable_sidebar_position'] 	= $notice_disable_sidebar_position;
+		$data['csrf_name'] 							= $this->csrf['name'];
+		$data['csrf_hash'] 							= $this->csrf['hash'];
+
+		return view('layout', $data);
+	}
+
 	public function getListPosts()
 	{
 		$timezone  = +7;
@@ -544,6 +631,7 @@ class manage_portofolio extends Aruna_Controller
 			$row['content'] 	 = preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
 			$row['get_user']	 = get_client($row['userid'], 'fullname');
 			$row['get_created']  = get_date($row['created']);
+			$row['get_status']	 = get_status_article($row['status'], TRUE);
 			$row['scheduled']	 = ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';
 
 			$output[] = $row;

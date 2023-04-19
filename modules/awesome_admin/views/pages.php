@@ -42,6 +42,7 @@
 								<th scope="col" style="width: 18%">Page Name</th>
 								<th scope="col" style="width: 12%">Slideshow</th>
 								<th scope="col" style="width: 12%">Cover Image</th>
+								<th scope="col" style="width: 12%">Widget</th>
 								<th scope="col" style="width: 12%">Position</th>
 								<th scope="col" style="width: 34%"></th>
 							</tr>
@@ -57,11 +58,13 @@
 					$module_key 		= $page['flag'].'_actived';
 					$module_slideshow 	= $page['flag'].'_slideshow';
 					$module_coverimage 	= $page['flag'].'_coverimage';
+					$module_widget 		= $page['flag'].'_widget';
 					$module_position 	= $page['flag'].'_position';
 
 					$checked 			= (isset($current_modules[$page['flag']]['actived']) && $current_modules[$page['flag']]['actived'] == 1) ? 'checked' : '';
 					$checked_slideshow 	= (isset($current_modules[$page['flag']]['is_slideshow']) && $current_modules[$page['flag']]['is_slideshow'] == 1) ? 'checked' : '';
 					$checked_coverimage = (isset($current_modules[$page['flag']]['is_coverimage']) && $current_modules[$page['flag']]['is_coverimage'] == 1) ? 'checked' : '';
+					$checked_widget 	= (isset($current_modules[$page['flag']]['is_widget']) && $current_modules[$page['flag']]['is_widget'] == 1) ? 'checked' : '';
 
 					section_content('
 						<tr>
@@ -82,6 +85,12 @@
 							<td>
 								<div class="form-check form-switch form-lg">
 									<input class="form-check-input" type="checkbox" role="switch" name="'.$module_coverimage.'" value="1" id="'.$module_coverimage.'" '.$checked_coverimage.'>
+								</div>
+							</td>
+
+							<td>
+								<div class="form-check form-switch form-lg">
+									<input class="form-check-input" type="checkbox" role="switch" name="'.$module_widget.'" value="1" id="'.$module_widget.'" '.$checked_widget.'>
 								</div>
 							</td>
 							

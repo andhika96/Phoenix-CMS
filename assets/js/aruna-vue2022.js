@@ -1462,6 +1462,7 @@ const Vue2ListDataForArticle = new Vue(
 	data: 
 	{
 		getData: {},
+		getDataModal: {},
 		getTotalData: '',
 		getCategory: '',
 		pageURL: '',
@@ -1471,14 +1472,18 @@ const Vue2ListDataForArticle = new Vue(
 		currentPage: '',
 		getSearch: '',
 		resSearch: '',
+		resModal: '',
 		responseMessageSubmit: '',
 		isAvailable: 0,
 		statusData: '',
 		msgData: '',
+		msgDataModal: '',
 		show: true,
 		showData: true,
+		showDataModal: true,
 		loading: true,
 		loadingnextpage: true,
+		loadingmodal: true
 	},
 	methods: 
 	{
@@ -1537,6 +1542,75 @@ const Vue2ListDataForArticle = new Vue(
 					document.querySelector(".ar-total-data-load").style.display = 'block';
 				}
 			}
+		},
+		openDataModal: function(detail_key)
+		{
+			const detailModalPortofolio = new bootstrap.Modal(document.getElementById('detailModalPortofolio'));
+
+			detailModalPortofolio.show();
+
+			if (document.querySelector(".ar-fetch-data-modal") !== null && 
+				document.querySelector(".ar-fetch-data-modal").getAttribute("data-modal-url") !== null)
+			{
+				const getUrl = document.querySelector(".ar-fetch-data-modal").getAttribute("data-modal-url");
+
+				this.resModal = '?uri='+detail_key;
+
+				axios.get(getUrl+this.resModal)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+					const getRes = response.data.slice(0)[0];
+
+					this.getDataModal 		= response.data
+					this.statusDataModal	= getRes.status;
+					this.msgDataModal 		= getRes.msg;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingmodal = false;
+
+					if (document.querySelector(".ar-modal-data-load") !== null)
+					{
+						if (getComputedStyle(document.querySelector(".ar-modal-data-load"), null).display == 'block')
+						{
+							document.querySelector(".ar-modal-data-load").style.display = 'none';
+						}
+					}
+
+					if (document.querySelector(".ar-modal-data-list") !== null)
+					{
+						if (getComputedStyle(document.querySelector(".ar-modal-data-list"), null).display == 'none')
+						{
+							document.querySelector(".ar-modal-data-list").style.display = 'block';
+						}
+					}
+				});
+			}
+
+			let myModalEl = document.getElementById('detailModalPortofolio');
+			myModalEl.addEventListener('hidden.bs.modal', function(event) 
+			{
+				if (document.querySelector(".ar-modal-data-load") !== null)
+				{
+					if (getComputedStyle(document.querySelector(".ar-modal-data-load"), null).display == 'none')
+					{
+						document.querySelector(".ar-modal-data-load").style.display = 'block';
+					}
+				}
+
+				if (document.querySelector(".ar-modal-data-list") !== null)
+				{
+					if (getComputedStyle(document.querySelector(".ar-modal-data-list"), null).display == 'block')
+					{
+						document.querySelector(".ar-modal-data-list").style.display = 'none';
+					}
+				}
+			});
 		},
 		searchData: function(event)
 		{

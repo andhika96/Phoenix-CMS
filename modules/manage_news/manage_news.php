@@ -166,6 +166,7 @@ class manage_news extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('check_schedule_posts') == 1)
 		{
@@ -286,6 +287,7 @@ class manage_news extends Aruna_Controller
 					'title' 		=> $this->input->post('title'),
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
+					'status' 		=> $this->input->post('status'),
 					'userid'		=> get_user('id'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
@@ -365,6 +367,7 @@ class manage_news extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
@@ -497,6 +500,7 @@ class manage_news extends Aruna_Controller
 					'title' 		=> $this->input->post('title'),
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
+					'status' 		=> $this->input->post('status'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
@@ -520,6 +524,35 @@ class manage_news extends Aruna_Controller
 		$data['csrf_hash'] = $this->csrf['hash'];
 
 		return view('editpost', $data);
+	}
+
+	public function clonepost($id)
+	{
+		$res = $this->db->sql_prepare("select * from ml_news_article where id = :id");
+		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		$row['id'] = isset($row['id']) ? $row['id'] : NULL;
+
+		if ( ! $row['id'] || ! is_numeric($id))
+		{
+			error_page();
+		}
+
+		$data = [
+			'title' 		=> $row['title'],
+			'cid'	 		=> $row['cid'],
+			'content' 		=> $row['content'],
+			'thumb_s'		=> $thumb_s,
+			'thumb_s2'		=> $thumb_s2,
+			'thumb_l'		=> $thumb_l,
+			'uri'			=> $row['uri'].'-clone',
+			'schedule_pub' 	=> $row['schedule_pub'],
+			'status'		=> 1
+		];
 	}
 
 	public function layout()
@@ -565,13 +598,16 @@ class manage_news extends Aruna_Controller
 			}
 			else
 			{
+				$sidebar_position = ($this->input->post('sidebar_position') !== NULL) ? $this->input->post('sidebar_position') : '';
+				$is_hide_sidebar = ($this->input->post('is_hide_sidebar') !== NULL) ? $this->input->post('is_hide_sidebar') : '';
+
 				$layout_data = [
 					'page'					=> 'news',
 					'section'				=> 'main_content',
 					'view_type'				=> $this->input->post('view_type'),
-					'sidebar_position'		=> $this->input->post('sidebar_position'),
 					'is_hide_category'		=> $this->input->post('is_hide_category'),
-					'is_hide_sidebar'		=> $this->input->post('is_hide_sidebar'),
+					'is_hide_sidebar'		=> $is_hide_sidebar,
+					'sidebar_position'		=> $sidebar_position,
 					'created'				=> time()
 				];
 
@@ -624,6 +660,7 @@ class manage_news extends Aruna_Controller
 			$row['content'] 	 = preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
 			$row['get_user']	 = get_client($row['userid'], 'fullname');
 			$row['get_created']  = get_date($row['created']);
+			$row['get_status']	 = get_status_article($row['status'], TRUE);
 			$row['scheduled']	 = ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';
 
 			$output[] = $row;

@@ -311,6 +311,30 @@
 	}
 
 	// ------------------------------------------------------------------------
+	
+	function get_status_article($key = '', $with_style = FALSE)
+	{
+		if ($key == 0)
+		{
+			$output = ($with_style == TRUE) ? '<span class="badge bg-success">Publish</span>' : 'Publish';
+		}
+		elseif ($key == 1) 
+		{
+			$output = ($with_style == TRUE) ? '<span class="badge bg-secondary">Draft</span>' : 'Draft';	
+		}
+		elseif ($key == 2) 
+		{
+			$output = ($with_style == TRUE) ? '<span class="badge bg-danger">Deleted</span>' : 'Deleted';	
+		}
+		else
+		{
+			$output = ($with_style == TRUE) ? '<span class="badge bg-info">Unknown</span>' : 'Unknown';	
+		}
+
+		return $output;
+	}
+
+	// ------------------------------------------------------------------------
 
 	/**
 	 * Get Role
@@ -733,6 +757,10 @@
 		{
 			$table_database = 'ml_promotion_category';
 		}
+		elseif ($page == 'portofolio')
+		{
+			$table_database = 'ml_portofolio_category';
+		}
 
 		$res = $Aruna->db->sql_prepare("select name from $table_database where id = :id");
 		$bindParam = $Aruna->db->sql_bindParam(['id' => $cid], $res);
@@ -786,6 +814,8 @@
 
 		return $row['actived'];
 	}
+
+	// ------------------------------------------------------------------------
 
 	function get_role_page($page_name)
 	{
@@ -969,27 +999,62 @@
 
 	// ------------------------------------------------------------------------
 
+	function add_title_widget($string, $options = array('for_widget' => ''))
+	{
+		$GLOBALS['widget']['title'][$options['for_widget']] = $string;	
+	}
+
+	// ------------------------------------------------------------------------
+
+	function add_caption_widget($string, $options = array('for_widget' => ''))
+	{
+		$GLOBALS['widget']['caption'][$options['for_widget']] = $string;	
+	}
+
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Add Widget
 	 * 
 	 * Example:
 	 * 
-	 * add_widget('news', 'homepage')
+	 * 1. Module Name
+	 * 2. View Type: list, grid, grid-box
+	 * 
+	 * add_widget('news', 'grid')
 	 * 
 	 * @return string
 	 */
 
-	function add_widget($widget, $page)
+	function add_widget($widget = '', $view_type = 'grid', $options = array('sortBy' => 'desc', 'limit' => 6))
 	{
 		$Aruna =& get_instance();
 
 		$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and type = :type");
-		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $page, 'type' => 'page'], $res_module);
+		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $widget, 'type' => 'page'], $res_module);
 		$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
 
-		$res_layout = $Aruna->db->sql_prepare("select * from ml_layout where name = :name and section = :section");
-		$bindParam_layout = $Aruna->db->sql_bindParam(['name' => $page, 'section' => 'widget'], $res_layout);
-		$row_layout = $Aruna->db->sql_fetch_single($bindParam_layout);
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row_module = ($row_module !== FALSE) ? $row_module : [];
+
+		if ($row_module['is_widget'] == 1)
+		{
+			$res_article = $Aruna->db->sql_select("select * from ml_".$widget."_article order by id ".$options['sortBy']." limit ".$options['limit']."");
+			$row_article = $Aruna->db->sql_fetch($res_article);
+
+			if ($view_type == 'grid')
+			{
+				include APPPATH.'views/widget/common/grid_view.php';
+
+				return $output;
+			}
+			elseif ($view_type == 'grid_box')
+			{
+				include APPPATH.'views/widget/common/grid_box_view.php';
+
+				return $output;
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

@@ -92,7 +92,7 @@
 					<transition-group name="custom-classes-transition" enter-active-class="animate__animated animate__fadeIn animate__faster" tag="div" class="row ph-grid-view">
 						<div class="col-md-6 col-xl-4" v-for="(info, index) in getData" v-bind:key="info.id">
 
-							<div class="ph-event">
+							<div class="ph-news">
 								<div>
 									<div class="thumbnail">
 										<a :href="\''.site_url('news/\'+info.uri+\'').'\'" class="stretched-link">

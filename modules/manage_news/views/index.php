@@ -106,6 +106,7 @@
 									<th scope="col" style="width: 8%">Thumbnail</th>
 									<th scope="col" style="width: 40%">Content</th>
 									<th scope="col" style="width: 10%">Scheduled</th>
+									<th scope="col" style="width: 10%">Status</th>
 									<th scope="col" style="width: 10%">Created</th>
 									<th scope="col" style="width: 10%">Option</th>
 								</tr>
@@ -124,6 +125,10 @@
 									
 									<td class="align-middle text-nowrap">
 										<span v-html="info.scheduled"></span>
+									</td>
+
+									<td class="align-middle text-nowrap">
+										<span v-html="info.get_status"></span>
 									</td>
 
 									<td class="align-middle text-nowrap">

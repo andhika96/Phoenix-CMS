@@ -19,7 +19,7 @@
 		<div class="arv6-box bg-white arv3-pc-content p-4 p-md-5 rounded shadow-sm" id="ar-form-submit">
 			<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
 
-			<form action="'.site_url('manage_portofolio/editcategory/'.$id).'" method="post" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" ref="formHTML">
+			<form action="'.site_url('manage_portofolio/editcategory/'.$id).'" method="post" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" with-list-slideshow-page="false" with-list-coverimage-page="false" ref="formHTML">
 				<div class="row">
 					<label class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Category Name').'</label>
 					

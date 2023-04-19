@@ -27,6 +27,11 @@ class home extends Aruna_Controller
 		return view('index');
 	}
 
+	public function landing()
+	{
+		return view('landing');
+	}
+
 	public function test()
 	{
 		$spreadsheet = new Spreadsheet();

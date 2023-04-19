@@ -45,8 +45,9 @@
 							<div class="d-flex justify-content-md-end align-items-center">
 								<span class="text-muted fw-bold me-2">Share Post:</span>
 
-								'.anchor_popup('https://www.facebook.com/sharer/sharer.php?u='.site_url('blog/'.$row['uri']), '<div style="font-size: 2.5em"><span class="fa-layers fa-fw"><i class="fas fa-circle" style="color: #0054b9"></i><i class="fa-inverse fab fa-facebook-f" data-fa-transform="shrink-6"></i></span></div>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100']).'
-								'.anchor_popup('http://www.twitter.com/intent/tweet?url='.site_url('blog/'.$row['uri']).'&text=['.$row['title'].']', '<div style="font-size: 2.5em"><span class="fa-layers fa-fw"><i class="fas fa-circle" style="color: #0054b9"></i><i class="fa-inverse fab fa-twitter" data-fa-transform="shrink-6"></i></span></div>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'ms-2']).'
+								'.anchor_popup('https://www.facebook.com/sharer/sharer.php?u='.site_url('news/'.$row['uri']), '<i class="fab fa-facebook-square fa-2x"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'me-3']).'
+								'.anchor_popup('http://www.twitter.com/intent/tweet?url='.site_url('news/'.$row['uri']).'&text=['.$row['title'].']', '<i class="fab fa-twitter fa-2x"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100', 'class' => 'me-3']).'
+								'.anchor_popup('whatsapp://send?text='.site_url('news/'.$row['uri']), '<i class="fab fa-whatsapp fa-2x"></i>', ['target' => '_blank', 'width' => '600', 'height' => '500', 'screenx' => '350', 'screeny' => '100']).'
 							</div>
 						</div>
 					</div>

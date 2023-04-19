@@ -242,11 +242,13 @@ class awesome_admin extends Aruna_Controller
 					$module_key 			= $key.'_actived';
 					$module_slideshow 		= $key.'_slideshow';
 					$module_coverimage 		= $key.'_coverimage';
+					$module_widget 			= $key.'_widget';
 					$module_position 		= $key.'_position';
 
 					$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
 					$slideshow_actived 		= ( ! empty($this->input->post($module_slideshow))) ? 1 : 0;
 					$coverimage_actived 	= ( ! empty($this->input->post($module_coverimage))) ? 1 : 0;
+					$widget_actived 		= ( ! empty($this->input->post($module_widget))) ? 1 : 0;
 
 					$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
 
@@ -258,11 +260,11 @@ class awesome_admin extends Aruna_Controller
 							exit;
 						}
 
-						$this->db->sql_update(['actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'position' => $this->input->post($module_position), 'type' => 'page'], 'ml_modules', ['name' => $key]);
+						$this->db->sql_update(['actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived, 'position' => $this->input->post($module_position), 'type' => 'page'], 'ml_modules', ['name' => $key]);
 					}
 					else
 					{
-						$this->db->sql_insert(['name' => $key, 'type' => 'page', 'actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'position' => $this->input->post($module_position)], 'ml_modules');
+						$this->db->sql_insert(['name' => $key, 'type' => 'page', 'actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived, 'position' => $this->input->post($module_position)], 'ml_modules');
 					}
 				}
 			}
@@ -421,7 +423,6 @@ class awesome_admin extends Aruna_Controller
 				{
 					$module['name'] = $file;
 
-					/*
 					if (file_exists('modules/'.$file.'/'.$file.'.hook.php')) 
 					{
 						$module['hooking'] = 1;
@@ -430,7 +431,6 @@ class awesome_admin extends Aruna_Controller
 					{
 						$module['hooking'] = 0;
 					}
-					*/
 
 					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
 					{
@@ -473,6 +473,137 @@ class awesome_admin extends Aruna_Controller
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post') 
 		{
+			$hooks 	= $this->check_hook('menu');
+			$menu 	= array();
+
+			if ($hooks)
+			{
+				foreach ($hooks as $hook) 
+				{
+					$hook_function = $hook.'_menu';
+					$array_hook = $hook_function();
+
+					foreach ($array_hook as $key => $item) 
+					{
+						$menu[$key] = $item;
+
+						foreach ($menu as $key => $value)
+						{
+							if ($value['type'] == 'parent')
+							{
+								$res_parent = $this->db->sql_prepare("select * from ml_menu_parent where parent_name = :parent_name");
+								$bindParam_parent = $this->db->sql_bindParam(['parent_name' => $value['name']], $res_parent);
+
+								if ( ! $this->db->sql_counts($bindParam_parent))
+								{
+									$value['converted_name'] = strtolower($value['name']);
+									$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+									$data_0 = 
+									[
+										'parent_name' 	=> $value['name'],
+										'parent_code' 	=> $value['converted_name'],
+										'icon'			=> $value['icon'],
+										'roles'			=> $value['roles']
+									];
+
+									$this->db->sql_insert($data_0, 'ml_menu_parent');
+
+									$parent_id = $this->db->insert_id();
+								}
+								else
+								{
+									$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+
+									$value['converted_name'] = strtolower($value['name']);
+									$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+									$data_0 = 
+									[
+										'parent_name' 	=> $value['name'],
+										'parent_code' 	=> $value['converted_name'],
+										'icon'			=> $value['icon'],
+										'roles'			=> $value['roles']
+									];
+
+									$this->db->sql_update($data_0, 'ml_menu_parent', ['id' => $row_parent['id']]);
+
+									$parent_id = $row_parent['id'];
+								}
+							}
+
+							if ($value['type'] == 'child')
+							{				
+								$res_new_menu = $this->db->sql_prepare("select * from ml_menu where menu_name = :menu_name");
+								$bindParam_new_menu = $this->db->sql_bindParam(['menu_name' => $value['name']], $res_new_menu);
+
+								if ( ! $this->db->sql_counts($bindParam_new_menu))
+								{	
+									if ( ! isset($value['new_name']))
+									{
+										$res_new_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent where id = :id");
+										$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+										$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+										$data_1 = 
+										[
+											'menu_parent_id'	=> $row_new_parent['id'],
+											'menu_parent_name' 	=> $row_new_parent['parent_name'],
+											'menu_parent_code' 	=> $row_new_parent['parent_code'],
+											'menu_name'			=> $value['name'],
+											'url'				=> $value['path'],
+											'icon'				=> $value['icon'],
+											'roles'				=> $value['roles']
+										];
+
+										$this->db->sql_insert($data_1, 'ml_menu');
+									}
+								}	
+								else
+								{
+									$row_new_menu = $this->db->sql_fetch_single($bindParam_new_menu);
+
+									$res_new_parent = $this->db->sql_prepare("select id, parent_name, parent_code from ml_menu_parent where id = :id");
+									$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+									$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+									if (isset($value['new_name']) && ! empty($value['new_name']))
+									{
+										$data_1 = 
+										[
+											'menu_parent_id'	=> $row_new_parent['id'],
+											'menu_parent_name' 	=> $row_new_parent['parent_name'],
+											'menu_parent_code' 	=> $row_new_parent['parent_code'],
+											'menu_name'			=> $value['new_name'],
+											'url'				=> $value['path'],
+											'icon'				=> $value['icon'],
+											'roles'				=> $value['roles']
+										];
+
+										$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
+									}
+									else
+									{
+										$data_1 = 
+										[
+											'menu_parent_id'	=> $row_new_parent['id'],
+											'menu_parent_name' 	=> $row_new_parent['parent_name'],
+											'menu_parent_code' 	=> $row_new_parent['parent_code'],
+											'menu_name'			=> $value['name'],
+											'url'				=> $value['path'],
+											'icon'				=> $value['icon'],
+											'roles'				=> $value['roles']
+										];
+
+										$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
+									}
+								}		
+							}
+						}
+					}
+				}
+			}
+
 			foreach ($this_modules as $key => $module) 
 			{
 				$module_key 			= $key.'_actived';
@@ -481,11 +612,11 @@ class awesome_admin extends Aruna_Controller
 
 				if (is_array($current_modules[$key]))
 				{
-					$this->db->sql_update(['actived' => $actived, 'type' => $module['type']], 'ml_modules', ['name' => $key]);
+					$this->db->sql_update(['actived' => $actived, 'type' => $module['type'], 'hooking' => $module['hooking']], 'ml_modules', ['name' => $key]);
 				}
 				else
 				{
-					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'actived' => $actived], 'ml_modules');
+					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'hooking' => $module['hooking'], 'actived' => $actived], 'ml_modules');
 				}
 			}
 
@@ -934,8 +1065,52 @@ class awesome_admin extends Aruna_Controller
 		exit;
 	}
 
+	protected function check_hook($act = 'menu')
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if ($module['hooking'] == 1 && file_exists('modules/'.$module['name'].'/'.$module['name'].'.hook.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.hook.php');
+			}
+
+			$function = $module['name'].'_'.$act;
+
+			if ($module['actived'] == 1 && function_exists($function))
+			{
+				$hooks[] = $module['name'];
+			}
+		}
+
+		if (isset($hooks) && is_array($hooks))
+		{
+			return $hooks;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
 	public function test()
 	{
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}		
+
 		if ($handle = opendir('modules')) 
 		{
 			while (false !== ($file = readdir($handle))) 
@@ -946,6 +1121,15 @@ class awesome_admin extends Aruna_Controller
 				if (is_dir('modules/' .$file) && $file != '.' && $file != '..' && ! in_array($file, $ignores) && file_exists('modules/'.$file.'/'.$file.'.info')) 
 				{
 					$module['name'] = $file;
+
+					if (file_exists('modules/'.$file.'/'.$file.'.hook.php')) 
+					{
+						$module['hooking'] = 1;
+					}
+					else 
+					{
+						$module['hooking'] = 0;
+					}
 
 					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
 					{
@@ -981,9 +1165,225 @@ class awesome_admin extends Aruna_Controller
 			closedir($handle);
 		}
 
+		/*
+		foreach ($current_modules as $module) 
+		{
+			if ($module['hooking'] == 1 && file_exists('modules/'.$module['name'].'/'.$module['name'].'.hook.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.hook.php');
+			}
+		}
+
+		$test = function_exists('manage_news_menu');
+		$function = manage_news_menu();
+
+		foreach ($function as $key => $value)
+		{
+			if ($value['type'] == 'parent')
+			{
+				$res_parent = $this->db->sql_prepare("select * from ml_menu_parent_test where parent_name = :parent_name");
+				$bindParam_parent = $this->db->sql_bindParam(['parent_name' => $value['name']], $res_parent);
+
+				if ( ! $this->db->sql_counts($bindParam_parent))
+				{
+					$value['converted_name'] = strtolower($value['name']);
+					$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+					$data_0 = 
+					[
+						'parent_name' 	=> $value['name'],
+						'parent_code' 	=> $value['converted_name'],
+						'icon'			=> $value['icon'],
+						'roles'			=> $value['roles']
+					];
+
+					$this->db->sql_insert($data_0, 'ml_menu_parent_test');
+
+					$parent_id = $this->db->insert_id();
+				}
+				else
+				{
+					$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+
+					$value['converted_name'] = strtolower($value['name']);
+					$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+					$data_0 = 
+					[
+						'parent_name' 	=> $value['name'],
+						'parent_code' 	=> $value['converted_name'],
+						'icon'			=> $value['icon'],
+						'roles'			=> $value['roles']
+					];
+
+					$this->db->sql_update($data_0, 'ml_menu_parent_test', ['id' => $row_parent['id']]);
+
+					$parent_id = $row_parent['id'];
+				}
+			}
+
+			if ($value['type'] == 'child')
+			{				
+				$res_new_menu = $this->db->sql_prepare("select * from ml_menu_test where menu_name = :menu_name");
+				$bindParam_new_menu = $this->db->sql_bindParam(['menu_name' => $value['name']], $res_new_menu);
+
+				if ( ! $this->db->sql_counts($bindParam_new_menu))
+				{	
+					$res_new_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent_test where id = :id");
+					$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+					$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+					$data_1 = 
+					[
+						'menu_parent_id'	=> $row_new_parent['id'],
+						'menu_parent_name' 	=> $row_new_parent['parent_name'],
+						'menu_parent_code' 	=> $row_new_parent['parent_code'],
+						'menu_name'			=> $value['name'],
+						'url'				=> $value['path'],
+						'icon'				=> $value['icon'],
+						'roles'				=> $value['roles']
+					];
+
+					$this->db->sql_insert($data_1, 'ml_menu_test');
+				}	
+				else
+				{
+					$row_new_menu = $this->db->sql_fetch_single($bindParam_new_menu);
+
+					$res_new_parent = $this->db->sql_prepare("select id, parent_name, parent_code from ml_menu_parent_test where id = :id");
+					$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+					$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+					$data_1 = 
+					[
+						'menu_parent_id'	=> $row_new_parent['id'],
+						'menu_parent_name' 	=> $row_new_parent['parent_name'],
+						'menu_parent_code' 	=> $row_new_parent['parent_code'],
+						'menu_name'			=> $value['name'],
+						'url'				=> $value['path'],
+						'icon'				=> $value['icon'],
+						'roles'				=> $value['roles']
+					];
+
+					$this->db->sql_update($data_1, 'ml_menu_test', ['id' => $row_new_menu['id']]);
+				}		
+			}
+		}
+		*/
+
+		$hooks 	= $this->check_hook('menu');
+		$menu 	= array();
+
+		if ($hooks)
+		{
+			foreach ($hooks as $hook) 
+			{
+				$hook_function = $hook.'_menu';
+				$array_hook = $hook_function();
+
+				foreach ($array_hook as $key => $item) 
+				{
+					$menu[$key] = $item;
+
+					foreach ($menu as $key => $value)
+					{
+						if ($value['type'] == 'parent')
+						{
+							$res_parent = $this->db->sql_prepare("select * from ml_menu_parent_test where parent_name = :parent_name");
+							$bindParam_parent = $this->db->sql_bindParam(['parent_name' => $value['name']], $res_parent);
+
+							if ( ! $this->db->sql_counts($bindParam_parent))
+							{
+								$value['converted_name'] = strtolower($value['name']);
+								$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+								$data_0 = 
+								[
+									'parent_name' 	=> $value['name'],
+									'parent_code' 	=> $value['converted_name'],
+									'icon'			=> $value['icon'],
+									'roles'			=> $value['roles']
+								];
+
+								$this->db->sql_insert($data_0, 'ml_menu_parent_test');
+
+								$parent_id = $this->db->insert_id();
+							}
+							else
+							{
+								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+
+								$value['converted_name'] = strtolower($value['name']);
+								$value['converted_name'] = preg_replace("/\s+/", "_", $value['converted_name']);
+
+								$data_0 = 
+								[
+									'parent_name' 	=> $value['name'],
+									'parent_code' 	=> $value['converted_name'],
+									'icon'			=> $value['icon'],
+									'roles'			=> $value['roles']
+								];
+
+								$this->db->sql_update($data_0, 'ml_menu_parent_test', ['id' => $row_parent['id']]);
+
+								$parent_id = $row_parent['id'];
+							}
+						}
+
+						if ($value['type'] == 'child')
+						{				
+							$res_new_menu = $this->db->sql_prepare("select * from ml_menu_test where menu_name = :menu_name");
+							$bindParam_new_menu = $this->db->sql_bindParam(['menu_name' => $value['name']], $res_new_menu);
+
+							if ( ! $this->db->sql_counts($bindParam_new_menu))
+							{	
+								$res_new_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent_test where id = :id");
+								$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+								$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+								$data_1 = 
+								[
+									'menu_parent_id'	=> $row_new_parent['id'],
+									'menu_parent_name' 	=> $row_new_parent['parent_name'],
+									'menu_parent_code' 	=> $row_new_parent['parent_code'],
+									'menu_name'			=> $value['name'],
+									'url'				=> $value['path'],
+									'icon'				=> $value['icon'],
+									'roles'				=> $value['roles']
+								];
+
+								$this->db->sql_insert($data_1, 'ml_menu_test');
+							}	
+							else
+							{
+								$row_new_menu = $this->db->sql_fetch_single($bindParam_new_menu);
+
+								$res_new_parent = $this->db->sql_prepare("select id, parent_name, parent_code from ml_menu_parent_test where id = :id");
+								$bindParam_new_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_new_parent);
+								$row_new_parent = $this->db->sql_fetch_single($bindParam_new_parent);
+
+								$data_1 = 
+								[
+									'menu_parent_id'	=> $row_new_parent['id'],
+									'menu_parent_name' 	=> $row_new_parent['parent_name'],
+									'menu_parent_code' 	=> $row_new_parent['parent_code'],
+									'menu_name'			=> $value['name'],
+									'url'				=> $value['path'],
+									'icon'				=> $value['icon'],
+									'roles'				=> $value['roles']
+								];
+
+								$this->db->sql_update($data_1, 'ml_menu_test', ['id' => $row_new_menu['id']]);
+							}		
+						}
+					}
+				}
+			}
+		}
+
 		$this->output->set_content_type('application/json', 'utf-8')
 				 ->set_header('Access-Control-Allow-Origin: '.site_url())
-				 ->set_output(json_encode($this_modules, JSON_PRETTY_PRINT))
+				 ->set_output(json_encode($menu, JSON_PRETTY_PRINT))
 				 ->_display();
 		exit;
 	}

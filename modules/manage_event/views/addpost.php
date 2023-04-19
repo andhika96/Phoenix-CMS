@@ -55,12 +55,21 @@
 							</select>
 						</div>
 
-						<div class="col-md-6 mb-3 mb-md-0">
+						<div class="col-md-4 mb-3 mb-md-0">
 							<label class="form-label">'.t('Thumbnail').'</label>
 							<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">Status</label>
+							<select name="status" class="form-select font-size-inherit">
+								<option value="">Select status</option>
+								<option value="0">Publish</option>
+								<option value="1">Draft</option>
+							</select>
+						</div>
+
+						<div class="col-md-4">
 							<label class="form-label">'.t('Schedule Posts').'</label>
 
 							<div class="input-group mb-3">
@@ -101,7 +110,7 @@
 					<div>
 						<input type="hidden" name="step" value="post">
 						<input type="hidden" class="btn-token-submit" name="'.$csrf_name.'" value="'.$csrf_hash.'">
-						<input type="submit" class="btn btn-bnight-blue btn-malika-submit" value="'.t('Publish').'">
+						<input type="submit" class="btn btn-bnight-blue btn-malika-submit font-size-inherit" value="'.t('Publish').'">
 					</div>
 				</div>
 			</form>

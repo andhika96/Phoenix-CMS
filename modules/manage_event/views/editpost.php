@@ -24,6 +24,9 @@
 	$value_form 	= ($row['schedule_pub'] !== 0) ? gmdate("m/d/Y G:i", $row['schedule_pub']+$timezone*3600) : '';
 	$event_date 	= ($row['event_date'] !== 0) ? gmdate("m/d/Y G:i", $row['event_date']+$timezone*3600) : '';
 
+	$status_selected_0 	= ($row['status'] == 0) ? 'selected' : '';
+	$status_selected_1 	= ($row['status'] == 1) ? 'selected' : '';
+
 	section_content('
 	<!--- Custom CSS Daterange Picker --->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
@@ -65,12 +68,21 @@
 							</select>
 						</div>
 
-						<div class="col-md-6 mb-3 mb-md-0">
+						<div class="col-md-4 mb-3 mb-md-0">
 							<label class="form-label">Thumbnail</label>
 							<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-4 mb-3 mb-md-0">
+							<label class="form-label">Status</label>
+							<select name="status" class="form-select font-size-inherit">
+								<option value="">Select status</option>
+								<option value="0" '.$status_selected_0.'>Publish</option>
+								<option value="1" '.$status_selected_1.'>Draft</option>
+							</select>
+						</div>
+
+						<div class="col-md-4">
 							<label class="form-label">Schedule posts '.$scheduled.'</label>
 
 							<div class="input-group mb-2">
@@ -111,7 +123,7 @@
 					<div>
 						<input type="hidden" name="step" value="post">
 						<input type="hidden" class="btn-token-submit" name="'.$csrf_name.'" value="'.$csrf_hash.'">
-						<input type="submit" class="btn btn-bnight-blue btn-malika-submit" value="Submit">
+						<input type="submit" class="btn btn-bnight-blue btn-malika-submit font-size-inherit" value="Submit">
 					</div>
 				</div>
 			</form>

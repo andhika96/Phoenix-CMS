@@ -74,6 +74,234 @@
 	text-decoration: none;
 }
 
+.ph-grid-view .ph-promotion
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-grid-view .ph-promotion .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-grid-view .ph-promotion .thumbnail
+{
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-grid-view .ph-promotion .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-grid-view .ph-promotion .details 
+{
+	position: relative;
+	padding: 17px 10px 10px;
+}
+
+.ph-grid-view .ph-promotion .details .title, 
+.ph-grid-view .ph-promotion .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-grid-view .ph-promotion .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
+.ph-grid-view .ph-news
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-grid-view .ph-news .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-grid-view .ph-news .thumbnail
+{
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-grid-view .ph-news .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-grid-view .ph-news .details 
+{
+	position: relative;
+	padding: 17px 10px 10px;
+}
+
+.ph-grid-view .ph-news .details .title, 
+.ph-grid-view .ph-news .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-grid-view .ph-news .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
+.ph-grid-view .ph-portofolio
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-grid-view .ph-portofolio .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-grid-view .ph-portofolio .thumbnail
+{
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-grid-view .ph-portofolio .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-grid-view .ph-portofolio .details 
+{
+	position: relative;
+	padding: 17px 10px 10px;
+}
+
+.ph-grid-view .ph-portofolio .details .title, 
+.ph-grid-view .ph-portofolio .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-grid-view .ph-portofolio .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
 .ph-search-container .form-control
 {
 	border-right: 0;
@@ -318,6 +546,240 @@
 }
 
 .ph-list-view .ph-event .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-promotion
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-list-view .ph-promotion .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-list-view .ph-promotion .thumbnail
+{
+	min-width: 395px;
+	max-width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-list-view .ph-promotion .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-list-view .ph-promotion .details 
+{
+	position: relative;
+	padding: 28px 35px 10px 35px;
+}
+
+.ph-list-view .ph-promotion .details .title, 
+.ph-list-view .ph-promotion .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-promotion .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-news
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-list-view .ph-news .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-list-view .ph-news .thumbnail
+{
+	min-width: 395px;
+	max-width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-list-view .ph-news .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-list-view .ph-news .details 
+{
+	position: relative;
+	padding: 28px 35px 10px 35px;
+}
+
+.ph-list-view .ph-news .details .title, 
+.ph-list-view .ph-news .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-news .more_listing 
+{
+	color: #FF0000;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 16px;
+	letter-spacing: 0em;
+	position: relative;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-portofolio
+{
+	background-color: #fff;
+	border: 1px solid #EAEAEA;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	overflow: hidden;
+	padding: 10px;
+	position: relative;
+}
+
+.ph-list-view .ph-portofolio .tag 
+{
+	background-color: #0054b9;
+	border-radius: 60px;
+	color: #fff;
+	font-size: 9px;
+	font-style: normal;
+	font-weight: 600;
+	left: 10px;
+	line-height: 25px;
+	letter-spacing: 0.03em;
+	position: absolute;
+	text-align: center;
+	text-transform: uppercase;
+	top: 10px;
+	z-index: 1;
+	padding: 3px 10px;
+}
+
+.ph-list-view .ph-portofolio .thumbnail
+{
+	min-width: 395px;
+	max-width: 100%;
+	border-radius: 8px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ph-list-view .ph-portofolio .thumbnail .image
+{
+	background-position: center center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 255px;
+}
+
+.ph-list-view .ph-portofolio .details 
+{
+	position: relative;
+	padding: 28px 35px 10px 35px;
+}
+
+.ph-list-view .ph-portofolio .details .title, 
+.ph-list-view .ph-portofolio .details .title a 
+{
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 26px;
+	letter-spacing: 0em;
+	margin-bottom: 20px;
+	text-decoration: none;
+}
+
+.ph-list-view .ph-portofolio .more_listing 
 {
 	color: #FF0000;
 	font-size: 13px;

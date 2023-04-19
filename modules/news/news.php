@@ -127,8 +127,8 @@ class news extends Aruna_Controller
 
 	public function getListPosts()
 	{
-		$res_getTotal = $this->db->sql_prepare("select count(id) as num from ml_news_article where (cid like :cid and title like :title) and schedule_pub <= :time");
-		$bindParam_getTotal = $this->db->sql_bindParam(['cid' => '%'.$this->input->get('category').'%', 'title' => '%'.$this->input->get('search').'%', 'time' => time()], $res_getTotal);
+		$res_getTotal = $this->db->sql_prepare("select count(id) as num from ml_news_article where (cid like :cid and title like :title) and status = :status and schedule_pub <= :time");
+		$bindParam_getTotal = $this->db->sql_bindParam(['cid' => '%'.$this->input->get('category').'%', 'title' => '%'.$this->input->get('search').'%', 'status' => 0, 'time' => time()], $res_getTotal);
 		$row_getTotal = $this->db->sql_fetch_single($bindParam_getTotal);
 
 		$totalpage = ceil($row_getTotal['num']/$this->num_per_page);
@@ -136,8 +136,8 @@ class news extends Aruna_Controller
 		$currentpage = ($this->input->get('page') == 1) ? '' : $this->input->get('page');
 		$currentpage = ($this->input->get('page') != null) ? $this->input->get('page') : 1;
 
-		$res = $this->db->sql_prepare("select * from ml_news_article where (cid like :cid and title like :title) and schedule_pub <= :time order by schedule_pub desc limit $this->offset, $this->num_per_page");
-		$bindParam = $this->db->sql_bindParam(['cid' => '%'.$this->input->get('category').'%', 'title' => '%'.$this->input->get('search').'%', 'time' => time()], $res);
+		$res = $this->db->sql_prepare("select * from ml_news_article where (cid like :cid and title like :title) and status = :status and schedule_pub <= :time order by schedule_pub desc limit $this->offset, $this->num_per_page");
+		$bindParam = $this->db->sql_bindParam(['cid' => '%'.$this->input->get('category').'%', 'title' => '%'.$this->input->get('search').'%', 'status' => 0, 'time' => time()], $res);
 		while ($row = $this->db->sql_fetch_single($bindParam))
 		{
 			$row['thumb_s'] 	 	= ( ! empty($row['thumb_s'])) ? (file_exists($row['thumb_s']) ? base_url($row['thumb_s']) : 'undefined') : '';

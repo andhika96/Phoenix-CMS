@@ -166,6 +166,7 @@ class manage_event extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('check_schedule_posts') == 1)
 		{
@@ -289,6 +290,7 @@ class manage_event extends Aruna_Controller
 					'content' 			=> $this->input->post('content', FALSE),
 					'event_location'	=> $this->input->post('event_location'),
 					'event_address'	 	=> $this->input->post('event_address'),
+					'status' 			=> $this->input->post('status'),
 					'userid'			=> get_user('id'),
 					'thumb_s'			=> $thumb_s,
 					'thumb_s2'			=> $thumb_s2,
@@ -387,6 +389,7 @@ class manage_event extends Aruna_Controller
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
+		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
@@ -522,6 +525,7 @@ class manage_event extends Aruna_Controller
 					'content' 			=> $this->input->post('content', FALSE),
 					'event_location'	=> $this->input->post('event_location'),
 					'event_address'	 	=> $this->input->post('event_address'),
+					'status' 			=> $this->input->post('status'),
 					'userid'			=> get_user('id'),
 					'thumb_s'			=> $thumb_s,
 					'thumb_s2'			=> $thumb_s2,
@@ -599,9 +603,9 @@ class manage_event extends Aruna_Controller
 					'page'					=> 'event',
 					'section'				=> 'main_content',
 					'view_type'				=> $this->input->post('view_type'),
-					'sidebar_position'		=> $sidebar_position,
 					'is_hide_category'		=> $this->input->post('is_hide_category'),
 					'is_hide_sidebar'		=> $is_hide_sidebar,
+					'sidebar_position'		=> $sidebar_position,
 					'created'				=> time()
 				];
 
@@ -632,7 +636,6 @@ class manage_event extends Aruna_Controller
 		return view('layout', $data);
 	}
 
-
 	public function getListPosts()
 	{
 		$timezone  = +7;
@@ -655,6 +658,7 @@ class manage_event extends Aruna_Controller
 			$row['content'] 	 	= preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
 			$row['get_user']	 	= get_client($row['userid'], 'fullname');
 			$row['get_created']  	= get_date($row['created']);
+			$row['get_status']	 	= get_status_article($row['status'], TRUE);
 			$row['scheduled']	 	= ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';
 
 			$output[] = $row;
