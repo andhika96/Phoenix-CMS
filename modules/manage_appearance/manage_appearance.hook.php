@@ -28,51 +28,51 @@ defined('MODULEPATH') OR exit('No direct script access allowed');
  *
 */
 
-function manage_news_menu()
+function manage_appearance_menu()
 {
 	$list_menu[] = 
 	[
-		'name' 	=> 'Manage News',
+		'name' 	=> 'Manage Appearance',
 		'type' 	=> 'parent',
-		'icon' 	=> '<i class="fad fa-newspaper fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-palette fa-fw me-2"></i>',
 		'roles' => '99',
 		'path' 	=> ''
 	];
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'List of News',
+		'name' 	=> 'Logo',
 		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-list fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-swatchbook fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news'
+		'path' 	=> 'manage_appearance/logo'
 	];
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'Add New',
+		'name' 	=> 'Slideshow',
 		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-plus fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/addpost'
+		'path' 	=> 'manage_appearance/slideshow'
 	];
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'News Categories',
+		'name' 	=> 'Cover Image',
 		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-folder fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/category'
+		'path' 	=> 'manage_appearance/coverimage'
 	];
 
 	$list_menu[] = 
 	[
 		'name' 	=> 'Layout',
 		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-swatchbook fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/layout'
+		'path' 	=> 'manage_appearance/layout'
 	];
 
 	return $list_menu;

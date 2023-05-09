@@ -28,11 +28,11 @@ defined('MODULEPATH') OR exit('No direct script access allowed');
  *
 */
 
-function manage_news_menu()
+function manage_promotion_menu()
 {
 	$list_menu[] = 
 	[
-		'name' 	=> 'Manage News',
+		'name' 	=> 'Manage Promotion',
 		'type' 	=> 'parent',
 		'icon' 	=> '<i class="fad fa-newspaper fa-fw me-2"></i>',
 		'roles' => '99',
@@ -41,11 +41,11 @@ function manage_news_menu()
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'List of News',
+		'name' 	=> 'List of Promotion',
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-list fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news'
+		'path' 	=> 'manage_promotion'
 	];
 
 	$list_menu[] = 
@@ -54,16 +54,16 @@ function manage_news_menu()
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-plus fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/addpost'
+		'path' 	=> 'manage_promotion/addpost'
 	];
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'News Categories',
+		'name' 	=> 'Promotion Categories',
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-folder fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/category'
+		'path' 	=> 'manage_promotion/category'
 	];
 
 	$list_menu[] = 
@@ -72,7 +72,7 @@ function manage_news_menu()
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-swatchbook fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/layout'
+		'path' 	=> 'manage_promotion/layout'
 	];
 
 	return $list_menu;

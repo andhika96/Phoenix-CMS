@@ -28,51 +28,42 @@ defined('MODULEPATH') OR exit('No direct script access allowed');
  *
 */
 
-function manage_news_menu()
+function manage_section_content_menu()
 {
 	$list_menu[] = 
 	[
-		'name' 	=> 'Manage News',
+		'name' 	=> 'Manage Section Content',
 		'type' 	=> 'parent',
-		'icon' 	=> '<i class="fad fa-newspaper fa-fw me-2"></i>',
+		'icon' 	=> '<i class="fad fa-columns fa-fw me-2"></i>',
 		'roles' => '99',
 		'path' 	=> ''
 	];
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'List of News',
-		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-list fa-fw me-2"></i>',
-		'roles' => '99',
-		'path' 	=> 'manage_news'
-	];
-
-	$list_menu[] = 
-	[
-		'name' 	=> 'Add New',
-		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-plus fa-fw me-2"></i>',
-		'roles' => '99',
-		'path' 	=> 'manage_news/addpost'
-	];
-
-	$list_menu[] = 
-	[
-		'name' 	=> 'News Categories',
-		'type' 	=> 'child',
-		'icon' 	=> '<i class="fad fa-folder fa-fw me-2"></i>',
-		'roles' => '99',
-		'path' 	=> 'manage_news/category'
-	];
-
-	$list_menu[] = 
-	[
-		'name' 	=> 'Layout',
+		'name' 	=> 'Content In Pages',
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-swatchbook fa-fw me-2"></i>',
 		'roles' => '99',
-		'path' 	=> 'manage_news/layout'
+		'path' 	=> 'manage_section_content/pages'
+	];
+
+	$list_menu[] = 
+	[
+		'name' 	=> 'Header',
+		'type' 	=> 'child',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
+		'roles' => '99',
+		'path' 	=> 'manage_section_content/header'
+	];
+
+	$list_menu[] = 
+	[
+		'name' 	=> 'Footer',
+		'type' 	=> 'child',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
+		'roles' => '99',
+		'path' 	=> 'manage_section_content/footer'
 	];
 
 	return $list_menu;
