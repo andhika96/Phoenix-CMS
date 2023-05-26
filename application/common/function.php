@@ -1021,7 +1021,7 @@
 	 * 1. Module Name
 	 * 2. View Type: list, grid, grid-box
 	 * 
-	 * add_widget('news', 'grid')
+	 * add_widget('news', 'grid', array('sortBy' => 'desc', 'limit' => 6))
 	 * 
 	 * @return string
 	 */

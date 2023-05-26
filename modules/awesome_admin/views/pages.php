@@ -76,22 +76,59 @@
 							</td>
 							
 							<td>'.$page['name'].'</td>
-							<td>
+
+							<td>');
+
+						if ($current_modules[$page['flag']]['active_slideshow'] == 1)
+						{
+							section_content('
 								<div class="form-check form-switch form-lg">
 									<input class="form-check-input" type="checkbox" role="switch" name="'.$module_slideshow.'" value="1" id="'.$module_slideshow.'" '.$checked_slideshow.'>
-								</div>
+								</div>');
+						}
+						else
+						{
+							section_content('
+								-');
+						}
+
+					section_content('
 							</td>
 							
-							<td>
+							<td>');
+
+						if ($current_modules[$page['flag']]['active_coverimage'] == 1)
+						{
+							section_content('
 								<div class="form-check form-switch form-lg">
 									<input class="form-check-input" type="checkbox" role="switch" name="'.$module_coverimage.'" value="1" id="'.$module_coverimage.'" '.$checked_coverimage.'>
-								</div>
+								</div>');
+						}
+						else
+						{
+							section_content('
+								-');
+						}
+
+					section_content('
 							</td>
 
-							<td>
+							<td>');
+
+						if ($current_modules[$page['flag']]['active_widget'] == 1)
+						{
+							section_content('
 								<div class="form-check form-switch form-lg">
 									<input class="form-check-input" type="checkbox" role="switch" name="'.$module_widget.'" value="1" id="'.$module_widget.'" '.$checked_widget.'>
-								</div>
+								</div>');
+						}
+						else
+						{
+							section_content('
+								-');
+						}
+
+					section_content('		
 							</td>
 							
 							<td>

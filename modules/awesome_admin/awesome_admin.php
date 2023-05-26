@@ -473,23 +473,58 @@ class awesome_admin extends Aruna_Controller
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post') 
 		{
-			$hooks 	= $this->check_hook('menu');
-			$menu 	= array();
+			$init_install 	= $this->check_install();
+			$list_config 	= array();
 
-			if ($hooks)
+			if ($init_install)
 			{
-				foreach ($hooks as $hook) 
-				{
-					$hook_function = $hook.'_menu';
-					$array_hook = $hook_function();
+				$list_install = ['active_slideshow', 'active_coverimage', 'active_widget'];
 
-					foreach ($array_hook as $key => $item) 
+				foreach ($init_install as $module) 
+				{
+					$install_function = $module.'_install';
+					$array_install = $install_function();
+
+					foreach ($array_install as $key => $item) 
 					{
-						$menu[$hook_function][$key] = $item;
+						$list_config[$install_function][$key] = $item;
+					}
+
+				}
+
+				foreach ($list_config as $key0 => $value0)
+				{
+					$get_real_module_name = str_replace("_install", "", $key0);
+
+					foreach ($value0 as $key1 => $value1)
+					{
+						if (in_array($key1, $list_install))
+						{
+							$update_module = [$key1 => $value1];
+
+							$this->db->sql_update([$key1 => $value1], 'ml_modules', ['name' => $get_real_module_name]);
+						}
+					}
+				}
+			}
+
+			$menus 	= $this->check_menu();
+			$list_menu 	= array();
+
+			if ($menus)
+			{
+				foreach ($menus as $menu) 
+				{
+					$menu_function = $menu.'_menu';
+					$array_menu = $menu_function();
+
+					foreach ($array_menu as $key => $item) 
+					{
+						$list_menu[$menu_function][$key] = $item;
 					}
 				}
 
-				foreach ($menu as $key0 => $value0)
+				foreach ($list_menu as $key0 => $value0)
 				{
 					$get_real_module_name = str_replace("_menu", "", $key0);
 
@@ -1124,7 +1159,79 @@ class awesome_admin extends Aruna_Controller
 		exit;
 	}
 
-	protected function check_hook($act = 'menu')
+	protected function check_install()
+	{
+		$install = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.install.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.install.php');
+			}
+
+			$function = $module['name'].'_install';
+
+			if ($module['actived'] == 1 && function_exists($function))
+			{
+				$install[] = $module['name'];
+			}
+		}
+
+		if (isset($install) && is_array($install))
+		{
+			return $install;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	protected function check_menu()
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.menu.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.menu.php');
+			}
+
+			$function = $module['name'].'_menu';
+
+			if ($module['actived'] == 1 && function_exists($function))
+			{
+				$hooks[] = $module['name'];
+			}
+		}
+
+		if (isset($hooks) && is_array($hooks))
+		{
+			return $hooks;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	protected function check_hook($act = 'hook')
 	{
 		$hooks = array();
 		$current_modules = array();
@@ -1550,6 +1657,121 @@ class awesome_admin extends Aruna_Controller
 		// 		 ->set_output(json_encode($menu, JSON_PRETTY_PRINT))
 		// 		 ->_display();
 		exit;
+	}
+
+	public function test2()
+	{
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}		
+
+		if ($handle = opendir('modules')) 
+		{
+			while (false !== ($file = readdir($handle))) 
+			{
+				$module = array();
+				$ignores = array('.svn');
+
+				if (is_dir('modules/' .$file) && $file != '.' && $file != '..' && ! in_array($file, $ignores) && file_exists('modules/'.$file.'/'.$file.'.info')) 
+				{
+					$module['name'] = $file;
+
+					if (file_exists('modules/'.$file.'/'.$file.'.install.php')) 
+					{
+						$module['install'] = 1;
+					}
+					else 
+					{
+						$module['install'] = 0;
+					}
+
+					if (file_exists('modules/'.$file.'/'.$file.'.hook.php')) 
+					{
+						$module['hooking'] = 1;
+					}
+					else 
+					{
+						$module['hooking'] = 0;
+					}
+
+					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
+					{
+						$filename = 'modules/'.$file.'/'.$file.'.info';
+						$handle2 = fopen($filename, "r");
+						$info = fread($handle2, filesize($filename));
+						fclose($handle2);
+						$arr = explode("\r\n", $info);
+
+						foreach ($arr as $item) 
+						{
+							$info = explode('=',$item);
+							$key = trim($info[0]);
+
+							$value = trim($info[1]);
+							$module[$key] = $value;
+							$module['flag'] = $file;
+						}
+					}
+					else 
+					{
+						$module['flag'] 		= $file;
+						$module['version'] 		= 'Unknown';
+						$module['description'] 	= '';
+						$module['type'] 		= '';
+						$module['manage_path'] 	= '';
+					}
+
+					$this_modules[$file] = $module;
+				}
+			}
+
+			closedir($handle);
+		}
+
+		$init_install 	= $this->check_install();
+		$list_config 	= array();
+
+		if ($init_install)
+		{
+			$list_install = ['active_slideshow', 'active_coverimage', 'active_widget'];
+
+			foreach ($init_install as $module) 
+			{
+				$install_function = $module.'_install';
+				$array_install = $install_function();
+
+				foreach ($array_install as $key => $item) 
+				{
+					$list_config[$install_function][$key] = $item;
+				}
+
+			}
+
+			foreach ($list_config as $key0 => $value0)
+			{
+				$get_real_module_name = str_replace("_install", "", $key0);
+
+				foreach ($value0 as $key1 => $value1)
+				{
+					if (in_array($key1, $list_install))
+					{
+						$update_module = [$key1 => $value1];
+
+						$this->db->sql_update([$key1 => $value1], 'ml_modules', ['name' => $get_real_module_name]);
+					}
+				}
+			}
+		}
+
+		// $this->output->set_content_type('application/json', 'utf-8')
+		// 		 ->set_header('Access-Control-Allow-Origin: '.site_url())
+		// 		 ->set_output(json_encode($menu, JSON_PRETTY_PRINT))
+		// 		 ->_display();
+		// exit;
 	}
 }
 
