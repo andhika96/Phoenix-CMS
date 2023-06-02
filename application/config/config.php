@@ -476,7 +476,7 @@
 	| homepage atau error page
 	*/
 
-	$config['main_page'] = '';
+	$config['main_page'] = 'home/landing';
 	$config['error_page'] = '';
 
 	/*

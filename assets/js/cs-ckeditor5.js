@@ -6,52 +6,81 @@ ClassicEditor
 	toolbar: 
 	{
 		items: [
-			"heading",
-			"|",
-			"bold",
-			"italic",
-			"link",
-			"bulletedList",
-			"numberedList",
-			"TodoList",
-			"|",
-			"indent",
-			"outdent",
-			"alignment",
-			"|",
-			"CKFinder",
-			"imageUpload",
-			"blockQuote",
-			"insertTable",
-			"mediaEmbed",
-			"undo",
-			"redo",
-			"removeFormat",
-			"underline",
-			"fontSize",
-			"fontFamily",
-			"highlight",
-			"code",
-			"codeBlock",
-			"exportPdf",
-			"WordCount"
+			'heading',
+			'|',
+			'bold',
+			'italic',
+			'link',
+			'bulletedList',
+			'numberedList',
+			'todoList',
+			'|',
+			'outdent',
+			'indent',
+			'alignment',
+			'undo',
+			'redo',
+			'|',
+			'CKFinder',
+			'imageUpload',
+			'imageInsert',
+			'blockQuote',
+			'insertTable',
+			'mediaEmbed',
+			'removeFormat',
+			'underline',
+			'fontFamily',
+			'fontSize',
+			'fontColor',
+			'fontBackgroundColor',
+			'highlight',
+			'code',
+			'codeBlock',
+			'sourceEditing',
+			'selectAll'
 		]
 	},
-	language: "en",
-	image: 
-	{
+	language: 'en',
+	image: {
+		styles: [ 'alignCenter', 'alignLeft', 'alignRight' ],
+		resizeOptions: [
+			{
+				name: 'resizeImage:original',
+				label: 'Default image width',
+				value: null
+			},
+			{
+				name: 'resizeImage:25',
+				label: '25% page width',
+				value: '25'
+			},
+			{
+				name: 'resizeImage:50',
+				label: '50% page width',
+				value: '50'
+			},
+			{
+				name: 'resizeImage:75',
+				label: '75% page width',
+				value: '75'
+			}
+		],
 		toolbar: [
-			"imageTextAlternative",
-			"imageStyle:full",
-			"imageStyle:side"
+			'imageTextAlternative', 'toggleImageCaption',
+			'|',
+			'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText', 'imageStyle:side',
+			'|',
+			'resizeImage',
+			'linkImage'
 		]
 	},
-	table: 
-	{
+	table: {
 		contentToolbar: [
-			"tableColumn",
-			"tableRow",
-			"mergeTableCells"
+			'tableColumn',
+			'tableRow',
+			'mergeTableCells',
+			'tableCellProperties',
+			'tableProperties'
 		]
 	},
 	ckfinder: 

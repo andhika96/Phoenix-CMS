@@ -18,7 +18,7 @@
 			<link rel="icon" href="'.base_url('assets/favicons/favicon.ico').'">
 
 			<!-- Bootstrap CSS -->
-			<link rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/5.2.3/css/bootstrap.min.css').'">
+			<link rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/5.3.0/css/bootstrap.min.css').'">
 
 			<!-- Font Lato CSS -->
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
@@ -101,7 +101,7 @@
 
 			<script src="'.base_url('assets/js/jquery-3.6.0.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootbox/5.5.2/bootbox.all.min.js').'"></script>
-			<script src="'.base_url('assets/plugins/bootstrap/5.2.3/js/bootstrap.bundle.min.js').'"></script>
+			<script src="'.base_url('assets/plugins/bootstrap/5.3.0/js/bootstrap.bundle.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/fontawesome/5.15.3/js/all.min.js').'"></script>
 			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.1').'"></script>
 			<script src="'.base_url('assets/js/simplebar-5.3.6.min.js').'"></script>

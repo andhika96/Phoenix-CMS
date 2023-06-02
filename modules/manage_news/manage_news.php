@@ -156,9 +156,9 @@ class manage_news extends Aruna_Controller
 		register_js([
 			'<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>',
 			'<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>',
-			'<script src="'.base_url('assets/plugins/ckeditor5/build/ckeditor.js').'"></script>',
+			'<script src="'.base_url('assets/plugins/ckeditor5_new/build/ckeditor.js?v=0.0.4').'"></script>',
 			'<script src="'.base_url('assets/plugins/ckfinder/ckfinder.js').'"></script>',
-			'<script src="'.base_url('assets/js/cs-ckeditor5.js').'"></script>'
+			'<script src="'.base_url('assets/js/cs-ckeditor5.js?v=0.0.2').'"></script>'
 		]);
 
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
@@ -328,9 +328,9 @@ class manage_news extends Aruna_Controller
 		register_js([
 			'<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>',
 			'<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>',
-			'<script src="'.base_url('assets/plugins/ckeditor5/build/ckeditor.js').'"></script>',
+			'<script src="'.base_url('assets/plugins/ckeditor5_new/build/ckeditor.js?v=0.0.4').'"></script>',
 			'<script src="'.base_url('assets/plugins/ckfinder/ckfinder.js').'"></script>',
-			'<script src="'.base_url('assets/js/cs-ckeditor5.js').'"></script>',
+			'<script src="'.base_url('assets/js/cs-ckeditor5.js?v=0.0.2').'"></script>',
 			'<script>
 				$(".ar-schedule-pub2").daterangepicker(
 				{
@@ -365,6 +365,7 @@ class manage_news extends Aruna_Controller
 		}
 
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
+		$this->form_validation->set_rules('slug', 'Slug', 'regex_match[/^[A-Za-z0-9-]+$/]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
 		$this->form_validation->set_rules('status', 'Status', 'required');

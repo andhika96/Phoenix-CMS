@@ -330,7 +330,7 @@ const Vue2FormArticle = new Vue(
 						let toast = new bootstrap.Toast(toastBox);
 						toast.show();
 
-						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
 						document.getElementsByClassName("btn-loading-submit")[0].remove();
 					}
 					else
@@ -345,7 +345,7 @@ const Vue2FormArticle = new Vue(
 						let toast = new bootstrap.Toast(toastBox);
 						toast.hide();
 
-						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
 						document.getElementsByClassName("btn-loading-submit")[0].remove();
 					}
 
@@ -378,7 +378,7 @@ const Vue2FormArticle = new Vue(
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 				}
 
@@ -395,7 +395,7 @@ const Vue2FormArticle = new Vue(
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
 					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -430,8 +430,6 @@ const Vue2FormArticle = new Vue(
 			{
 				document.getElementsByClassName("form-control-schedule-posts")[0].setAttribute("disabled", "disabled");
 			}
-
-			console.log(document.getElementsByClassName("form-check-input")[0].checked);
 		}
 	}
 });
