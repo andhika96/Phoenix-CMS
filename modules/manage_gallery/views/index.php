@@ -54,7 +54,7 @@
 					<div class="h5 pb-4 mb-3 border-bottom"><i class="fad fa-folder-plus fa-fw me-1"></i> '.t('Add New Category').'</div>
 					<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
 
-					<form action="'.site_url('manage_gallery/index').'" method="post" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" ref="formHTML">
+					<form action="'.site_url('manage_gallery/index').'" method="post" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" with-list-slideshow-page="false" with-list-coverimage-page="false" ref="formHTML">
 						<div class="form-group mb-3">
 							<label class="form-label">'.t('Category Name').'</label>
 							<input type="text" name="newcategory" class="form-control">

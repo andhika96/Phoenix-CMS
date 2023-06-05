@@ -69,10 +69,10 @@ for (let i = 0; i < getFormCheckDate.length; i++)
 
 $(document).ready(function() 
 {
-	$(function() 
-	{
-		$('[data-toggle="tooltip"]').tooltip();
-	});
+	// $(function() 
+	// {
+	// 	$('[data-toggle="tooltip"]').tooltip();
+	// });
 
 	$('.custom-file-input').change(function(e) 
 	{

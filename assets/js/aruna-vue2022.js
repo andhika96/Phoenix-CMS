@@ -270,7 +270,8 @@ const Vue2FormArticle = new Vue(
 	data: 
 	{
 		form: {},
-		responseMessageSubmit: ''
+		responseMessageSubmit: '',
+		imageEncode: ''
 	},
 	methods: 
 	{
@@ -430,6 +431,52 @@ const Vue2FormArticle = new Vue(
 			{
 				document.getElementsByClassName("form-control-schedule-posts")[0].setAttribute("disabled", "disabled");
 			}
+		},
+		previewImage: function(event)
+		{
+			const fileReader = new FileReader();
+			const image = new Image();
+			const files = event.target.files;
+
+			const imagePreview = document.getElementById("img-preview");
+
+			const filename = files[0].name;
+			fileReader.addEventListener('load', () => 
+			{
+				image.src = fileReader.result;
+
+				image.addEventListener('load', () => 
+				{
+					// console.log(image.width+' x '+image.height);
+
+					if (image.width > image.height)
+					{
+						imagePreview.classList.remove("h-100");
+
+						// console.log('Its Landscape');
+					} 
+					else if (image.width < image.height)
+					{
+						imagePreview.classList.add("h-100");
+
+						// console.log('Its Portrait');
+					}
+					else if (image.width == 0 && image.height == 0)
+					{
+						imagePreview.classList.add("h-100");
+					}
+					else
+					{
+						imagePreview.classList.remove("h-100");
+
+						// console.log('Its Square');
+					}
+
+					this.imageEncode = fileReader.result;
+				});
+			});
+
+			fileReader.readAsDataURL(files[0]);
 		}
 	}
 });

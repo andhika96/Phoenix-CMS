@@ -20,15 +20,15 @@
 			<script src="'.base_url('assets/js/vue-lazyload-1.3.3.min.js').'"></script>
 			<script src="'.base_url('assets/js/vue-cookies-1.8.3.js').'"></script>
 
-			<script src="'.base_url('assets/js/jquery-3.6.0.min.js').'"></script>
-			<script src="'.base_url('assets/plugins/spectrum/dist/spectrum.min.js').'">
-			<script src="'.base_url('assets/plugins/bootbox/5.5.2/bootbox.all.min.js').'"></script>
+			<script src="'.base_url('assets/js/jquery-3.7.0.min.js').'"></script>
+			<script src="'.base_url('assets/plugins/spectrum/dist/spectrum.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootstrap/5.3.0/js/bootstrap.bundle.min.js').'"></script>
+			<script src="'.base_url('assets/plugins/bootbox/6.0.0/bootbox.all.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/fontawesome/5.15.3/js/all.min.js').'"></script>	
 			<script src="'.base_url('assets/js/simplebar-5.3.6.min.js').'"></script>
 
-			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.14').'"></script>
-			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.1').'"></script>
+			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.15').'"></script>
+			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.2').'"></script>
 
 			<script>
 			if (document.querySelector(".color-picker-for-jquery") !== undefined)
