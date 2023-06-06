@@ -17,7 +17,7 @@
 		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm">
 			<div class="h5 pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center">
 				<div>
-					<i class="fad fa-images fa-fw me-2"></i> '.t('Edit Footer').'
+					<i class="fad fa-list-ul fa-fw me-2"></i> '.t('Edit Footer Link').' 2
 				</div> 
 
 				<div>
@@ -26,8 +26,8 @@
 			</div>
 
 			<div id="ar-form-submit-2">	
-				<form action="'.site_url('manage_news/listform').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'2\')" ref="formHTML" button-block="false" button-rounded-pill="false" font-size-large="false">						
-					<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>					
+				<form action="'.site_url('manage_section_content/footer').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'2\')" ref="formHTML" button-block="false" button-rounded-pill="false" font-size-large="false">						
+					<div class="toast ar-notice-toast-2 position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>					
 
 					<div class="col-12 mb-4" v-for="(info, index) in getListFooter2" :key="index">
 						<div class="row mb-2">
@@ -45,7 +45,7 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][icon]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link2[link_\'+index+\'][icon]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -53,7 +53,7 @@
 								<label class="form-label">Title</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][content]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link2[link_\'+index+\'][content]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -61,9 +61,9 @@
 								<label class="form-label">Link</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][link]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link2[link_\'+index+\'][link]\'" class="form-control font-size-inherit">
 								
-									<input type="hidden" :name="\'footer_right_link1[link_\'+index+\'][type]\'" :value="\'text\'">
+									<input type="hidden" :name="\'footer_right_link2[link_\'+index+\'][type]\'" :value="\'text\'">
 								</div>
 							</div>
 						</div>
@@ -73,7 +73,7 @@
 						<div>
 							<input type="hidden" name="step" value="post">
 							<input type="hidden" class="btn-token-submit-2" name="'.$csrf_name.'" value="'.$csrf_hash.'">
-							<input type="submit" class="btn btn-malika-submit-2" value="'.t('Save').'">
+							<input type="submit" class="btn btn-malika-submit btn-malika-submit-2" value="'.t('Save').'">
 						</div>
 					</div>
 

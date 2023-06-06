@@ -30,13 +30,13 @@
 			</li>
 			
 			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="footer-link2-tab" data-bs-toggle="pill" data-bs-target="#footer-link3" type="button" role="tab" aria-controls="footer-link3-pill-pane" aria-selected="false">Footer Link 3</button>
+				<button class="nav-link" id="footer-link3-tab" data-bs-toggle="pill" data-bs-target="#footer-link3" type="button" role="tab" aria-controls="footer-link3-pill-pane" aria-selected="false">Footer Link 3</button>
 			</li>
 		</ul>
 
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="footer-image-content" role="tabpanel" aria-labelledby="footer-image-content-pill-tab" tabindex="0">
-				ASDASD
+				Coming Soon
 			</div>
 			
 			<div class="tab-pane fade" id="footer-link1" role="tabpanel" aria-labelledby="footer-link1-pill-tab" tabindex="1">
@@ -48,7 +48,7 @@
 			</div>
 
 			<div class="tab-pane fade" id="footer-link3" role="tabpanel" aria-labelledby="footer-link3-pill-tab" tabindex="3">
-				Footer Link 3
+				'.$__footer_link_3.'
 			</div>
 		</div>
 	</div>');

@@ -177,7 +177,7 @@ class manage_section_content extends Aruna_Controller
 
 		$data['__footer_link_1'] = $this->__footer_link_1();
 		$data['__footer_link_2'] = $this->__footer_link_2();
-		// $data['__footer_link_3'] = $this->__footer_link_3();
+		$data['__footer_link_3'] = $this->__footer_link_3();
 
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];

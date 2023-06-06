@@ -1563,13 +1563,13 @@ const Vue2ListForm = new Vue(
 						this.responseMessageSubmit = response.data.msg;
 
 						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
 						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
 
 						let toast = new bootstrap.Toast(toastBox);
 						toast.show();
 
-						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
 					}
 					else
@@ -1580,7 +1580,7 @@ const Vue2ListForm = new Vue(
 						}, 500);
 
 						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
 						let toast = new bootstrap.Toast(toastBox);
 						toast.hide();
 
@@ -1611,13 +1611,13 @@ const Vue2ListForm = new Vue(
 					this.responseMessageSubmit = response.data.msg;
 					
 					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
 					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
 				}
 
@@ -1727,6 +1727,12 @@ const Vue2ListForm = new Vue(
 				});
 			}
 			*/
+		},
+		created: function()
+		{
+			const getTotalTabs = document.querySelectorAll(".nav-item").length;
+
+			console.log('Total: '+getTotalTabs);
 		}
 	}
 });
