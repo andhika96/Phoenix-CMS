@@ -1501,6 +1501,236 @@ const Vue2ListData = new Vue(
 	}
 });
 
+const Vue2ListForm = new Vue(
+{
+	el: "#ar-app-listform",
+	data: 
+	{
+		getListForm: [{ name: '', id: undefined }],
+		getListFooter1: [{ name: '', id: undefined }],
+		getListFooter2: [{ name: '', id: undefined }],
+		getListFooter3: [{ name: '', id: undefined }]
+	},
+	methods:
+	{
+		multipleSubmit: function(event, idSubmit)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit = document.getElementById("ar-form-submit-"+idSubmit);
+
+			// Get value of attribute in HTML.
+			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs.formHTML);
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-"+idSubmit+" "+getButtonBlock+" "+getRoundedPill+" "+getFontSizeLarge+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data"}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.msg;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+					}
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+				}
+				else if (response.data.status == 'failed')
+				{
+					this.responseMessageSubmit = response.data.msg;
+					
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+				}
+
+				document.getElementsByClassName("btn-token-submit-"+idSubmit)[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(response =>
+			{
+				console.log(response);
+			});
+		},
+		addNewForm: function(part_section)
+		{
+			if (part_section == 'list_footer1')
+			{
+				this.getListFooter1.push({ name: ''});
+			}
+			else if (part_section == 'list_footer2')
+			{
+				this.getListFooter2.push({ name: ''});
+			}
+			else if (part_section == 'list_footer3')
+			{
+				this.getListFooter3.push({ name: ''});
+			}
+		},
+		deleteForm: function(getDataInfo, index, getId)
+		{
+			getDataInfo.splice(index, 1);
+
+			/*
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+getId;
+			const getParentClass = initClass.parentNode;
+
+			if (getId == undefined)
+			{
+				getDataInfo.splice(index, 1);
+			}
+			else
+			{
+				bootbox.confirm(
+				{
+					search: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+					message: "Are you sure, do you want to delete this item?",
+					centerVertical: true,
+					closeButton: false,
+					buttons: 
+					{
+						cancel: 
+						{
+							className: 'btn-danger',
+							label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+						},
+						confirm: 
+						{
+							className: 'btn-success',
+							label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+						}
+					},
+					callback: function(result) 
+					{
+						if (result == true)
+						{
+							axios.get(getDataURL)
+							.then(response => 
+							{
+								if (response.data.status == 'success')
+								{
+									getDataInfo.splice(index, 1);
+
+									bootbox.alert({
+										search: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+										message: "<div class=\"text-center h6 m-0\">Data deleted !!</div>",
+										centerVertical: true,
+										closeButton: false
+									});
+								}
+								else if (response.data.status == 'failed' && response.data.msg !== '' && response.data.msg !== undefined)
+								{
+									bootbox.alert({
+										search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+										message: "<div class=\"text-center h6 m-0\">"+response.data.msg+"</div>",
+										centerVertical: true,
+										closeButton: false
+									});
+								}
+								else if (response.data.status == 'failed' && response.data.msg == undefined)
+								{
+									getDataInfo.splice(index, 1);
+								}
+								else
+								{
+									bootbox.alert({
+										search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+										message: "<div class=\"text-center h6 m-0\">Invalid Data Selected</div>",
+										centerVertical: true,
+										closeButton: false
+									});
+								}
+							})
+							.catch(function(error)
+							{
+							 	console.log(error);
+							});
+						}
+					}
+				});
+			}
+			*/
+		}
+	}
+});
+
 const Vue2ListDataForArticle = new Vue(
 {
 	el: "#ar-app-listdata-article",

@@ -27,7 +27,7 @@
 			<script src="'.base_url('assets/plugins/fontawesome/5.15.3/js/all.min.js').'"></script>	
 			<script src="'.base_url('assets/js/simplebar-5.3.6.min.js').'"></script>
 
-			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.15').'"></script>
+			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.16').'"></script>
 			<script src="'.base_url('assets/js/aruna-admin-v5.js?v=1.0.2').'"></script>
 
 			<script>

@@ -97,6 +97,10 @@
 								<div class="col-12 mb-3">
 									<label class="form-label">'.t('Thumbnail').'</label>
 									<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
+
+									<div class="mt-4 position-relative text-center d-flex align-items-center justify-content-center" style="width: auto;height: 250px;background-image: linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7),linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7);background-position: 0 0,10px 10px;background-size: 20px 20px;">
+										<img :src="\'\'+imageEncode+\'\'" id="img-preview" class="img-fluid">
+									</div>
 								</div>
 							</div>
 						</div>

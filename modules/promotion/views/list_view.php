@@ -90,7 +90,7 @@
 					</div>
 				</div>';
 
-		if (get_layout('event', 'is_hide_category') == 1)
+		if (get_layout('event', 'is_hide_category') !== 1)
 		{
 			echo '
 				<div class="border border-radius-10 p-4">

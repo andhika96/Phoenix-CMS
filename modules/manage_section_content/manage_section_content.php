@@ -158,67 +158,56 @@ class manage_section_content extends Aruna_Controller
 
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
-		$res = $this->db->sql_prepare("select * from ml_section where uri = :uri");
-		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
-		$row = $this->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$this->form_validation->set_rules('background_color', 'Background Color', 'required');
-		$this->form_validation->set_rules('background_color_active', 'Background Color Active', 'required');
-		$this->form_validation->set_rules('link_color', 'Link Color', 'required');
-		$this->form_validation->set_rules('link_color_hover', 'Link Color Hover', 'required');
-		$this->form_validation->set_rules('link_color_active', 'Link Color Active', 'required');
-		$this->form_validation->set_rules('background_link_color', 'Background Link Color', 'required');
-		$this->form_validation->set_rules('background_link_color_hover', 'Background Link Color Hover', 'required');
-		$this->form_validation->set_rules('background_link_color_active', 'Background Link Color Active', 'required');
-
-		$link_border_radius 	= ( ! empty($this->input->post('link_border_radius'))) ? $this->input->post('link_border_radius') : '0px';
-		$margin_top_link 		= ( ! empty($this->input->post('margin_top_link'))) ? $this->input->post('margin_top_link') : '0px';
-		$margin_right_link 		= ( ! empty($this->input->post('margin_right_link'))) ? $this->input->post('margin_right_link') : '0px';
-		$margin_bottom_link 	= ( ! empty($this->input->post('margin_bottom_link'))) ? $this->input->post('margin_bottom_link') : '0px';
-		$margin_left_link 		= ( ! empty($this->input->post('margin_left_link'))) ? $this->input->post('margin_left_link') : '0px';
-
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
-			if ($this->form_validation->run() == FALSE)
-			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
-				exit;
-			}
-			else
-			{
-				$data = [
-					'menu_position'					=> '',
-					'background_color'				=> $this->input->post('background_color'),
-					'background_color_active'		=> $this->input->post('background_color_active'),
-					'link_color'					=> $this->input->post('link_color'),
-					'link_color_hover'				=> $this->input->post('link_color_hover'),
-					'link_color_active'				=> $this->input->post('link_color_active'),
-					'link_border_radius'			=> $link_border_radius,
-					'background_link_color'			=> $this->input->post('background_link_color'),
-					'background_link_color_hover'	=> $this->input->post('background_link_color_hover'),
-					'background_link_color_active'	=> $this->input->post('background_link_color_active'),
-					'margin_top_link'				=> $margin_top_link,
-					'margin_right_link'				=> $margin_right_link,
-					'margin_bottom_link'			=> $margin_bottom_link,
-					'margin_left_link'				=> $margin_left_link,
-					'section_type'					=> ''
-				];
+			// if ($this->form_validation->run() == FALSE)
+			// {
+			// 	echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+			// 	exit;
+			// }
+			// else
+			// {
 
-				$this->db->sql_update($data, 'ml_section', ['uri' => 'footer']);
+			// 	$this->db->sql_update($data, 'ml_section', ['uri' => 'footer']);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
-				exit;
-			}
+			// 	echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			// 	exit;
+			// }
 		}
 
-		$data['row'] = $row;
+		$data['__footer_link_1'] = $this->__footer_link_1();
+		$data['__footer_link_2'] = $this->__footer_link_2();
+		// $data['__footer_link_3'] = $this->__footer_link_3();
+
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
 
 		return view('footer', $data);
+	}
+
+	protected function __footer_link_1()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_1', $data, FALSE, TRUE);
+		// return view('__footer_link_1', $data, TRUE);
+	}
+
+	protected function __footer_link_2()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_2', $data, FALSE, TRUE);
+	}
+
+	protected function __footer_link_3()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_3', $data, FALSE, TRUE);
 	}
 }
 

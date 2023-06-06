@@ -157,6 +157,7 @@ class manage_gallery extends Aruna_Controller
 		}
 
 		register_js([
+			'<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js" integrity="sha256-WCzAhd2P6gRJF9Hv3oOOd+hFJi/QJbv+Azn4CGB8gfY=" crossorigin="anonymous"></script>',
 			'<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>',
 			'
 			<script>

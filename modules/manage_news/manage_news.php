@@ -764,6 +764,89 @@ class manage_news extends Aruna_Controller
 			exit;
 		}
 	}
+
+	public function listform()
+	{
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			$data['footer_right_link1'] = $this->input->post('footer_right_link1');
+
+			// $this->db->sql_insert(['vars' => json_encode($data)], 'ml_test');
+
+			$this->db->sql_update(['vars' => json_encode($data)], 'ml_test', ['id' => 1]);
+
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
+		}
+
+		$data['csrf_name']	= $this->csrf['name'];
+		$data['csrf_hash']	= $this->csrf['hash'];
+
+		return view('listform', $data);
+	}
+
+	public function asd()
+	{
+		$data = 
+		[
+			'footer_right_link1' =>
+			[
+				'link_0' =>
+				[
+					'type' => 'text',
+					'alias' => '',
+					'icon'	=> '',
+					'content' => 'Link 1',
+					'link' => 'https://phoenix.aruna-dev.com'
+				],
+				'link_1' =>
+				[
+					'type' => 'text',
+					'alias' => '',
+					'icon'	=> '',
+					'content' => 'Link 2',
+					'link' => 'https://phoenix.aruna-dev.com'
+				],
+				'link_2' =>
+				[
+					'type' => 'text',
+					'alias' => '',
+					'icon'	=> '',
+					'content' => 'Link 3',
+					'link' => 'https://phoenix.aruna-dev.com'
+				]
+			]
+		];
+
+		// Add new data
+		$data['footer_right_link1'] +=
+		[
+			'link_3' =>
+			[
+				'type' => 'text',
+				'alias' => '',
+				'icon'	=> '',
+				'content' => 'Link 3',
+				'link' => 'https://phoenix.aruna-dev.com'
+			]
+		];
+
+		$this->db->sql_insert(['vars' => json_encode($data)], 'ml_test');
+
+		// Delete data
+		// unset($data['footer_right_link1']['link_3']);
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($data, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
 }
 
 ?>
