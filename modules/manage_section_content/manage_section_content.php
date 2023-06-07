@@ -166,33 +166,32 @@ class manage_section_content extends Aruna_Controller
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
-			// if ($this->form_validation->run() == FALSE)
-			// {
-			// 	echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
-			// 	exit;
-			// }
-			// else
-			// {
-
-			// 	$this->db->sql_update($data, 'ml_section', ['uri' => 'footer']);
-
-			// 	echo json_encode(['status' => 'success', 'msg' => 'Success']);
-			// 	exit;
-			// }
-
 			if ($this->input->post('footer_right_link1') !== null)
 			{
 				$get_vars['footer_right_link1'] = $this->input->post('footer_right_link1');
 
 				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
-
-				$this->output->set_content_type('application/json', 'utf-8')
-						 ->set_header('Access-Control-Allow-Origin: '.site_url())
-						 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
-						 // ->set_output(json_encode($data, JSON_PRETTY_PRINT))
-						 ->_display();
-				exit;
 			}
+
+			if ($this->input->post('footer_right_link2') !== null)
+			{
+				$get_vars['footer_right_link2'] = $this->input->post('footer_right_link2');
+
+				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+			}
+
+			if ($this->input->post('footer_right_link3') !== null)
+			{
+				$get_vars['footer_right_link3'] = $this->input->post('footer_right_link3');
+
+				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+			}
+
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
 		}
 
 		$data['__footer_link_1'] = $this->__footer_link_1();

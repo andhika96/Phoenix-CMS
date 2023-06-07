@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="col-md-6 text-md-end">
-								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter1, index, info.id); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
+								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter1, index); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
 							</div>
 						</div>
 

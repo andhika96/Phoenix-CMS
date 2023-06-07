@@ -1511,6 +1511,7 @@ const Vue2FooterContent = new Vue(
 		getListFooter1: [{ icon: '', link: '', content: '', type: 'text'}],
 		getListFooter2: [{ icon: '', link: '', content: '', type: 'text'}],
 		getListFooter3: [{ icon: '', link: '', content: '', type: 'text'}],
+		showData: true,
 		loadingData: true,
 		statusData: '',
 		messageData: ''
@@ -1709,6 +1710,8 @@ const Vue2FooterContent = new Vue(
 		deleteForm: function(getDataInfo, index, getId)
 		{
 			getDataInfo.splice(index, 1);
+
+			console.log(getDataInfo+index);
 
 			/*
 			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
