@@ -158,6 +158,12 @@ class manage_section_content extends Aruna_Controller
 
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
+		$res = $this->db->sql_prepare("select * from ml_section where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$get_vars = json_decode($row['vars'], true);
+
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
 			// if ($this->form_validation->run() == FALSE)
@@ -173,6 +179,20 @@ class manage_section_content extends Aruna_Controller
 			// 	echo json_encode(['status' => 'success', 'msg' => 'Success']);
 			// 	exit;
 			// }
+
+			if ($this->input->post('footer_right_link1') !== null)
+			{
+				$get_vars['footer_right_link1'] = $this->input->post('footer_right_link1');
+
+				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+
+				$this->output->set_content_type('application/json', 'utf-8')
+						 ->set_header('Access-Control-Allow-Origin: '.site_url())
+						 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+						 // ->set_output(json_encode($data, JSON_PRETTY_PRINT))
+						 ->_display();
+				exit;
+			}
 		}
 
 		$data['__footer_link_1'] = $this->__footer_link_1();
@@ -185,13 +205,27 @@ class manage_section_content extends Aruna_Controller
 		return view('footer', $data);
 	}
 
+	public function getFooterContent()
+	{
+		$res = $this->db->sql_prepare("select * from ml_section where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$get_vars = json_decode($row['vars'], true);
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($get_vars, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
+
 	protected function __footer_link_1()
 	{
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
 
 		return view('__footer_link_1', $data, FALSE, TRUE);
-		// return view('__footer_link_1', $data, TRUE);
 	}
 
 	protected function __footer_link_2()

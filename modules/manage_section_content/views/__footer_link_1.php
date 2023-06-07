@@ -26,7 +26,7 @@
 			</div>
 
 			<div id="ar-form-submit-1">	
-				<form action="'.site_url('manage_section_content/footer').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'1\')" ref="formHTML" button-block="false" button-rounded-pill="false" font-size-large="false">						
+				<form action="'.site_url('manage_section_content/footer').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'1\')" ref="formHTML1" button-block="false" button-rounded-pill="false" font-size-large="false">						
 					<div class="toast ar-notice-toast-1 position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>					
 
 					<div class="col-12 mb-4" v-for="(info, index) in getListFooter1" :key="index">
@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="col-md-6 text-md-end">
-								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter1, index, info.id); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Image</a>
+								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter1, index, info.id); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
 							</div>
 						</div>
 
@@ -45,7 +45,7 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][icon]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][icon]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -53,7 +53,7 @@
 								<label class="form-label">Title</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][content]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][content]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -61,9 +61,9 @@
 								<label class="form-label">Link</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[link_\'+index+\'][link]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][link]\'" class="form-control font-size-inherit">
 								
-									<input type="hidden" :name="\'footer_right_link1[link_\'+index+\'][type]\'" :value="\'text\'">
+									<input type="hidden" :name="\'footer_right_link1[\'+index+\'][type]\'" :value="\'text\'">
 								</div>
 							</div>
 						</div>

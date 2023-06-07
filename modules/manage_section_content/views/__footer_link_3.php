@@ -25,9 +25,9 @@
 				</div>
 			</div>
 
-			<div id="ar-form-submit-1">	
-				<form action="'.site_url('manage_section_content/footer').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'1\')" ref="formHTML" button-block="false" button-rounded-pill="false" font-size-large="false">						
-					<div class="toast ar-notice-toast-1 position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>					
+			<div id="ar-form-submit-3">	
+				<form action="'.site_url('manage_section_content/footer').'" method="post" enctype="multipart/form-data" @submit.prevent="multipleSubmit($event, \'3\')" ref="formHTML3" button-block="false" button-rounded-pill="false" font-size-large="false">						
+					<div class="toast ar-notice-toast-3 position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>					
 
 					<div class="col-12 mb-4" v-for="(info, index) in getListFooter3" :key="index">
 						<div class="row mb-2">
@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="col-md-6 text-md-end">
-								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter3, index, info.id); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Image</a>
+								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter3, index, info.id); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
 							</div>
 						</div>
 
@@ -45,7 +45,7 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link3[link_\'+index+\'][icon]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link3[\'+index+\'][icon]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -53,7 +53,7 @@
 								<label class="form-label">Title</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link3[link_\'+index+\'][content]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link3[\'+index+\'][content]\'" class="form-control font-size-inherit">
 								</div>
 							</div>
 
@@ -61,9 +61,9 @@
 								<label class="form-label">Link</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link3[link_\'+index+\'][link]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link3[\'+index+\'][link]\'" class="form-control font-size-inherit">
 								
-									<input type="hidden" :name="\'footer_right_link3[link_\'+index+\'][type]\'" :value="\'text\'">
+									<input type="hidden" :name="\'footer_right_link3[\'+index+\'][type]\'" :value="\'text\'">
 								</div>
 							</div>
 						</div>
@@ -72,8 +72,8 @@
 					<div class="d-flex justify-content-end">
 						<div>
 							<input type="hidden" name="step" value="post">
-							<input type="hidden" class="btn-token-submit-1" name="'.$csrf_name.'" value="'.$csrf_hash.'">
-							<input type="submit" class="btn btn-malika-submit btn-malika-submit-1" value="'.t('Save').'">
+							<input type="hidden" class="btn-token-submit-3" name="'.$csrf_name.'" value="'.$csrf_hash.'">
+							<input type="submit" class="btn btn-malika-submit btn-malika-submit-3" value="'.t('Save').'">
 						</div>
 					</div>
 

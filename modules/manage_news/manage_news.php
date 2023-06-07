@@ -794,47 +794,168 @@ class manage_news extends Aruna_Controller
 	{
 		$data = 
 		[
+			'footer_left' =>
+			[
+				'display_type' => 'logo',
+				'site_name' => 
+				[
+					'type' => 'text',
+					'alias' => '',
+					'content' => 'Phoenix CMS v1',
+				],
+				'site_logo' => 
+				[
+					'type' => 'file',
+					'alias' => '',
+					'content' => 'Phoenix CMS v1',
+				],
+				'site_description' => 
+				[
+					'type' => 'text',
+					'alias' => '',
+					'content' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas nec mi nec commodo. Morbi interdum ex quis nunc ultrices sodales.',
+				],
+			],
 			'footer_right_link1' =>
 			[
-				'link_0' =>
 				[
 					'type' => 'text',
-					'alias' => '',
+					'alias' => 'Link 1',
 					'icon'	=> '',
 					'content' => 'Link 1',
-					'link' => 'https://phoenix.aruna-dev.com'
+					'link' => ''
 				],
-				'link_1' =>
+
 				[
 					'type' => 'text',
-					'alias' => '',
+					'alias' => 'Link 2',
 					'icon'	=> '',
 					'content' => 'Link 2',
-					'link' => 'https://phoenix.aruna-dev.com'
+					'link' => ''
 				],
-				'link_2' =>
+
 				[
 					'type' => 'text',
-					'alias' => '',
+					'alias' => 'Link 3',
 					'icon'	=> '',
 					'content' => 'Link 3',
-					'link' => 'https://phoenix.aruna-dev.com'
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 4',
+					'icon'	=> '',
+					'content' => 'Link 4',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 5',
+					'icon'	=> '',
+					'content' => 'Link 5',
+					'link' => ''
+				]
+			],
+			'footer_right_link2' =>
+			[
+				[
+					'type' => 'text',
+					'alias' => 'Link 1',
+					'icon'	=> '',
+					'content' => 'Link 1',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 2',
+					'icon'	=> '',
+					'content' => 'Link 2',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 3',
+					'icon'	=> '',
+					'content' => 'Link 3',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 4',
+					'icon'	=> '',
+					'content' => 'Link 4',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 5',
+					'icon'	=> '',
+					'content' => 'Link 5',
+					'link' => ''
+				]
+			],
+			'footer_right_link3' =>
+			[
+				[
+					'type' => 'text',
+					'alias' => 'Link 1',
+					'icon'	=> '',
+					'content' => 'Link 1',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 2',
+					'icon'	=> '',
+					'content' => 'Link 2',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 3',
+					'icon'	=> '',
+					'content' => 'Link 3',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 4',
+					'icon'	=> '',
+					'content' => 'Link 4',
+					'link' => ''
+				],
+
+				[
+					'type' => 'text',
+					'alias' => 'Link 5',
+					'icon'	=> '',
+					'content' => 'Link 5',
+					'link' => ''
 				]
 			]
 		];
 
 		// Add new data
-		$data['footer_right_link1'] +=
-		[
-			'link_3' =>
-			[
-				'type' => 'text',
-				'alias' => '',
-				'icon'	=> '',
-				'content' => 'Link 3',
-				'link' => 'https://phoenix.aruna-dev.com'
-			]
-		];
+		// $data['footer_right_link1'] +=
+		// [
+		// 	'link_3' =>
+		// 	[
+		// 		'type' => 'text',
+		// 		'alias' => '',
+		// 		'icon'	=> '',
+		// 		'content' => 'Link 3',
+		// 		'link' => 'https://phoenix.aruna-dev.com'
+		// 	]
+		// ];
 
 		$this->db->sql_insert(['vars' => json_encode($data)], 'ml_test');
 

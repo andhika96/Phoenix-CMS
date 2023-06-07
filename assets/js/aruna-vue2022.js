@@ -1501,18 +1501,79 @@ const Vue2ListData = new Vue(
 	}
 });
 
-const Vue2ListForm = new Vue(
+const Vue2FooterContent = new Vue(
 {
-	el: "#ar-app-listform",
+	el: "#ar-app-footer-content",
 	data: 
 	{
-		getListForm: [{ name: '', id: undefined }],
-		getListFooter1: [{ name: '', id: undefined }],
-		getListFooter2: [{ name: '', id: undefined }],
-		getListFooter3: [{ name: '', id: undefined }]
+		getData: {},
+		getListForm: [{ name: ''}],
+		getListFooter1: [{ icon: '', link: '', content: '', type: 'text'}],
+		getListFooter2: [{ icon: '', link: '', content: '', type: 'text'}],
+		getListFooter3: [{ icon: '', link: '', content: '', type: 'text'}],
+		loadingData: true,
+		statusData: '',
+		messageData: ''
 	},
 	methods:
 	{
+		listData: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-footer") !== null && 
+				document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					// const getRes = response.data.slice(0)[0];
+
+					const initListFooter1 = response.data.footer_right_link1;
+
+					this.getListFooter1 = response.data.footer_right_link1;
+					this.getListFooter2 = response.data.footer_right_link2;
+					this.getListFooter3 = response.data.footer_right_link3;
+
+					// this.statusData 	= getRes.status;
+					// this.messageData 	= getRes.message;
+
+					console.log(this.getListFooter1);
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingData = false;
+				});
+			}
+
+			// if (document.querySelector(".ar-data-status") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-data-status").style.display = 'block';
+			// 	}
+			// }
+
+			// if (document.querySelector(".ar-data-load") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-data-load").style.display = 'block';
+			// 	}
+			// }
+
+			// if (document.querySelector(".ar-total-data-load") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-total-data-load").style.display = 'block';
+			// 	}
+			// }
+		},
 		multipleSubmit: function(event, idSubmit)
 		{
 			event.preventDefault();
@@ -1532,16 +1593,16 @@ const Vue2ListForm = new Vue(
 			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
 
 			// Get using button block or not with value true and false from button-block attribute
-			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+			let getButtonBlock = this.$refs['formHTML'+idSubmit].attributes['button-block']['value'] == 'true' ? 'w-100' : '';
 
 			// Get using button large or not with value true and false from button-large attribute
-			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+			let getFontSizeLarge = this.$refs['formHTML'+idSubmit].attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
 
 			// Get rounded pill button or just rounded
-			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			let getRoundedPill = this.$refs['formHTML'+idSubmit].attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
 
 			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
-			let formData = new FormData(this.$refs.formHTML);
+			let formData = new FormData(this.$refs['formHTML'+idSubmit]);
 
 			// Get class button name to change the button to button loading state .
 			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-"+idSubmit+" "+getButtonBlock+" "+getRoundedPill+" "+getFontSizeLarge+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
@@ -1605,6 +1666,8 @@ const Vue2ListForm = new Vue(
 							}
 						}
 					}
+
+					console.log(response.data);
 				}
 				else if (response.data.status == 'failed')
 				{
@@ -1632,15 +1695,15 @@ const Vue2ListForm = new Vue(
 		{
 			if (part_section == 'list_footer1')
 			{
-				this.getListFooter1.push({ name: ''});
+				this.getListFooter1.push({ icon: '', link: '', content: '', type: 'text'});
 			}
 			else if (part_section == 'list_footer2')
 			{
-				this.getListFooter2.push({ name: ''});
+				this.getListFooter2.push({ icon: '', link: '', content: '', type: 'text'});
 			}
 			else if (part_section == 'list_footer3')
 			{
-				this.getListFooter3.push({ name: ''});
+				this.getListFooter3.push({ icon: '', link: '', content: '', type: 'text'});
 			}
 		},
 		deleteForm: function(getDataInfo, index, getId)
@@ -1727,13 +1790,11 @@ const Vue2ListForm = new Vue(
 				});
 			}
 			*/
-		},
-		created: function()
-		{
-			const getTotalTabs = document.querySelectorAll(".nav-item").length;
-
-			console.log('Total: '+getTotalTabs);
 		}
+	},
+	created: function()
+	{
+		this.listData();
 	}
 });
 

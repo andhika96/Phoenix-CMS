@@ -15,8 +15,8 @@
 	section_content(breadcrumb([t('Manage Section Content') => '', t('Footer Section') => '']));
 
 	section_content('
-	<div id="ar-app-listform">
-		<ul class="nav nav-pills mb-3" id="pills-tab" role="pilllist">
+	<div id="ar-app-footer-content">
+		<ul class="nav nav-pills ar-fetch-listdata-footer mb-3" id="pills-tab" role="pilllist" data-url="'.site_url('manage_section_content/getFooterContent').'">
 			<li class="nav-item" role="presentation">
 				<button class="nav-link active" id="footer-image-content-tab" data-bs-toggle="pill" data-bs-target="#footer-image-content" type="button" role="tab" aria-controls="footer-image-content-pill-pane" aria-selected="true">Footer Image & Content</button>
 			</li>
