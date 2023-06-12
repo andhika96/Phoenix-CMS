@@ -15,8 +15,15 @@
 	section_content(breadcrumb([t('Manage Section Content') => '', t('Footer Section') => '']));
 
 	section_content('
+	<style>
+	.ar-custom-fa-icon svg 
+	{
+		width: 25px !important;
+	}
+	</style>
+		
 	<div id="ar-app-footer-content">
-		<ul class="nav nav-pills ar-fetch-listdata-footer mb-3" id="pills-tab" role="pilllist" data-url="'.site_url('manage_section_content/getFooterContent').'">
+		<ul class="nav nav-pills ar-fetch-listdata-footer ar-fetch-listdata-icons mb-3" id="pills-tab" role="pilllist" data-url="'.site_url('manage_section_content/getFooterContent').'" data-url-icons="'.site_url('manage_section_content/icon').'">
 			<li class="nav-item" role="presentation">
 				<button class="nav-link active" id="footer-image-content-tab" data-bs-toggle="pill" data-bs-target="#footer-image-content" type="button" role="tab" aria-controls="footer-image-content-pill-pane" aria-selected="true">Footer Image & Content</button>
 			</li>

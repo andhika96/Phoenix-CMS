@@ -26,7 +26,6 @@
 	{
 		$roles = array();
 
-
 		$Aruna =& get_instance();
 
 		$res = $Aruna->db->sql_prepare("select roles from ml_accounts where id = :id and username = :username and token = :token");
@@ -630,11 +629,11 @@
 	{
 		$Aruna =& get_instance();
 
-		$res = $Aruna->db->sql_prepare("select var from ml_section where uri = :uri");
+		$res = $Aruna->db->sql_prepare("select vars from ml_section where uri = :uri");
 		$bindParam = $Aruna->db->sql_bindParam(['uri' => $uri], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
-		$json_decode = json_decode($row['var'], true);
+		$json_decode = json_decode($row['vars'], true);
 
 		if ( empty($json_decode[$section]) || empty($json_decode[$section][$column]))
 		{

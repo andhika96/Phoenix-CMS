@@ -242,6 +242,39 @@ class manage_section_content extends Aruna_Controller
 
 		return view('__footer_link_3', $data, FALSE, TRUE);
 	}
+
+	public function icon()
+	{
+		$new_lists = array();
+		$files = file_get_contents(base_url('assets/plugins/fontawesome/5.15.3/metadata/icons.json'));
+
+		$json_decode = json_decode($files, true);
+
+		foreach ($json_decode as $key => $value) 
+		{
+			if ($key == $this->input->get('search'))
+			{
+				$code = $key;
+				$icon = isset($value['svg']['solid']) ? $value['svg']['solid']['raw'] : $value['svg']['brands']['raw'];
+
+				$new_lists[] = ['code' => $code, 'icon' => $icon];
+			}
+			
+			if ( ! $this->input->get('search'))
+			{
+				$code = $key;
+				$icon = isset($value['svg']['solid']) ? $value['svg']['solid']['raw'] : $value['svg']['brands']['raw'];
+
+				$new_lists[] = ['code' => $code, 'icon' => $icon];
+			}
+		}
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($new_lists, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;		
+	}
 }
 
 ?>

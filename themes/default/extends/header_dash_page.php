@@ -39,6 +39,9 @@
 			<!-- Spectrum ColorPicker CSS -->
 			<link rel="stylesheet" href="'.base_url('assets/plugins/spectrum/dist/spectrum.min.css').'">
 
+			<link rel="stylesheet" href="'.base_url('assets/plugins/fontawesome/5.15.3/css/all.min.css').'">
+			<link rel="stylesheet" href="'.base_url('assets/plugins/iconpicker/dist/iconpicker-1.5.0.css').'">
+
 			<title>'.get_ctitle().'</title>
 
 			<noscript>

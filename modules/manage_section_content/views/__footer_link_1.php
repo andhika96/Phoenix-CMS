@@ -45,7 +45,9 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[\'+index+\'][icon]\'" class="form-control font-size-inherit">
+									<span class="input-group-text" id="basic-addon1"><i :id="\'IconPreviewListFooter1_\'+index+\'\'" class="fas fa-star"></i></span>
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][icon]\'" class="form-control font-size-inherit" :id="\'IconInputListFooter1_\'+index+\'\'">
+									<button :class="\'btn btn-outline-secondary font-size-inherit GetFAIconListFooter1 GetIconPickerListFooter1_\'+index+\'\'" :data-iconpicker-input="\'input#IconInputListFooter1_\'+index+\'\'" :data-iconpicker-preview="\'i#IconPreviewListFooter1_\'+index+\'\'" type="button">Search Icon</button>
 								</div>
 							</div>
 

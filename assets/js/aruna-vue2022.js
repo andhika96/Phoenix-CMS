@@ -1507,14 +1507,20 @@ const Vue2FooterContent = new Vue(
 	data: 
 	{
 		getData: {},
+		getDataIcon: {},
+		getListDataIcon: {},
 		getListForm: [{ name: ''}],
 		getListFooter1: [{ icon: '', link: '', content: '', type: 'text'}],
 		getListFooter2: [{ icon: '', link: '', content: '', type: 'text'}],
 		getListFooter3: [{ icon: '', link: '', content: '', type: 'text'}],
+		getSearchIcon: '',
 		showData: true,
 		loadingData: true,
+		loadingDataIcon: true,
 		statusData: '',
-		messageData: ''
+		messageData: '',
+		statusDataIcon: '',
+		messageDataIcon: ''
 	},
 	methods:
 	{
@@ -1538,15 +1544,44 @@ const Vue2FooterContent = new Vue(
 
 					// this.statusData 	= getRes.status;
 					// this.messageData 	= getRes.message;
-
-					console.log(this.getListFooter1);
 				})
 				.catch(function(error) 
 				{
 					console.log(error);
 				})
 				.finally(() => 
-				{ 
+				{
+					IconPicker.Init(
+					{
+						jsonUrl: baseurl+"assets/plugins/iconpicker/dist/iconpicker-1.5.0.json",
+						searchPlaceholder: "Search Icon",
+						showAllButton: "Show All",
+						cancelButton: "Cancel",
+						noResultsFound: "No results found.",
+						borderRadius: "20px",
+					});	
+
+					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter1_"+i);
+					}
+
+					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter2_"+i);
+					}
+
+					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter3_"+i);
+					}
+
 					this.loadingData = false;
 				});
 			}
@@ -1697,21 +1732,49 @@ const Vue2FooterContent = new Vue(
 			if (part_section == 'list_footer1')
 			{
 				this.getListFooter1.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
+
+					const getBeforeLatestID = GetFAIconListFooter1.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter1_"+getBeforeLatestID);
+
+				}, 100);
 			}
 			else if (part_section == 'list_footer2')
 			{
 				this.getListFooter2.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
+
+					const getBeforeLatestID = GetFAIconListFooter2.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter2_"+getBeforeLatestID);
+
+				}, 100);
 			}
 			else if (part_section == 'list_footer3')
 			{
 				this.getListFooter3.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
+
+					const getBeforeLatestID = GetFAIconListFooter3.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter3_"+getBeforeLatestID);
+
+				}, 100);
 			}
 		},
 		deleteForm: function(getDataInfo, index, getId)
 		{
 			getDataInfo.splice(index, 1);
-
-			console.log(getDataInfo+index);
 
 			/*
 			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
@@ -1793,11 +1856,62 @@ const Vue2FooterContent = new Vue(
 				});
 			}
 			*/
+		},
+		listIcons: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-icons") !== null && 
+				document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons") !== null)
+			{
+				const getUrl = document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons");
+
+				axios.get(getUrl)
+				.then(response => 
+				{
+					this.getListDataIcon = response.data;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingDataIcon = false;
+				});
+			}			
+		},
+		searchIcons: function(event)
+		{
+			// const getSearchIcon = this.getSearchIcon.trim();
+			const getSearchIcon = event.target.value;
+
+			console.log(event);
+
+			if (document.querySelector(".ar-fetch-listdata-icons") !== null && 
+				document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons") !== null)
+			{
+				const getUrl = document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons");
+
+				axios.get(getUrl+'?search='+getSearchIcon)
+				.then(response => 
+				{
+					this.getDataIcon = response.data;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingDataIcon = false;
+				});
+			}			
 		}
 	},
 	created: function()
 	{
 		this.listData();
+
+		this.listIcons();
 	}
 });
 

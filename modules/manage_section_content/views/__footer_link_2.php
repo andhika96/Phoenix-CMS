@@ -36,7 +36,7 @@
 							</div>
 
 							<div class="col-md-6 text-md-end">
-								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter1, index); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
+								<a href="javascript:void(0)" v-on:click="deleteForm(getListFooter2, index); showData = !showData" class="text-danger text-underline ar-alert-bootbox font-size-inherit" v-bind:data-url="\''.site_url('manage_appearance/deleteslideshow/').'\'">Delete Link</a>
 							</div>
 						</div>
 
@@ -45,7 +45,9 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link2[\'+index+\'][icon]\'" class="form-control font-size-inherit">
+									<span class="input-group-text" id="basic-addon1"><i :id="\'IconPreviewListFooter2_\'+index+\'\'" class="fas fa-star"></i></span>
+									<input type="text" :name="\'footer_right_link2[\'+index+\'][icon]\'" class="form-control font-size-inherit" :id="\'IconInputListFooter2_\'+index+\'\'">
+									<button :class="\'btn btn-outline-secondary font-size-inherit GetFAIconListFooter2 GetIconPickerListFooter2_\'+index+\'\'" :data-iconpicker-input="\'input#IconInputListFooter2_\'+index+\'\'" :data-iconpicker-preview="\'i#IconPreviewListFooter2_\'+index+\'\'" type="button">Search Icon</button>
 								</div>
 							</div>
 
