@@ -15,7 +15,9 @@ a:focus
 }
 
 .arv6-sidebar a svg,
-.offcanvas a svg
+.offcanvas a svg,
+.arv6-sidebar a i,
+.offcanvas a i
 {
 	color: #ff3232;
 }

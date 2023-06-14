@@ -30,7 +30,7 @@
 
 			<!-- Custom CSS -->
 			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css').'">
-			<link rel="stylesheet" href="'.base_url('assets/css/aruna-admin-v6.css?v=0.0.4').'">
+			<link rel="stylesheet" href="'.base_url('assets/css/aruna-admin-v6.css?v=0.0.5').'">
 
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" integrity="sha256-r8T4Dlx/tdy6jNcFHplWaDHs7ob/Y9bKoJgjNFlYxY4=" crossorigin="anonymous" />
 			<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css">

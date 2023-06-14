@@ -1774,144 +1774,79 @@ const Vue2FooterContent = new Vue(
 		},
 		deleteForm: function(getDataInfo, index, getId)
 		{
-			getDataInfo.splice(index, 1);
-
-			/*
-			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
-			const getDataURL = initClass.getAttribute("data-url")+getId;
-			const getParentClass = initClass.parentNode;
-
-			if (getId == undefined)
+			bootbox.confirm(
 			{
-				getDataInfo.splice(index, 1);
-			}
-			else
-			{
-				bootbox.confirm(
+				search: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this item?",
+				centerVertical: true,
+				closeButton: false,
+				buttons: 
 				{
-					search: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
-					message: "Are you sure, do you want to delete this item?",
-					centerVertical: true,
-					closeButton: false,
-					buttons: 
+					cancel: 
 					{
-						cancel: 
-						{
-							className: 'btn-danger',
-							label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
-						},
-						confirm: 
-						{
-							className: 'btn-success',
-							label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
-						}
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
 					},
-					callback: function(result) 
+					confirm: 
 					{
-						if (result == true)
-						{
-							axios.get(getDataURL)
-							.then(response => 
-							{
-								if (response.data.status == 'success')
-								{
-									getDataInfo.splice(index, 1);
-
-									bootbox.alert({
-										search: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
-										message: "<div class=\"text-center h6 m-0\">Data deleted !!</div>",
-										centerVertical: true,
-										closeButton: false
-									});
-								}
-								else if (response.data.status == 'failed' && response.data.msg !== '' && response.data.msg !== undefined)
-								{
-									bootbox.alert({
-										search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
-										message: "<div class=\"text-center h6 m-0\">"+response.data.msg+"</div>",
-										centerVertical: true,
-										closeButton: false
-									});
-								}
-								else if (response.data.status == 'failed' && response.data.msg == undefined)
-								{
-									getDataInfo.splice(index, 1);
-								}
-								else
-								{
-									bootbox.alert({
-										search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
-										message: "<div class=\"text-center h6 m-0\">Invalid Data Selected</div>",
-										centerVertical: true,
-										closeButton: false
-									});
-								}
-							})
-							.catch(function(error)
-							{
-							 	console.log(error);
-							});
-						}
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
 					}
-				});
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						getDataInfo.splice(index, 1);
+					}
+				}
+			});
+		},
+		selectFooterType: function(event)
+		{
+			console.log(event.target.value);
+
+			if (event.target.value == 'text')
+			{
+				if (document.querySelector(".ar-display-footer-text") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'none')
+					{
+						document.querySelector(".ar-display-footer-text").style.display = 'block';
+					}
+				}
+
+				if (document.querySelector(".ar-display-footer-logo") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'block')
+					{
+						document.querySelector(".ar-display-footer-logo").style.display = 'none';
+					}
+				}
 			}
-			*/
-		},
-		listIcons: function()
-		{
-			if (document.querySelector(".ar-fetch-listdata-icons") !== null && 
-				document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons") !== null)
+			else if (event.target.value == 'logo')
 			{
-				const getUrl = document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons");
-
-				axios.get(getUrl)
-				.then(response => 
+				if (document.querySelector(".ar-display-footer-text") !== null)
 				{
-					this.getListDataIcon = response.data;
-				})
-				.catch(function(error) 
-				{
-					console.log(error);
-				})
-				.finally(() => 
-				{ 
-					this.loadingDataIcon = false;
-				});
-			}			
-		},
-		searchIcons: function(event)
-		{
-			// const getSearchIcon = this.getSearchIcon.trim();
-			const getSearchIcon = event.target.value;
+					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'block')
+					{
+						document.querySelector(".ar-display-footer-text").style.display = 'none';
+					}
+				}
 
-			console.log(event);
-
-			if (document.querySelector(".ar-fetch-listdata-icons") !== null && 
-				document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons") !== null)
-			{
-				const getUrl = document.querySelector(".ar-fetch-listdata-icons").getAttribute("data-url-icons");
-
-				axios.get(getUrl+'?search='+getSearchIcon)
-				.then(response => 
+				if (document.querySelector(".ar-display-footer-logo") !== null)
 				{
-					this.getDataIcon = response.data;
-				})
-				.catch(function(error) 
-				{
-					console.log(error);
-				})
-				.finally(() => 
-				{ 
-					this.loadingDataIcon = false;
-				});
-			}			
+					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'none')
+					{
+						document.querySelector(".ar-display-footer-logo").style.display = 'block';
+					}
+				}
+			}
 		}
 	},
 	created: function()
 	{
 		this.listData();
-
-		this.listIcons();
 	}
 });
 

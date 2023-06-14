@@ -45,9 +45,9 @@
 								<label class="form-label">Icon</label>								
 
 								<div class="input-group">
-									<span class="input-group-text" id="basic-addon1"><i :id="\'IconPreviewListFooter1_\'+index+\'\'" class="fas fa-star"></i></span>
-									<input type="text" :name="\'footer_right_link1[\'+index+\'][icon]\'" class="form-control font-size-inherit" :id="\'IconInputListFooter1_\'+index+\'\'">
-									<button :class="\'btn btn-outline-secondary font-size-inherit GetFAIconListFooter1 GetIconPickerListFooter1_\'+index+\'\'" :data-iconpicker-input="\'input#IconInputListFooter1_\'+index+\'\'" :data-iconpicker-preview="\'i#IconPreviewListFooter1_\'+index+\'\'" type="button">Search Icon</button>
+									<span class="input-group-text" id="basic-addon1"><i :id="\'IconPreviewListFooter1_\'+index+\'\'" :class="\'\'+info.icon+\'\'"></i></span>
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][icon]\'" class="form-control font-size-inherit" :id="\'IconInputListFooter1_\'+index+\'\'" :value="\'\'+info.icon+\'\'">
+									<button :class="\'btn btn-outline-secondary font-size-inherit GetFAIconListFooter1 GetIconPickerListFooter1_\'+index+\'\'" :data-iconpicker-input="\'input#IconInputListFooter1_\'+index+\'\'" :data-iconpicker-preview="\'i#IconPreviewListFooter1_\'+index+\'\'" type="button"><i class="fad fa-search fa-fw me-1"></i> Search Icon</button>
 								</div>
 							</div>
 
@@ -55,7 +55,7 @@
 								<label class="form-label">Title</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[\'+index+\'][content]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][content]\'" class="form-control font-size-inherit" :value="\'\'+info.content+\'\'">
 								</div>
 							</div>
 
@@ -63,7 +63,7 @@
 								<label class="form-label">Link</label>								
 
 								<div class="input-group">
-									<input type="text" :name="\'footer_right_link1[\'+index+\'][link]\'" class="form-control font-size-inherit">
+									<input type="text" :name="\'footer_right_link1[\'+index+\'][link]\'" class="form-control font-size-inherit" :value="\'\'+info.link+\'\'">
 								
 									<input type="hidden" :name="\'footer_right_link1[\'+index+\'][type]\'" :value="\'text\'">
 								</div>

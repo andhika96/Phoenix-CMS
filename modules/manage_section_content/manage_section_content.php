@@ -166,6 +166,18 @@ class manage_section_content extends Aruna_Controller
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
+			if ($this->input->post('footer_left') !== null)
+			{
+				if ($this->input->post('footer_left')['display_type'] == 'logo')
+				{
+
+				}
+
+				$get_vars['footer_left'] = $this->input->post('footer_left');
+
+				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+			}
+
 			if ($this->input->post('footer_right_link1') !== null)
 			{
 				$get_vars['footer_right_link1'] = $this->input->post('footer_right_link1');
@@ -189,14 +201,15 @@ class manage_section_content extends Aruna_Controller
 
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->set_output(json_encode(['status' => 'success', 'msg' => $get_vars['footer_left']], JSON_PRETTY_PRINT))
 					 ->_display();
 			exit;
 		}
 
-		$data['__footer_link_1'] = $this->__footer_link_1();
-		$data['__footer_link_2'] = $this->__footer_link_2();
-		$data['__footer_link_3'] = $this->__footer_link_3();
+		$data['__footer_left'] 		= $this->__footer_left();
+		$data['__footer_link_1'] 	= $this->__footer_link_1();
+		$data['__footer_link_2'] 	= $this->__footer_link_2();
+		$data['__footer_link_3'] 	= $this->__footer_link_3();
 
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
@@ -217,30 +230,6 @@ class manage_section_content extends Aruna_Controller
 					 ->set_output(json_encode($get_vars, JSON_PRETTY_PRINT))
 					 ->_display();
 		exit;
-	}
-
-	protected function __footer_link_1()
-	{
-		$data['csrf_name'] = $this->csrf['name'];
-		$data['csrf_hash'] = $this->csrf['hash'];
-
-		return view('__footer_link_1', $data, FALSE, TRUE);
-	}
-
-	protected function __footer_link_2()
-	{
-		$data['csrf_name'] = $this->csrf['name'];
-		$data['csrf_hash'] = $this->csrf['hash'];
-
-		return view('__footer_link_2', $data, FALSE, TRUE);
-	}
-
-	protected function __footer_link_3()
-	{
-		$data['csrf_name'] = $this->csrf['name'];
-		$data['csrf_hash'] = $this->csrf['hash'];
-
-		return view('__footer_link_3', $data, FALSE, TRUE);
 	}
 
 	public function icon()
@@ -274,6 +263,38 @@ class manage_section_content extends Aruna_Controller
 					 ->set_output(json_encode($new_lists, JSON_PRETTY_PRINT))
 					 ->_display();
 		exit;		
+	}
+
+	protected function __footer_left()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_left', $data, FALSE, TRUE);
+	}
+
+	protected function __footer_link_1()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_1', $data, FALSE, TRUE);
+	}
+
+	protected function __footer_link_2()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_2', $data, FALSE, TRUE);
+	}
+
+	protected function __footer_link_3()
+	{
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('__footer_link_3', $data, FALSE, TRUE);
 	}
 }
 

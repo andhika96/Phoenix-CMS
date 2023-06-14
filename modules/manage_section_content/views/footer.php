@@ -15,13 +15,6 @@
 	section_content(breadcrumb([t('Manage Section Content') => '', t('Footer Section') => '']));
 
 	section_content('
-	<style>
-	.ar-custom-fa-icon svg 
-	{
-		width: 25px !important;
-	}
-	</style>
-		
 	<div id="ar-app-footer-content">
 		<ul class="nav nav-pills ar-fetch-listdata-footer ar-fetch-listdata-icons mb-3" id="pills-tab" role="pilllist" data-url="'.site_url('manage_section_content/getFooterContent').'" data-url-icons="'.site_url('manage_section_content/icon').'">
 			<li class="nav-item" role="presentation">
@@ -43,7 +36,7 @@
 
 		<div class="tab-content" id="pills-tabContent">
 			<div class="tab-pane fade show active" id="footer-image-content" role="tabpanel" aria-labelledby="footer-image-content-pill-tab" tabindex="0">
-				Coming Soon
+				'.$__footer_left.'
 			</div>
 			
 			<div class="tab-pane fade" id="footer-link1" role="tabpanel" aria-labelledby="footer-link1-pill-tab" tabindex="1">
