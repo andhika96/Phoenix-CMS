@@ -940,13 +940,35 @@
 	{
 		$Aruna =& get_instance();
 
-		$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and type = :type and is_slideshow = :is_slideshow");
-		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $page, 'type' => 'page', 'is_slideshow' => 1], $res_module);
+		$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and (type = :type1 or type = :type2)");
+		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $page, 'type1' => 'page', 'type2' => 'core'], $res_module);
 		$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
 
-		$res_layout = $Aruna->db->sql_prepare("select * from ml_layout where name = :name and section = :section");
-		$bindParam_layout = $Aruna->db->sql_bindParam(['name' => $page, 'section' => 'slideshow'], $res_layout);
-		$row_layout = $Aruna->db->sql_fetch_single($bindParam_layout);
+		if ($row_module['is_slideshow'] == 1)
+		{
+			$path = APPPATH.'/views/widget/slideshow/widget_slideshow.php';
+
+			if (file_exists($path))
+			{
+				require_once $path;
+
+				if (method_exists('widget_content', 'index'))
+				{
+					$load_widget = new widget_content;
+
+					// Access function content() from $path
+					return $load_widget->index($page);
+				}
+				else
+				{
+					return '<div class="bg-danger bg-opacity-25 text-center rounded p-4 m-5">Error: function index() not exist</div>';
+				}
+			}
+			else
+			{
+				return '<div class="bg-warning bg-opacity-25 text-center rounded p-4 m-5">Widget not found</div>';
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

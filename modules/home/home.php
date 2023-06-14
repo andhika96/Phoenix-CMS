@@ -29,7 +29,9 @@ class home extends Aruna_Controller
 
 	public function landing()
 	{
-		return view('landing');
+		$data['db'] = $this->db;
+
+		return view('landing', $data);
 	}
 
 	public function test()

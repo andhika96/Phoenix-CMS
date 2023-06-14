@@ -22,6 +22,8 @@
 	add_caption_widget('find the latest event from us', ['for_widget' => 'event']);
 
 	section_content('
+	'.add_slideshow('home').'
+
 	<div class="container my-5">
 		<div>
 			'.add_widget('portofolio', 'grid_box').'

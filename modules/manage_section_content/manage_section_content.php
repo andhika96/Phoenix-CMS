@@ -261,7 +261,7 @@ class manage_section_content extends Aruna_Controller
 
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode(['status' => 'success', 'msg' => $get_vars['footer_left']], JSON_PRETTY_PRINT))
+					 ->set_output(json_encode(['status' => 'success', 'msg' => 'Success'], JSON_PRETTY_PRINT))
 					 ->_display();
 			exit;
 		}
