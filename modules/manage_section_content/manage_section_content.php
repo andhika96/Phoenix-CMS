@@ -170,10 +170,70 @@ class manage_section_content extends Aruna_Controller
 			{
 				if ($this->input->post('footer_left')['display_type'] == 'logo')
 				{
+					if ( ! empty($_FILES['image_logo']['name']))
+					{
+						$dir = date("Ym", time());
+						$s_folder = './contents/userfiles/logo/'.$dir.'/';
 
+						// For database only without dot and slash at the front folder
+						$x_folder = 'contents/userfiles/logo/'.$dir.'/';
+
+						if ( ! is_dir($s_folder)) 
+						{
+							mkdir($s_folder, 0777);
+						}
+
+						$configs['upload_path']		= $s_folder;
+						$configs['allowed_types']	= 'jpg|jpeg|png';
+						$configs['overwrite']		= TRUE;
+						$configs['remove_spaces']	= TRUE;
+						$configs['encrypt_name']	= TRUE;
+						$configs['max_size']		= 24000;
+
+						$upload = load_lib('upload', $configs);
+
+						if ( ! $upload->do_upload('image_logo'))
+						{
+							if ($_FILES['image_logo']['error'] != 4)
+							{
+								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								exit;
+							}
+
+							if (file_exists($get_vars['footer_left']['site_logo']['content']))
+							{
+								$image_web = $get_vars['footer_left']['site_logo']['content'];
+							}
+							else
+							{
+								$image_web = 'empty';
+							}
+						}
+						else 
+						{
+							if (file_exists($get_vars['footer_left']['site_logo']['content']))
+							{
+								unlink($get_vars['footer_left']['site_logo']['content']);
+							}
+
+							$image_web = $x_folder.$upload->data('file_name');
+						}
+					}
+					else
+					{
+						if (file_exists($get_vars['footer_left']['site_logo']['content']))
+						{
+							$image_web = $get_vars['footer_left']['site_logo']['content'];
+						}
+						else
+						{
+							$image_web = 'empty';
+						}
+					}
 				}
-
+				
 				$get_vars['footer_left'] = $this->input->post('footer_left');
+				$get_vars['footer_left']['site_logo']['content'] = $image_web;
 
 				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
 			}
@@ -272,7 +332,7 @@ class manage_section_content extends Aruna_Controller
 		$row = $this->db->sql_fetch_single($bindParam);
 
 		$get_vars = json_decode($row['vars'], true);
-		
+
 		$data['get_vars'] = $get_vars;
 
 		$data['csrf_name'] = $this->csrf['name'];

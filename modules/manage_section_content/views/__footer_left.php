@@ -55,7 +55,7 @@
 
 								<input type="hidden" name="footer_left[site_logo][type]" value="text">
 								<input type="hidden" name="footer_left[site_logo][alias]" value="empty">								
-								<input type="file" name="footer_left[site_logo][content]" class="form-control font-size-inherit" id="formFile">
+								<input type="file" name="image_logo" class="form-control font-size-inherit" id="formFile">
 							</div>
 						</div>
 
