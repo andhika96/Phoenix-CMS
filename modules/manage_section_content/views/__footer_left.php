@@ -12,6 +12,12 @@
 
 	defined('MODULEPATH') OR exit('No direct script access allowed');
 
+	$selected_text = ($get_vars['footer_left']['display_type'] == 'text') ? 'selected' : '';
+	$selected_logo = ($get_vars['footer_left']['display_type'] == 'logo') ? 'selected' : '';
+
+	$displayed_text = ($get_vars['footer_left']['display_type'] == 'text') ? 'display: block' : 'display: none';
+	$displayed_logo = ($get_vars['footer_left']['display_type'] == 'logo') ? 'display: block' : 'display: none';
+
 	echo '
 	<div class="container-fluid px-0 mb-5">
 		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm">
@@ -30,21 +36,21 @@
 							<label class="form-label">Select Footer Type</label>
 							<select name="footer_left[display_type]" class="form-select font-size-inherit" aria-label="Select Footer Type" v-on:change="selectFooterType($event)">
 								<option value="">Select</option>
-								<option value="text">Only Text</option>
-								<option value="logo">With Logo</option>
+								<option value="text" '.$selected_text.'>Only Text</option>
+								<option value="logo" '.$selected_logo.'>With Logo</option>
 							</select>
 						</div>
 
 						<div class="col-12 mb-3">
-							<div class="ar-display-footer-text" style="display: none">
+							<div class="ar-display-footer-text" style="'.$displayed_text.'">
 								<label class="form-label">Enter Text for Heading</label>
 
 								<input type="hidden" name="footer_left[site_name][type]" value="text">
 								<input type="hidden" name="footer_left[site_name][alias]" value="empty">
-								<input type="text" name="footer_left[site_name][content]" class="form-control font-size-inherit">
+								<input type="text" name="footer_left[site_name][content]" class="form-control font-size-inherit" value="'.$get_vars['footer_left']['site_name']['content'].'">
 							</div>
 
-							<div class="ar-display-footer-logo" style="display: none">
+							<div class="ar-display-footer-logo" style="'.$displayed_logo.'">
 								<label class="form-label" for="formFile">Upload Image for Logo</label>
 
 								<input type="hidden" name="footer_left[site_logo][type]" value="text">
@@ -58,7 +64,7 @@
 
 							<input type="hidden" name="footer_left[site_description][type]" value="text">
 							<input type="hidden" name="footer_left[site_description][alias]" value="empty">
-							<textarea name="footer_left[site_description][content]" rows="4" class="form-control font-size-inherit"></textarea>
+							<textarea name="footer_left[site_description][content]" rows="4" class="form-control font-size-inherit">'.$get_vars['footer_left']['site_description']['content'].'</textarea>
 						</div>
 					</div>
 

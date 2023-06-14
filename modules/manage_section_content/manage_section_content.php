@@ -267,6 +267,14 @@ class manage_section_content extends Aruna_Controller
 
 	protected function __footer_left()
 	{
+		$res = $this->db->sql_prepare("select * from ml_section where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$get_vars = json_decode($row['vars'], true);
+		
+		$data['get_vars'] = $get_vars;
+
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
 
