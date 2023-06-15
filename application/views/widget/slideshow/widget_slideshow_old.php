@@ -112,28 +112,18 @@ class widget_content
 			}
 		}
 
-		
+		$effect = ($row_layout['effect'] == 'fade') ? 'effect: "fade", fadeEffect:{ crossFade: true },' : '';
 		$autoPlay = ($row_layout['autoplay'] == 'active') ? 'autoplay: { delay: '.$row_layout['autoplay_delay'].', disableOnInteraction: false },' : '';
 		$slidesPerView = ($row_layout['slide_per_view'] > 1) ? 'slidesPerView: '.$row_layout['slide_per_view'].', spaceBetween: 30,' : '';
 
-		if ($row_layout['slide_per_view'] > 1)
-		{
-			$effect = '';
-		}
-		else
-		{
-			$effect = ($row_layout['effect'] == 'fade') ? 'effect: "fade", fadeEffect:{ crossFade: true },' : '';
-		}
-
 		$output .= '
+				<!-- If we need pagination -->
+				<div class="swiper-pagination"></div>
+
+				<!-- If we need navigation buttons -->
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-button-next"></div>
 			</div>
-
-			<!-- If we need pagination -->
-			<div class="swiper-pagination"></div>
-
-			<!-- If we need navigation buttons -->
-			<div class="swiper-button-prev"></div>
-			<div class="swiper-button-next"></div>
 		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
