@@ -112,6 +112,9 @@ class widget_content
 			}
 		}
 
+		$effect = ($row_layout['effect'] == 'fade') ? 'effect: "fade", fadeEffect:{ crossFade: true },' : '';
+		$autoPlay = ($row_layout['autoplay'] == 'active') ? 'autoplay: { delay: '.$row_layout['autoplay_delay'].', disableOnInteraction: false },' : '';
+
 		$output .= '
 				<!-- If we need pagination -->
 				<div class="swiper-pagination"></div>
@@ -128,11 +131,10 @@ class widget_content
 		const swiper = new Swiper(".swiper", 
 		{
 			// Effect
-			effect: "fade",
-			fadeEffect:
-			{
-				crossFade: true
-			},
+			'.$effect.'
+
+			// autoPlay
+			'.$autoPlay.'
 
 			// Optional parameters
 			direction: "horizontal",
