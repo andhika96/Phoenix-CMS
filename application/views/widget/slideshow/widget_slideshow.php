@@ -104,16 +104,6 @@ class widget_content
 
 		return $output;
 	}
-
-	protected function slideshow_layout1()
-	{
-
-	}
-
-	protected function slideshow_layout2()
-	{
-		
-	}
 }
 
 ?>

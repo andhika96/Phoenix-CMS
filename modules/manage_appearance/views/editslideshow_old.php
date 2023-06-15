@@ -107,7 +107,7 @@
 
 								<label class="form-label">For Mobile (450px X 400px)</label>									
 
-								<div class="input-group mb-3">
+								<div class="input-group">
 									<input type="file" :name="\'image_mobile_\'+index+\'\'" class="form-control font-size-inherit" id="formFileImageMobile" aria-label="Form Image For Mobile" aria-describedby="button-addon2" v-model="info.image_mobile_for_file">
 									
 									<input type="hidden" :name="\'image_key[\'+index+\']\'" :value="\'\'+index+\'\'">
@@ -117,6 +117,17 @@
 										<a :href="\''.base_url('\'+info.image_mobile+\'').'\'" class="input-group-text font-size-inherit" target="_blank">Preview</a>
 									</span>
 								</div>
+
+								<div class="row">
+									<div class="col-md-6 mb-3 mb-md-0">
+										<input type="text" :name="\'image_key[\'+index+\'][title]\'" :value="\'\'+info.title+\'\'">
+									</div>
+
+									<div class="col-md-6 mb-3 mb-md-0">
+										<input type="text" :name="\'image_key[\'+index+\'][caption]\'" :value="\'\'+info.caption+\'\'">
+									</div>
+								</div>
+
 							</div>
 						</div>
 

@@ -510,7 +510,7 @@ class manage_appearance extends Aruna_Controller
 			error_page();
 		}
 
-		$this->form_validation->set_rules('slideshow_to_show', 'Slideshow to Show', 'required');
+		//$this->form_validation->set_rules('slideshow_to_show', 'Slideshow to Show', 'required');
 		$this->form_validation->set_rules('is_adaptive_height', 'Adaptive Height', 'required');
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
@@ -526,7 +526,7 @@ class manage_appearance extends Aruna_Controller
 				{				
 					foreach ($this->input->post('image_key') as $key) 
 					{
-						if ($this->input->post('image_id')[$key]['id'] == 'undefined')
+						if ($this->input->post('image_id')[$key]['id'] === 'undefined')
 						{
 							if ( ! empty($_FILES['image_web_'.$key]['name']) || ! empty($_FILES['image_mobile_'.$key]['name']))
 							{
@@ -549,11 +549,11 @@ class manage_appearance extends Aruna_Controller
 								}
 
 								$configs['upload_path']		= $s_folder;
-								$configs['allowed_types']	= 'jpg|jpeg|png';
+								$configs['allowed_types']	= 'jpg|jpeg|png|gif|mp4';
 								$configs['overwrite']		= TRUE;
 								$configs['remove_spaces']	= TRUE;
 								$configs['encrypt_name']	= TRUE;
-								$configs['max_size']		= 24000;
+								$configs['max_size']		= 200000;
 
 								$upload = load_lib('upload', $configs);
 
@@ -591,11 +591,11 @@ class manage_appearance extends Aruna_Controller
 								}
 
 								$configs['upload_path']		= $s_folder;
-								$configs['allowed_types']	= 'jpg|jpeg|png';
+								$configs['allowed_types']	= 'jpg|jpeg|png|gif|mp4';
 								$configs['overwrite']		= TRUE;
 								$configs['remove_spaces']	= TRUE;
 								$configs['encrypt_name']	= TRUE;
-								$configs['max_size']		= 24000;
+								$configs['max_size']		= 200000;
 
 								$upload = load_lib('upload', $configs);
 
@@ -614,7 +614,7 @@ class manage_appearance extends Aruna_Controller
 									$image_mobile = $x_folder.$upload->data('file_name');
 								}
 
-								$this->db->sql_insert(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile], 'ml_slideshow');
+								$this->db->sql_insert(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile, 'title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption']], 'ml_slideshow');
 							}
 							else
 							{
@@ -624,23 +624,25 @@ class manage_appearance extends Aruna_Controller
 						}
 						else
 						{
+							$res = $this->db->sql_prepare("select * from ml_slideshow where id = :id");
+							$bindParam = $this->db->sql_bindParam(['id' => $this->input->post('image_id')[$key]['id']], $res);
+							$row = $this->db->sql_fetch_single($bindParam);
+
+							// Prevent from Automatic conversion of false to array is deprecated
+							$row = ($row !== FALSE) ? $row : [];
+
+							$row['id'] = isset($row['id']) ? $row['id'] : '';
+
+							$get_vars = json_decode($row['vars'], true);
+
+							if ( ! $row['id'])
+							{
+								echo json_encode(['status' => 'failed', 'msg' => 'Cannot update the image, please contact the programmer to trace this issue.']);
+								exit;
+							}
+
 							if ( ! empty($_FILES['image_web_'.$key]['name']) || ! empty($_FILES['image_mobile_'.$key]['name']))
 							{
-								$res = $this->db->sql_prepare("select * from ml_slideshow where id = :id");
-								$bindParam = $this->db->sql_bindParam(['id' => $this->input->post('image_id')[$key]['id']], $res);
-								$row = $this->db->sql_fetch_single($bindParam);
-
-								// Prevent from Automatic conversion of false to array is deprecated
-								$row = ($row !== FALSE) ? $row : [];
-
-								$row['id'] = isset($row['id']) ? $row['id'] : '';
-
-								if ( ! $row['id'])
-								{
-									echo json_encode(['status' => 'failed', 'msg' => 'Cannot update the image, please contact the programmer to trace this issue.']);
-									exit;
-								}
-
 								// Image For Web
 								$_FILES['file_web']['name'] 	= $_FILES['image_web_'.$key]['name'];
 								$_FILES['file_web']['type'] 	= $_FILES['image_web_'.$key]['type'];
@@ -737,17 +739,20 @@ class manage_appearance extends Aruna_Controller
 
 								$this->db->sql_update(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile], 'ml_slideshow', ['id' => $row['id']]);
 							}
+
+							$get_vars['button'] = $this->input->post('image_button')[$key];
+
+							$this->db->sql_update(['title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption'], 'vars' => json_encode($get_vars)], 'ml_slideshow', ['id' => $row['id']]);
 						}
 					}
 
 					$slideshow_data = [
 						'page'					=> $page,
 						'section'				=> 'slideshow',
-						'content_to_show'		=> $this->input->post('slideshow_to_show'),
+						// 'content_to_show'		=> $this->input->post('slideshow_to_show'),
 						'is_adaptive_height'	=> $this->input->post('is_adaptive_height'),
 						'content_title'			=> $this->input->post('content_title'),
 						'content_description'	=> $this->input->post('content_description'),
-						'content_to_show'		=> 0,
 						'sidebar_position'		=> '',
 						'created'				=> time()
 					];
@@ -1072,7 +1077,6 @@ class manage_appearance extends Aruna_Controller
 						'content_title'			=> $this->input->post('content_title'),
 						'content_description'	=> $this->input->post('content_description'),
 						'background_overlay'	=> $this->input->post('background_overlay'),
-						'content_to_show'		=> 0,
 						'sidebar_position'		=> '',
 						'created'				=> time()
 					];
@@ -1183,6 +1187,8 @@ class manage_appearance extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['uri' => $uri], $res);
 		while ($row = $this->db->sql_fetch_single($res))
 		{
+			$row['get_vars'] = json_decode($row['vars'], true);
+
 			$output[] = $row;
 		}
 
