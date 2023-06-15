@@ -494,13 +494,23 @@ class manage_appearance extends Aruna_Controller
 		$row_layout['content_title'] = isset($row_layout['content_title']) ? $row_layout['content_title'] : '';
 		$row_layout['content_description'] = isset($row_layout['content_description']) ? $row_layout['content_description'] : '';
 
-		$slideshow_to_show[0] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 1) ? 'selected' : FALSE;
-		$slideshow_to_show[1] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 2) ? 'selected' : FALSE;
-		$slideshow_to_show[2] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 3) ? 'selected' : FALSE;
-		$slideshow_to_show[3] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 4) ? 'selected' : FALSE;
+		// $slideshow_to_show[0] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 1) ? 'selected' : FALSE;
+		// $slideshow_to_show[1] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 2) ? 'selected' : FALSE;
+		// $slideshow_to_show[2] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 3) ? 'selected' : FALSE;
+		// $slideshow_to_show[3] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 4) ? 'selected' : FALSE;
 
-		$is_adaptive_height[0] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 0) ? 'selected' : FALSE;
-		$is_adaptive_height[1] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 1) ? 'selected' : FALSE;
+		// $is_adaptive_height[0] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 0) ? 'selected' : FALSE;
+		// $is_adaptive_height[1] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 1) ? 'selected' : FALSE;
+
+		$selected_effect[0] = (isset($row_layout['effect']) && $row_layout['effect'] == 'fade') ? 'selected' : FALSE;
+		$selected_effect[1] = (isset($row_layout['effect']) && $row_layout['effect'] == 'nonfade') ? 'selected' : FALSE;
+
+		$selected_autoplay[0] = (isset($row_layout['autoplay']) && $row_layout['autoplay'] == 'active') ? 'selected' : FALSE;
+		$selected_autoplay[1] = (isset($row_layout['autoplay']) && $row_layout['autoplay'] == 'inactive') ? 'selected' : FALSE;
+
+		$slide_per_view[0] = (isset($row_layout['slide_per_view']) && $row_layout['slide_per_view'] == 1) ? 'selected' : FALSE;
+		$slide_per_view[1] = (isset($row_layout['slide_per_view']) && $row_layout['slide_per_view'] == 2) ? 'selected' : FALSE;
+		$slide_per_view[2] = (isset($row_layout['slide_per_view']) && $row_layout['slide_per_view'] == 3) ? 'selected' : FALSE;
 
 		$res_check_page = $this->db->sql_prepare("select * from ml_modules where name = :name and is_slideshow = :is_slideshow");
 		$bindParam_check_page = $this->db->sql_bindParam(['name' => $page, 'is_slideshow' => 1], $res_check_page);
@@ -510,8 +520,9 @@ class manage_appearance extends Aruna_Controller
 			error_page();
 		}
 
-		//$this->form_validation->set_rules('slideshow_to_show', 'Slideshow to Show', 'required');
-		$this->form_validation->set_rules('is_adaptive_height', 'Adaptive Height', 'required');
+		$this->form_validation->set_rules('effect', 'Effect', 'required');
+		$this->form_validation->set_rules('slide_per_view', 'Slide per View', 'required');
+		$this->form_validation->set_rules('autoplay', 'Autoplay', 'required');
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
@@ -614,7 +625,13 @@ class manage_appearance extends Aruna_Controller
 									$image_mobile = $x_folder.$upload->data('file_name');
 								}
 
-								$this->db->sql_insert(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile, 'title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption']], 'ml_slideshow');
+								$this->db->sql_insert(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile, 'title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption'], 'vars' => '{"button":[{"type":"text","alias":"empty","title":"Link 1","content":"https://www.aruna-dev.com"},{"type":"text","alias":"empty","title":"Link 2","content":"https://www.aruna-dev.com"}],"style":{"position":"left"}}'], 'ml_slideshow');
+							
+								$get_latest_id = $this->db->insert_id();
+
+								$get_vars['button'] = $this->input->post('image_button')[$key];
+
+								$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_slideshow', ['id' => $get_latest_id]);
 							}
 							else
 							{
@@ -740,6 +757,11 @@ class manage_appearance extends Aruna_Controller
 								$this->db->sql_update(['uri' => $page, 'name' => $upload->data('file_name'), 'image_web' => $image_web, 'image_mobile' => $image_mobile], 'ml_slideshow', ['id' => $row['id']]);
 							}
 
+							if (empty($this->input->post('image_button')[$key]))
+							{
+								$this->input->post('image_button')[$key] = '{"button":[{"type":"text","alias":"empty","title":"Link 1","content":"https://www.aruna-dev.com"},{"type":"text","alias":"empty","title":"Link 2","content":"https://www.aruna-dev.com"}],"style":{"position":"left"}}';
+							}
+
 							$get_vars['button'] = $this->input->post('image_button')[$key];
 
 							$this->db->sql_update(['title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption'], 'vars' => json_encode($get_vars)], 'ml_slideshow', ['id' => $row['id']]);
@@ -749,11 +771,10 @@ class manage_appearance extends Aruna_Controller
 					$slideshow_data = [
 						'page'					=> $page,
 						'section'				=> 'slideshow',
-						// 'content_to_show'		=> $this->input->post('slideshow_to_show'),
-						'is_adaptive_height'	=> $this->input->post('is_adaptive_height'),
-						'content_title'			=> $this->input->post('content_title'),
-						'content_description'	=> $this->input->post('content_description'),
-						'sidebar_position'		=> '',
+						'slide_per_view'		=> $this->input->post('slide_per_view'),
+						'effect'				=> $this->input->post('effect'),
+						'autoplay'				=> $this->input->post('autoplay'),
+						'autoplay_delay'		=> $this->input->post('autoplay_delay'),
 						'created'				=> time()
 					];
 
@@ -766,7 +787,7 @@ class manage_appearance extends Aruna_Controller
 						$this->db->sql_update($slideshow_data, 'ml_layout', ['id' => $row_layout['id']]);
 					}
 
-					echo json_encode(['status' => 'success', 'msg' => 'Success']);
+					echo json_encode(['status' => 'success', 'msg' => $this->input->post('image_button')[3][0]['title']]);
 					exit;
 				}
 			}
@@ -775,8 +796,9 @@ class manage_appearance extends Aruna_Controller
 		$data['uri']				= $page;
 		$data['row']				= $row;
 		$data['row_layout']			= $row_layout;
-		$data['slideshow_to_show'] 	= $slideshow_to_show;
-		$data['is_adaptive_height']	= $is_adaptive_height;
+		$data['selected_effect'] 	= $selected_effect;
+		$data['selected_autoplay']	= $selected_autoplay;
+		$data['slide_per_view']		= $slide_per_view;
 		$data['csrf_name'] 			= $this->csrf['name'];
 		$data['csrf_hash'] 			= $this->csrf['hash'];
 

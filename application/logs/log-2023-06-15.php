@@ -124,3 +124,112 @@ ERROR - 2023-06-15 14:31:14 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-15 14:31:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-15 14:31:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-15 14:32:55 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:33:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $selected_effect D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 90
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 90
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $selected_effect D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 91
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 91
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 100
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 100
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 101
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 101
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 102
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 102
+ERROR - 2023-06-15 14:40:55 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $selected_effect D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 90
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 90
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $selected_effect D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 91
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 91
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 100
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 100
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 101
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 101
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $slide_per_view D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 102
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 102
+ERROR - 2023-06-15 14:42:20 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 61
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 61
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 64
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 64
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $is_adaptive_height D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 73
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 73
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $is_adaptive_height D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 74
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 74
+ERROR - 2023-06-15 14:43:31 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 61
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 61
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $slideshow_to_show D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 64
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 64
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $is_adaptive_height D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 73
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 73
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $is_adaptive_height D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 74
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 74
+ERROR - 2023-06-15 14:43:33 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:44:01 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:44:03 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:44:33 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:44:43 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:44:58 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:46:58 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:46:58 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:46:58 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:46:58 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:46:58 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:47:12 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:47:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:47:12 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:47:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:47:12 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:47:39 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:47:39 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:47:39 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:47:39 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:47:39 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:49:30 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:49:30 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:49:30 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:49:30 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:49:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:49:33 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:49:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:49:33 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:49:33 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:49:33 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:50:27 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:50:27 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 62
+ERROR - 2023-06-15 14:50:27 --> Severity: Warning --> Undefined variable $selected_autoplay D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:50:27 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_appearance\views\editslideshow.php 63
+ERROR - 2023-06-15 14:50:27 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:50:57 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:52:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:52:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:53:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:55:27 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:56:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:56:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:57:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:58:01 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 14:58:55 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:00:01 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:00:19 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:00:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:00:53 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:00:58 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:01:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:01:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:03:13 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:05:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:05:20 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:05:37 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:09:47 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:09:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:10:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:10:24 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874

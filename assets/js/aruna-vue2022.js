@@ -1464,7 +1464,9 @@ const Vue2ListData = new Vue(
 		{
 			if (this.getListFormSlideshow.length < 5)
 			{
-				this.getListFormSlideshow.push({ name: ''});
+				this.getListFormSlideshow.push({ name: '', get_vars: { button: [ {title: '', content: ''}, {title: '', content: ''} ] }});
+
+				console.log(this.getListFormSlideshow);
 			}
 			else
 			{

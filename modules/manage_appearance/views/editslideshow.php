@@ -46,40 +46,37 @@
 								<h6 class="mb-0 pb-3 border-bottom">- Layout & Content Settings</h6>
 							</div>
 
-							<div class="col-12 mb-3">
-								<label class="form-label">Content Title</label>
-								<input type="text" name="content_title" class="form-control font-size-inherit" value="'.$row_layout['content_title'].'">
+							<div class="col-md-6 mb-3 mb-md-0">
+								<label class="form-label">Effect</label>
+
+								<select name="effect" class="form-select font-size-inherit mb-3" aria-label="Select Adaptive Height">
+									<option value="">Select Effect</option>
+									<option value="fade" '.$selected_effect[0].'>Fade</option>
+									<option value="nonfade" '.$selected_effect[1].'>Non Fade</option>
+								</select>
+
+								<label class="form-label">Autoplay</label>
+
+								<select name="autoplay" class="form-select font-size-inherit" aria-label="Select Autoplay">
+									<option value="">Select Autoplay</option>
+									<option value="active" '.$selected_autoplay[0].'>Active</option>
+									<option value="inactive" '.$selected_autoplay[1].'>Inactive</option>
+								</select>
 							</div>
 
-							<div class="col-md-6">
-								<div class="row">
-									<div class="col-12 mb-3">
-										<label class="form-label">Select Slideshow to Show</label>
+							<div class="col-md-6 mb-3 mb-md-0">
+								<label class="form-label">Slide per View</label>
 
-										<select name="slideshow_to_show" class="form-select font-size-inherit" aria-label="Select Slideshow to Show">
-											<option value="">Select</option>
-											<option value="1" '.$slideshow_to_show[0].'>1</option>
-											<option value="2" '.$slideshow_to_show[1].'>2</option>
-											<option value="3" '.$slideshow_to_show[2].'>3</option>
-											<option value="4" '.$slideshow_to_show[3].'>4</option>
-										</select>
-									</div>
+								<select name="slide_per_view" class="form-select font-size-inherit mb-3" aria-label="Select Slide per View">
+									<option value="">Select Slide per View</option>
+									<option value="1" '.$slide_per_view[0].'>1</option>
+									<option value="2" '.$slide_per_view[1].'>2</option>
+									<option value="3" '.$slide_per_view[2].'>3</option>
+								</select>
 
-									<div class="col-12 mb-3">
-										<label class="form-label">Select Adaptive Height</label>
+								<label class="form-label">Autoplay Delay</label>
 
-										<select name="is_adaptive_height" class="form-select font-size-inherit" aria-label="Select Adaptive Height">
-											<option value="">Select Adaptive Height</option>
-											<option value="1" '.$is_adaptive_height[1].'>Active</option>
-											<option value="0" '.$is_adaptive_height[0].'>Non Active</option>
-										</select>
-									</div>
-								</div>
-							</div>
-
-							<div class="col-md-6">
-								<label class="form-label">Content Description</label>
-								<textarea name="content_description" class="form-control font-size-inherit" rows="5">'.$row_layout['content_description'].'</textarea>
+								<input type="text" name="autoplay_delay" class="form-control font-size-inherit" value="'.$row_layout['autoplay_delay'].'">
 							</div>
 						</div>
 
