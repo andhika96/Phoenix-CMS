@@ -46,7 +46,17 @@
 								<h6 class="mb-0 pb-3 border-bottom">- Layout & Content Settings</h6>
 							</div>
 
-							<div class="col-md-6 mb-3 mb-md-0">
+							<div class="col-md-4 mb-3 mb-md-0">
+								<label class="form-label">Display Slideshow</label>
+
+								<select name="display_slideshow" class="form-select font-size-inherit mb-3" aria-label="Select Adaptive Height">
+									<option value="">Select Effect</option>
+									<option value="only_image" '.$selected_display_slideshow[0].'>Only With Image</option>
+									<option value="background_image" '.$selected_display_slideshow[1].'>With Background Image</option>
+								</select>
+							</div>
+
+							<div class="col-md-4 mb-3 mb-md-0">
 								<label class="form-label">Effect</label>
 
 								<select name="effect" class="form-select font-size-inherit mb-3" aria-label="Select Adaptive Height">
@@ -54,7 +64,9 @@
 									<option value="fade" '.$selected_effect[0].'>Fade</option>
 									<option value="nonfade" '.$selected_effect[1].'>Non Fade</option>
 								</select>
+							</div>
 
+							<div class="col-md-4 mb-3 mb-md-0">
 								<label class="form-label">Autoplay</label>
 
 								<select name="autoplay" class="form-select font-size-inherit" aria-label="Select Autoplay">
@@ -73,7 +85,9 @@
 									<option value="2" '.$slide_per_view[1].'>2</option>
 									<option value="3" '.$slide_per_view[2].'>3</option>
 								</select>
+							</div>
 
+							<div class="col-md-6 mb-3 mb-md-0">
 								<label class="form-label">Autoplay Delay</label>
 
 								<input type="text" name="autoplay_delay" class="form-control font-size-inherit" value="'.$row_layout['autoplay_delay'].'">

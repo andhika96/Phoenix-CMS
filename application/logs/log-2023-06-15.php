@@ -234,3 +234,110 @@ ERROR - 2023-06-15 15:09:54 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-15 15:10:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-15 15:10:24 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-15 15:10:53 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:13:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:17:02 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:17:02 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:17:07 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:17:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:17:21 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:17:21 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:18:12 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:18:12 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:18:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:18:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:18:49 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:18:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:19:10 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:19:10 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:19:42 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:19:42 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 66
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $row D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 67
+ERROR - 2023-06-15 15:23:12 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:23:23 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:23:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:24:03 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:24:03 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:24:17 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:24:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:24:29 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:24:29 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:26:29 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:26:29 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:26:34 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:26:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:27:09 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:27:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:54:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:55:14 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:55:14 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:55:45 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:55:45 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:55:58 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:55:58 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:56:11 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:56:11 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:56:44 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:56:44 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:59:17 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:59:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:59:36 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:59:36 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 15:59:58 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 15:59:58 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:02:54 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:02:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:03:26 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:03:26 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:03:37 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:03:37 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:04:08 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:04:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:04:41 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:04:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:05:14 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:05:14 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:05:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:05:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:06:31 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:06:31 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:06:38 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:06:38 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:07:50 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:07:50 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 77
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 95
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 77
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 95
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 77
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 95
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 77
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined array key "display_slideshow" D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 95
+ERROR - 2023-06-15 16:10:09 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:10:29 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:10:29 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:11:21 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:11:45 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:14:20 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:14:28 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:14:28 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:16:56 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:16:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-15 16:16:57 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-15 16:16:57 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874

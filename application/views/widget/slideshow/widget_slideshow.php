@@ -54,10 +54,62 @@ class widget_content
 		$bindParam_slideshow = $Aruna->db->sql_bindParam(['uri' => $page], $res_slideshow);
 		while ($row_slideshow = $Aruna->db->sql_fetch_single($bindParam_slideshow))
 		{
-			$output .= '
-				<div class="swiper-slide">
+			$get_vars = json_decode($row_slideshow['vars'], true);
+
+			if ($get_vars['button'][0]['title'] !== '')
+			{
+				$button1 = '<a href="'.$get_vars['button'][0]['content'].'" class="btn btn-outline-light rounded-pill">'.$get_vars['button'][0]['title'].'</a>';
+			}
+			else
+			{
+				$button1 = '';
+			}
+
+			if ($get_vars['button'][1]['title'] !== '')
+			{
+				$button2 = '<a href="'.$get_vars['button'][1]['content'].'" class="btn btn-outline-light rounded-pill ms-3">'.$get_vars['button'][1]['title'].'</a>';
+			}
+			else
+			{
+				$button2 = '';
+			}
+
+			if ($row_layout['display_slideshow'] == 'only_image')
+			{
+				$output .= '
+				<div class="swiper-slide position-relative">
 					<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid">
+
+					<div class="container position-absolute top-50 start-50 translate-middle text-white">
+						<div class="row">
+							<div class="col-md-8 mx-auto text-center">
+								<h2>'.$row_slideshow['title'].'</h2>
+								<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
+
+								'.$button1.$button2.'
+							</div>
+						</div>
+					</div>
 				</div>';
+			}
+			elseif ($row_layout['display_slideshow'] == 'background_image')
+			{
+				$output .= '
+				<div class="swiper-slide">
+					<div class="d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_web']).');background-repeat: no-repeat;background-size: auto 800px;background-position: center center;height: 100vh;">
+						<div class="container text-white">
+							<div class="row">
+								<div class="col-md-8 mx-auto text-center">
+									<h2>'.$row_slideshow['title'].'</h2>
+									<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
+
+									'.$button1.$button2.'
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>';
+			}
 		}
 
 		$output .= '

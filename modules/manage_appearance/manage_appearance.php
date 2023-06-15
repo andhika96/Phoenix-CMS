@@ -491,22 +491,14 @@ class manage_appearance extends Aruna_Controller
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row_layout = ($row_layout !== FALSE) ? $row_layout : [];
 
-		$row_layout['content_title'] = isset($row_layout['content_title']) ? $row_layout['content_title'] : '';
-		$row_layout['content_description'] = isset($row_layout['content_description']) ? $row_layout['content_description'] : '';
-
-		// $slideshow_to_show[0] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 1) ? 'selected' : FALSE;
-		// $slideshow_to_show[1] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 2) ? 'selected' : FALSE;
-		// $slideshow_to_show[2] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 3) ? 'selected' : FALSE;
-		// $slideshow_to_show[3] = (isset($row_layout['content_to_show']) && $row_layout['content_to_show'] == 4) ? 'selected' : FALSE;
-
-		// $is_adaptive_height[0] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 0) ? 'selected' : FALSE;
-		// $is_adaptive_height[1] = (isset($row_layout['is_adaptive_height']) && $row_layout['is_adaptive_height'] == 1) ? 'selected' : FALSE;
-
 		$selected_effect[0] = (isset($row_layout['effect']) && $row_layout['effect'] == 'fade') ? 'selected' : FALSE;
 		$selected_effect[1] = (isset($row_layout['effect']) && $row_layout['effect'] == 'nonfade') ? 'selected' : FALSE;
 
 		$selected_autoplay[0] = (isset($row_layout['autoplay']) && $row_layout['autoplay'] == 'active') ? 'selected' : FALSE;
 		$selected_autoplay[1] = (isset($row_layout['autoplay']) && $row_layout['autoplay'] == 'inactive') ? 'selected' : FALSE;
+
+		$selected_display_slideshow[0] = (isset($row_layout['display_slideshow']) && $row_layout['display_slideshow'] == 'only_image') ? 'selected' : FALSE;
+		$selected_display_slideshow[1] = (isset($row_layout['display_slideshow']) && $row_layout['display_slideshow'] == 'background_image') ? 'selected' : FALSE;
 
 		$slide_per_view[0] = (isset($row_layout['slide_per_view']) && $row_layout['slide_per_view'] == 1) ? 'selected' : FALSE;
 		$slide_per_view[1] = (isset($row_layout['slide_per_view']) && $row_layout['slide_per_view'] == 2) ? 'selected' : FALSE;
@@ -772,6 +764,7 @@ class manage_appearance extends Aruna_Controller
 						'page'					=> $page,
 						'section'				=> 'slideshow',
 						'slide_per_view'		=> $this->input->post('slide_per_view'),
+						'display_slideshow'		=> $this->input->post('display_slideshow'),
 						'effect'				=> $this->input->post('effect'),
 						'autoplay'				=> $this->input->post('autoplay'),
 						'autoplay_delay'		=> $this->input->post('autoplay_delay'),
@@ -793,14 +786,15 @@ class manage_appearance extends Aruna_Controller
 			}
 		}
 
-		$data['uri']				= $page;
-		$data['row']				= $row;
-		$data['row_layout']			= $row_layout;
-		$data['selected_effect'] 	= $selected_effect;
-		$data['selected_autoplay']	= $selected_autoplay;
-		$data['slide_per_view']		= $slide_per_view;
-		$data['csrf_name'] 			= $this->csrf['name'];
-		$data['csrf_hash'] 			= $this->csrf['hash'];
+		$data['uri']							= $page;
+		$data['row']							= $row;
+		$data['row_layout']						= $row_layout;
+		$data['selected_effect'] 				= $selected_effect;
+		$data['selected_autoplay']				= $selected_autoplay;
+		$data['selected_display_slideshow'] 	= $selected_display_slideshow;
+		$data['slide_per_view']					= $slide_per_view;
+		$data['csrf_name'] 						= $this->csrf['name'];
+		$data['csrf_hash'] 						= $this->csrf['hash'];
 
 		return view('editslideshow', $data);
 	}
