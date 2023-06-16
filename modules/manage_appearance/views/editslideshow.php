@@ -53,27 +53,27 @@
 								<h6 class="mb-0 pb-3 border-bottom">- Layout & Content Settings</h6>
 							</div>
 
-							<div class="col-md-4 mb-3 mb-md-0">
+							<div class="col-md-4 mb-3">
 								<label class="form-label">Display Slideshow</label>
 
-								<select name="display_slideshow" class="form-select font-size-inherit mb-3" aria-label="Select Adaptive Height">
+								<select name="display_slideshow" class="form-select font-size-inherit" aria-label="Select Adaptive Height">
 									<option value="">Select Effect</option>
 									<option value="only_image" '.$selected_display_slideshow[0].'>Only With Image</option>
 									<option value="background_image" '.$selected_display_slideshow[1].'>With Background Image</option>
 								</select>
 							</div>
 
-							<div class="col-md-4 mb-3 mb-md-0">
+							<div class="col-md-4 mb-3">
 								<label class="form-label">Effect</label>
 
-								<select name="effect" class="form-select font-size-inherit mb-3" aria-label="Select Adaptive Height">
+								<select name="effect" class="form-select font-size-inherit" aria-label="Select Adaptive Height">
 									<option value="">Select Effect</option>
 									<option value="fade" '.$selected_effect[0].'>Fade</option>
 									<option value="nonfade" '.$selected_effect[1].'>Non Fade</option>
 								</select>
 							</div>
 
-							<div class="col-md-4 mb-3 mb-md-0">
+							<div class="col-md-4 mb-3">
 								<label class="form-label">Autoplay</label>
 
 								<select name="autoplay" class="form-select font-size-inherit" aria-label="Select Autoplay">
@@ -83,15 +83,17 @@
 								</select>
 							</div>
 
-							<div class="col-md-6 mb-3 mb-md-0">
+							<div class="col-md-6 mb-3">
 								<label class="form-label">Slide per View</label>
 
-								<select name="slide_per_view" class="form-select font-size-inherit mb-3" aria-label="Select Slide per View">
+								<select name="slide_per_view" class="form-select font-size-inherit" aria-label="Select Slide per View">
 									<option value="">Select Slide per View</option>
 									<option value="1" '.$slide_per_view[0].'>1</option>
 									<option value="2" '.$slide_per_view[1].'>2</option>
 									<option value="3" '.$slide_per_view[2].'>3</option>
 								</select>
+
+								<i class="form-text">* If you set slide per view more than 1, fade effect cannot be use</i>
 							</div>
 
 							<div class="col-md-6 mb-3 mb-md-0">

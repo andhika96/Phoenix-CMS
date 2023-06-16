@@ -120,3 +120,7 @@ ERROR - 2023-06-16 14:40:22 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-16 14:40:57 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-16 14:41:02 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
 ERROR - 2023-06-16 14:41:02 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 14:54:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 14:54:52 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 14:55:47 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 14:56:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
