@@ -979,6 +979,8 @@ const Vue2ListData = new Vue(
 					this.getListFormSlideshow 	= response.data;
 					this.statusData 			= getRes.status;
 					this.msgData 				= getRes.msg;
+
+					console.log(this.getListFormSlideshow);
 				})
 				.catch(function(error) 
 				{
@@ -986,6 +988,18 @@ const Vue2ListData = new Vue(
 				})
 				.finally(() => 
 				{ 
+					if (document.querySelector(".color-picker") !== undefined)
+					{
+						$(document).ready(function() 
+						{
+							$(".color-picker").spectrum({
+								type: "component",
+								showInput: true,
+								showInitial: true
+							});
+						});
+					}
+
 					this.loadingSlideshowPage = false;
 				});
 			}
@@ -1464,7 +1478,16 @@ const Vue2ListData = new Vue(
 		{
 			if (this.getListFormSlideshow.length < 5)
 			{
-				this.getListFormSlideshow.push({ name: '', get_vars: { button: [ {title: '', content: ''}, {title: '', content: ''} ] }});
+				this.getListFormSlideshow.push({ title: '', caption: '', get_vars: { button: [ {title: '', content: ''}, {title: '', content: ''} ], style: {position: 'center', background_overlay: '' } }});
+
+				$(document).ready(function() 
+				{
+					$(".color-picker").spectrum({
+						type: "component",
+						showInput: true,
+						showInitial: true
+					});
+				});
 
 				console.log(this.getListFormSlideshow);
 			}

@@ -25,7 +25,7 @@
 
 			<!-- Custom CSS -->
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.1').'">
+			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.3').'">
 			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v=0.0.4').'">
 
 			<title>'.get_ctitle().'</title>
@@ -98,7 +98,7 @@
 			<script src="'.base_url('assets/js/vuejs-2.7.14.min.js').'"></script>
 			<script src="'.base_url('assets/js/vuejs-paginate-2.1.0.min.js').'"></script>
 			<script src="'.base_url('assets/js/vue-lazyload-1.3.3.min.js').'"></script>
-			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.14').'"></script>
+			<script src="'.base_url('assets/js/aruna-vue2022.js?v=0.0.15').'"></script>
 
 			<script src="'.base_url('assets/js/jquery-3.6.0.min.js').'"></script>
 			<script src="'.base_url('assets/plugins/bootbox/5.5.2/bootbox.all.min.js').'"></script>

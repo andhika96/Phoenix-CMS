@@ -15,6 +15,13 @@
 	section_content(breadcrumb([t('Manage Appearance') => '', t('Slideshow') => site_url('manage_appearance/slideshow'), t('Edit Slideshow') => '']));
 
 	section_content('
+	<style>
+	.sp-original-input-container
+	{
+		width: 100%;
+	}
+	</style>
+
 	<div class="container-fluid px-0 mb-5">
 		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm" id="ar-app-listdata">
 			<div class="h5 pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center">
@@ -129,20 +136,29 @@
 										</div>
 
 										<div class="row">
-											<div class="col-md-6 mb-3 mb-md-0">
+											<div class="col-md-6 mb-3">
 												<label class="form-label">Button 1</label>
 
 												<input type="text" :name="\'image_button[\'+index+\'][0][title]\'" class="form-control font-size-inherit mb-3" placeholder="Title" :value="\'\'+info.get_vars[\'button\'][0][\'title\']+\'\'">
 												<input type="text" :name="\'image_button[\'+index+\'][0][content]\'" class="form-control font-size-inherit" placeholder="URL" :value="\'\'+info.get_vars[\'button\'][0][\'content\']+\'\'">
 											</div>
 
-											<div class="col-md-6 mb-3 mb-md-0">
+											<div class="col-md-6 mb-3">
 												<label class="form-label">Button 2</label>
 
 												<input type="text" :name="\'image_button[\'+index+\'][1][title]\'" class="form-control font-size-inherit mb-3" placeholder="Title" :value="\'\'+info.get_vars[\'button\'][1][\'title\']+\'\'">
 												<input type="text" :name="\'image_button[\'+index+\'][1][content]\'" class="form-control font-size-inherit" placeholder="URL" :value="\'\'+info.get_vars[\'button\'][1][\'content\']+\'\'">
 											</div>
 										</div>
+
+										<label class="form-label">Content Position</label>
+
+										<select :name="\'image_style[\'+index+\'][position]\'" class="form-select font-size-inherit mb-3" v-model="info.get_vars[\'style\'][\'position\']" aria-label="Select Content Position">
+											<option value="">Select Position</option>
+											<option value="left">Left</option>
+											<option value="center">Center</option>
+											<option value="right">Right</option>
+										</select>
 									</div>
 
 									<div class="col-md-6">
@@ -154,8 +170,14 @@
 
 										<label class="form-label">Caption</label>
 
-										<div class="input-group">
+										<div class="input-group mb-3">
 											<textarea :name="\'image_text[\'+index+\'][caption]\'" rows="7" class="form-control font-size-inherit">{{ info.caption }}</textarea>
+										</div>
+
+										<label class="form-label">Background Overlay</label>
+
+										<div class="input-group">
+											<input type="text" :name="\'image_style[\'+index+\'][background_overlay]\'" class="form-control font-size-inherit color-picker" id="color-picker" :value="\'\'+info.get_vars[\'style\'][\'background_overlay\']+\'\'">
 										</div>
 
 										<input type="hidden" :name="\'image_key[\'+index+\']\'" :value="\'\'+index+\'\'">

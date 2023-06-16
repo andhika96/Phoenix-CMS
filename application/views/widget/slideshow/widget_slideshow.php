@@ -18,6 +18,36 @@ class widget_content
 			--swiper-navigation-size: 25px !important; 
 		}
 
+		.swiper-slide::before
+		{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: block;
+			left: 0;
+			top: 0;
+			content: "";
+			z-index: 0 !important;
+			background-color: rgba(0, 0, 0, 0.463);
+		}
+
+		.swiper-slide::after
+		{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			display: block;
+			left: 0;
+			top: 0;
+			content: "";
+			background-color: rgba(0, 0, 0, 0.463);
+		}
+
+		.swiper-slide .container
+		{
+			z-index: 1;
+		}
+
 		.swiper-pagination-bullets.swiper-pagination-horizontal
 		{
 			bottom: 30px !important;
@@ -74,15 +104,27 @@ class widget_content
 				$button2 = '';
 			}
 
+			$left_position_1	= ($get_vars['style']['position'] == 'left') ? 'top-50 start-35' : '';
+			$center_position_1	= ($get_vars['style']['position'] == 'center') ? 'top-50 start-50' : '';
+			$right_position_1	= ($get_vars['style']['position'] == 'right') ? 'top-50 start-65' : '';
+
+			$left_text_1	= ($get_vars['style']['position'] == 'left') ? 'text-start' : '';
+			$center_text_1	= ($get_vars['style']['position'] == 'center') ? 'text-center' : '';
+			$right_text_1	= ($get_vars['style']['position'] == 'right') ? 'text-end' : '';
+
+			// $left_position_2	=
+			// $center_position_2	=
+			// $right_position_2	=
+
 			if ($row_layout['display_slideshow'] == 'only_image')
 			{
 				$output .= '
 				<div class="swiper-slide position-relative">
 					<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid">
 
-					<div class="container position-absolute top-50 start-50 translate-middle text-white">
+					<div class="container position-absolute '.$left_position_1.$center_position_1.$right_position_1.' translate-middle text-white">
 						<div class="row">
-							<div class="col-md-8 mx-auto text-center">
+							<div class="col-md-8 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
 								<h2>'.$row_slideshow['title'].'</h2>
 								<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
 
@@ -96,7 +138,7 @@ class widget_content
 			{
 				$output .= '
 				<div class="swiper-slide">
-					<div class="d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_web']).');background-repeat: no-repeat;background-size: auto 800px;background-position: center center;height: 100vh;">
+					<div class="swiper-background-image d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_web']).');background-repeat: no-repeat;background-size: auto 800px;background-position: center center;height: 100vh;">
 						<div class="container text-white">
 							<div class="row">
 								<div class="col-md-8 mx-auto text-center">

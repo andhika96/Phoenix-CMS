@@ -43,6 +43,180 @@ dl, ol, ul
 	margin-bottom: 1.25rem;
 }
 
+/* Add for Bootstrap 5.3 */
+
+.start-95 
+{
+	left: 95% !important;
+}
+
+.start-90 
+{
+	left: 90% !important;
+}
+
+.start-85
+{
+	left: 85% !important;
+}
+
+.start-80 
+{
+	left: 80% !important;
+}
+
+.start-75 
+{
+	left: 75% !important;
+}
+
+.start-70
+{
+	left: 70% !important;
+}
+
+.start-65 
+{
+	left: 65% !important;
+}
+
+.start-60 
+{
+	left: 60% !important;
+}
+
+.start-55 
+{
+	left: 55% !important;
+}
+
+.start-45 
+{
+	left: 45% !important;
+}
+
+.start-40 
+{
+	left: 40% !important;
+}
+
+.start-35 
+{
+	left: 35% !important;
+}
+
+.start-30
+{
+	left: 30% !important;
+}
+
+.start-25
+{
+	left: 25% !important;
+}
+
+.start-20
+{
+	left: 20% !important;
+}
+
+.start-15
+{
+	left: 15% !important;
+}
+
+.start-10
+{
+	left: 10% !important;
+}
+
+.end-95 
+{
+	right: 95% !important;
+}
+
+.end-90 
+{
+	right: 90% !important;
+}
+
+.end-85
+{
+	right: 85% !important;
+}
+
+.end-80 
+{
+	right: 80% !important;
+}
+
+.end-75 
+{
+	right: 75% !important;
+}
+
+.end-70
+{
+	right: 70% !important;
+}
+
+.end-65 
+{
+	right: 65% !important;
+}
+
+.end-60 
+{
+	right: 60% !important;
+}
+
+.end-55 
+{
+	right: 55% !important;
+}
+
+.end-45 
+{
+	right: 45% !important;
+}
+
+.end-40 
+{
+	right: 45% !important;
+}
+
+.end-35 
+{
+	right: 45% !important;
+}
+
+.end-30
+{
+	right: 45% !important;
+}
+
+.end-25
+{
+	right: 45% !important;
+}
+
+.end-20
+{
+	right: 45% !important;
+}
+
+.end-15
+{
+	right: 45% !important;
+}
+
+.end-10
+{
+	right: 45% !important;
+}
+
+/* End for Bootstrap 5.3 */
+
 .ck.ck-editor__editable_inline 
 {
 	min-height: 250px;

@@ -622,6 +622,8 @@ class manage_appearance extends Aruna_Controller
 								$get_latest_id = $this->db->insert_id();
 
 								$get_vars['button'] = $this->input->post('image_button')[$key];
+								$get_vars['style']['position'] = $this->input->post('image_style')[$key]['position'];
+								$get_vars['style']['background_overlay'] = $this->input->post('image_style')[$key]['background_overlay'];
 
 								$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_slideshow', ['id' => $get_latest_id]);
 							}
@@ -755,6 +757,8 @@ class manage_appearance extends Aruna_Controller
 							}
 
 							$get_vars['button'] = $this->input->post('image_button')[$key];
+							$get_vars['style']['position'] = $this->input->post('image_style')[$key]['position'];
+							$get_vars['style']['background_overlay'] = $this->input->post('image_style')[$key]['background_overlay'];
 
 							$this->db->sql_update(['title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption'], 'vars' => json_encode($get_vars)], 'ml_slideshow', ['id' => $row['id']]);
 						}
