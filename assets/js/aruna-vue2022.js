@@ -503,13 +503,13 @@ const Vue2FormArticle = new Vue(
 						{
 							imagePreview.classList.remove("h-100");
 
-							console.log('Its Landscape');
+							// console.log('Its Landscape');
 						} 
 						else if (image.width < image.height)
 						{
 							imagePreview.classList.add("h-100");
 
-							console.log('Its Portrait');
+							// console.log('Its Portrait');
 						}
 						else if (image.width == 0 && image.height == 0)
 						{
@@ -519,7 +519,7 @@ const Vue2FormArticle = new Vue(
 						{
 							imagePreview.classList.remove("h-100");
 
-							console.log('Its Square');
+							// console.log('Its Square');
 						}
 					}
 

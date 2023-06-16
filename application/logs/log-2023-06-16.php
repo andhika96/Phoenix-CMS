@@ -217,3 +217,45 @@ ERROR - 2023-06-16 15:41:11 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-16 15:41:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-16 15:42:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-16 15:42:15 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:44:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:44:39 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:44:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:44:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:45:55 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:50:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:50:18 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:50:39 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:50:40 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:51:04 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:51:09 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:51:15 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:51:45 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:51:50 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:51:50 --> Severity: Warning --> preg_replace(): Compilation failed: invalid range in character class at offset 11 D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 511
+ERROR - 2023-06-16 15:51:50 --> Severity: 8192 --> preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 512
+ERROR - 2023-06-16 15:52:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:52:54 --> Severity: 8192 --> trim(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:53:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:53:21 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:54:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:54:07 --> Severity: 8192 --> preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:54:07 --> Severity: Warning --> preg_replace(): Empty regular expression D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:54:07 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 511
+ERROR - 2023-06-16 15:54:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:54:19 --> Severity: 8192 --> preg_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:54:19 --> Severity: Warning --> preg_replace(): Empty regular expression D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 510
+ERROR - 2023-06-16 15:54:19 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 511
+ERROR - 2023-06-16 15:54:35 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:54:37 --> Severity: 8192 --> strtolower(): Passing null to parameter #1 ($string) of type string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\manage_news.php 511
+ERROR - 2023-06-16 15:55:02 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:06 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:11 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:13 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:26 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:32 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:55:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:56:11 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:56:13 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:56:19 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874

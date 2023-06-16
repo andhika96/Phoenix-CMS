@@ -281,6 +281,18 @@ class manage_news extends Aruna_Controller
 				$uri = preg_replace("/[\s-]+/", " ", $uri);
 				$uri = preg_replace("/[\s_]/", "-", $uri);
 
+				if ($this->input->post('uri') !== '')
+				{
+					$slug = strtolower($this->input->post('uri'));
+					$slug = preg_replace("/[^a-z0-9_\s-]/", "", $slug);
+					$slug = preg_replace("/[\s-]+/", " ", $slug);
+					$slug = preg_replace("/[\s_]/", "-", $slug);
+				}
+				else
+				{
+					$slug = $uri;
+				}
+
 				$time = ($this->input->post('check_schedule_posts') == 1) ? strtotime($this->input->post('schedule_pub')) : '';
 
 				$data = [
@@ -292,7 +304,7 @@ class manage_news extends Aruna_Controller
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
+					'uri'			=> $slug,
 					'schedule_pub'	=> $time,
 					'created'	 	=> time()
 				];
@@ -365,7 +377,7 @@ class manage_news extends Aruna_Controller
 		}
 
 		$this->form_validation->set_rules('title', 'Title', 'required|min_length[3]');
-		$this->form_validation->set_rules('slug', 'Slug', 'regex_match[/^[A-Za-z0-9-]+$/]');
+		$this->form_validation->set_rules('slug', 'Slug', 'regex_match[/^[A-Za-z0-9- ]+$/]');
 		$this->form_validation->set_rules('category', 'Category', 'required');
 		$this->form_validation->set_rules('content', 'Content', 'required|callback_charlength');
 		$this->form_validation->set_rules('status', 'Status', 'required');
@@ -493,6 +505,18 @@ class manage_news extends Aruna_Controller
 				$uri = preg_replace("/[\s-]+/", " ", $uri);
 				$uri = preg_replace("/[\s_]/", "-", $uri);
 
+				if ($this->input->post('uri') !== '')
+				{
+					$slug = strtolower(trim($this->input->post('uri')));
+					$slug = preg_replace("/[^a-z0-9_\s-]/", "", $slug);
+					$slug = preg_replace("/[\s-]+/", " ", $slug);
+					$slug = preg_replace("/[\s_]/", "-", $slug);
+				}
+				else
+				{
+					$slug = $uri;
+				}
+
 				$getCurrentTimeSchedule = ($row['schedule_pub'] != $row['created']) ? $row['schedule_pub'] : time();
 
 				$time = ( ! empty($this->input->post('schedule_pub'))) ? strtotime($this->input->post('schedule_pub')) : '';
@@ -505,7 +529,7 @@ class manage_news extends Aruna_Controller
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
+					'uri'			=> $slug,
 					'schedule_pub' 	=> $time
 				];
 				

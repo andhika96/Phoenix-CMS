@@ -94,7 +94,7 @@
 
 									<div class="col-md-6 mb-3 mb-md-0">
 										<label class="form-label">'.t('Slug').'</label>
-										<input type="text" name="uri" placeholder="Slug here" class="form-control font-size-inherit">
+										<input type="text" name="uri" placeholder="You can set slug here or leave it blank" class="form-control font-size-inherit">
 									</div>
 								</div>
 							</div>
