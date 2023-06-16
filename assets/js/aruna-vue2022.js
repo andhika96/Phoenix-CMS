@@ -431,7 +431,7 @@ const Vue2FormArticle = new Vue(
 			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
 
 			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
-			let formData = new FormData(this.$refs.formHTML);
+			let formData = new FormData(this.$refs.formHTMLSEO);
 
 			// Get class button name to change the button to button loading state .
 			document.getElementsByClassName("btn-malika-submit-seo")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-seo "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
@@ -453,13 +453,13 @@ const Vue2FormArticle = new Vue(
 						this.responseMessageSubmit = response.data.msg;
 
 						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
 						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
 
 						let toast = new bootstrap.Toast(toastBox);
 						toast.show();
 
-						document.getElementsByClassName("btn-loading-submit-seo")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-seo")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-seo "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
 						document.getElementsByClassName("btn-loading-submit-seo")[0].remove();
 					}
 					else
@@ -470,11 +470,11 @@ const Vue2FormArticle = new Vue(
 						}, 500);
 
 						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
 						let toast = new bootstrap.Toast(toastBox);
 						toast.hide();
 
-						document.getElementsByClassName("btn-loading-submit-seo")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit-seo")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged-seo "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
 						document.getElementsByClassName("btn-loading-submit-seo")[0].remove();
 					}
 
@@ -501,7 +501,7 @@ const Vue2FormArticle = new Vue(
 					this.responseMessageSubmit = response.data.msg;
 					
 					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
 					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);

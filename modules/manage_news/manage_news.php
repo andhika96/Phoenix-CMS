@@ -580,6 +580,16 @@ class manage_news extends Aruna_Controller
 		];
 	}
 
+	public function setseo()
+	{
+
+	}
+
+	public function editseo($id)
+	{
+		
+	}
+
 	public function layout()
 	{
 		set_title('Layout News Settings');

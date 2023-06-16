@@ -124,8 +124,13 @@
 				</div>
 			</div>
 
-			<div class="tab-pane fade show active" id="seo-tab-pane" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
-				asdasd
+			<div class="tab-pane fade" id="seo-tab-pane" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+				<div id="ar-form-submit-seo">
+					<form action="'.site_url('manage_news/setseo').'" method="post" enctype="multipart/form-data" @submit="submitSEO" ref="formHTMLSEO" button-block="false" button-rounded-pill="false" font-size-large="false">
+						<div class="toast ar-notice-toast-seo position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
+
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>');
