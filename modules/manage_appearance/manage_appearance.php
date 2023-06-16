@@ -784,7 +784,7 @@ class manage_appearance extends Aruna_Controller
 						$this->db->sql_update($slideshow_data, 'ml_layout', ['id' => $row_layout['id']]);
 					}
 
-					echo json_encode(['status' => 'success', 'msg' => $this->input->post('image_button')[3][0]['title']]);
+					echo json_encode(['status' => 'success', 'msg' => 'Success']);
 					exit;
 				}
 			}
