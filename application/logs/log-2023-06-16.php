@@ -161,3 +161,59 @@ ERROR - 2023-06-16 15:16:02 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-16 15:16:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-16 15:19:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-16 15:19:44 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:28:13 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "style_class_name" D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 1663
+ERROR - 2023-06-16 15:28:15 --> Severity: 8192 --> str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 17
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 20
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 20
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 21
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 22
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 23
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 24
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 24
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 26
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 27
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 41
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 58
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 58
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 58
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 58
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 58
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "title" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 118
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_news\views\editpost.php 123
+ERROR - 2023-06-16 15:28:15 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:28:39 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:29:33 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:29:49 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:29:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:29:57 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:32 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:43 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:46 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:50 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:30:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:03 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:18 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:20 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:26 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:31:29 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:32:53 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:32:55 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:33:19 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:33:38 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:34:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:35:03 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:36:20 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:36:37 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:38:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:38:51 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:39:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:39:31 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:40:15 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:41:11 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:41:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:42:05 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-16 15:42:15 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874

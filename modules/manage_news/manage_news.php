@@ -681,6 +681,29 @@ class manage_news extends Aruna_Controller
 		exit;
 	}
 
+	public function getDetailPost($id)
+	{
+		$res = $this->db->sql_prepare("select * from ml_news_article where id = :id");
+		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+		while ($row = $this->db->sql_fetch_single($bindParam))
+		{
+			$row['get_thumbnail'] = base_url($row['thumb_l']);
+
+			$output[] = $row;
+		}
+
+		if ( ! $this->db->sql_counts($res))
+		{
+			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+		}
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
+
 	public function deletepost($id)
 	{
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);

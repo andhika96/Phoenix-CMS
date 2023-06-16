@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
 	<div class="container-fluid px-0" id="ar-app-form-article">
-		<div id="ar-form-submit">				
+		<div class="ar-fetch-detail-article" id="ar-form-submit" data-url="'.site_url('manage_news/getDetailPost/'.$row['id']).'">				
 			<form action="'.site_url('manage_news/editpost/'.$row['id']).'" method="post" enctype="multipart/form-data" @submit="submit" ref="formHTML" button-block="false" button-rounded-pill="false" font-size-large="false">
 				<div class="row">
 					<div class="col-md-4 mb-4 mb-lg-0 order-lg-2">
@@ -96,7 +96,7 @@
 
 								<div class="col-12 mb-3">
 									<label class="form-label">'.t('Thumbnail').'</label>
-									<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile">
+									<input type="file" name="thumbnail" class="form-control font-size-inherit" id="customFile" @change="previewImage($event)">
 
 									<div class="mt-4 position-relative text-center d-flex align-items-center justify-content-center" style="width: auto;height: 250px;background-image: linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7),linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7);background-position: 0 0,10px 10px;background-size: 20px 20px;">
 										<img :src="\'\'+imageEncode+\'\'" id="img-preview" class="img-fluid">

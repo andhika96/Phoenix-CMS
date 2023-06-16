@@ -473,11 +473,72 @@ const Vue2FormArticle = new Vue(
 					}
 
 					this.imageEncode = fileReader.result;
+
+					console.log(this.imageEncode);
 				});
 			});
 
 			fileReader.readAsDataURL(files[0]);
+		},
+		previewImageExist: function()
+		{
+			if (document.querySelector(".ar-fetch-detail-article") !== null && 
+				document.querySelector(".ar-fetch-detail-article").getAttribute("data-url") !== null)
+			{
+				const image = new Image();
+				const url = document.querySelector(".ar-fetch-detail-article").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					const imagePreview = document.getElementById("img-preview");
+
+					this.imageEncode = response.data[0].get_thumbnail;
+
+					image.src = this.imageEncode;
+
+					image.onload = function()
+					{
+						if (image.width > image.height)
+						{
+							imagePreview.classList.remove("h-100");
+
+							console.log('Its Landscape');
+						} 
+						else if (image.width < image.height)
+						{
+							imagePreview.classList.add("h-100");
+
+							console.log('Its Portrait');
+						}
+						else if (image.width == 0 && image.height == 0)
+						{
+							imagePreview.classList.add("h-100");
+						}
+						else
+						{
+							imagePreview.classList.remove("h-100");
+
+							console.log('Its Square');
+						}
+					}
+
+					console.log(image.width+' - '+image.height);
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					// Empty
+				});
+			}
 		}
+	},
+	created: function()
+	{
+		this.previewImageExist();
 	}
 });
 
