@@ -986,8 +986,8 @@ class manage_news extends Aruna_Controller
 
 			if ($check_metatag)
 			{
-				$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
-				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'news'], $res_metatag);
+				$res_metatag = $this->db->sql_prepare("select metatag_image from ml_metatag_article where article_id = :article_id and type = :type");
+				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'news'], $res_metatag);
 				$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 				if (file_exists($row_metatag['metatag_image']))

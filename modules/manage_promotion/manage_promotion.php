@@ -281,6 +281,18 @@ class manage_promotion extends Aruna_Controller
 				$uri = preg_replace("/[\s-]+/", " ", $uri);
 				$uri = preg_replace("/[\s_]/", "-", $uri);
 
+				if ($this->input->post('uri') !== '')
+				{
+					$slug = strtolower($this->input->post('uri'));
+					$slug = preg_replace("/[^a-z0-9_\s-]/", "", $slug);
+					$slug = preg_replace("/[\s-]+/", " ", $slug);
+					$slug = preg_replace("/[\s_]/", "-", $slug);
+				}
+				else
+				{
+					$slug = $uri;
+				}
+
 				$time = ($this->input->post('check_schedule_posts') == 1) ? strtotime($this->input->post('schedule_pub')) : '';
 
 				$data = [
@@ -292,7 +304,7 @@ class manage_promotion extends Aruna_Controller
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
+					'uri'			=> $slug,
 					'schedule_pub'	=> $time,
 					'created'	 	=> time()
 				];
@@ -301,7 +313,12 @@ class manage_promotion extends Aruna_Controller
 				{
 					$this->db->sql_insert($data, 'ml_promotion_article');
 
-					echo json_encode(['status' => 'success', 'url' => site_url('manage_promotion')]);
+					// Get latest ID
+					$getLatestID = $this->db->insert_id();
+
+					$this->setseo($getLatestID);
+
+					echo json_encode(['status' => 'success', 'url' => site_url('manage_promotion/editpost/'.$getLatestID)]);
 					exit;
 				}
 			}
@@ -496,6 +513,18 @@ class manage_promotion extends Aruna_Controller
 				$uri = preg_replace("/[\s-]+/", " ", $uri);
 				$uri = preg_replace("/[\s_]/", "-", $uri);
 
+				if ($this->input->post('uri') !== '')
+				{
+					$slug = strtolower(trim($this->input->post('uri')));
+					$slug = preg_replace("/[^a-z0-9_\s-]/", "", $slug);
+					$slug = preg_replace("/[\s-]+/", " ", $slug);
+					$slug = preg_replace("/[\s_]/", "-", $slug);
+				}
+				else
+				{
+					$slug = $uri;
+				}
+
 				$getCurrentTimeSchedule = ($row['schedule_pub'] != $row['created']) ? $row['schedule_pub'] : time();
 
 				$time = ( ! empty($this->input->post('schedule_pub'))) ? strtotime($this->input->post('schedule_pub').':0') : $getCurrentTimeSchedule;
@@ -508,7 +537,7 @@ class manage_promotion extends Aruna_Controller
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
-					'uri'			=> $uri,
+					'uri'			=> $slug,
 					'schedule_pub' 	=> $time
 				];
 				
@@ -897,6 +926,33 @@ class manage_promotion extends Aruna_Controller
 		exit;
 	}
 
+	public function asd($id)
+	{
+		$check_metatag = $this->db->num_rows("ml_metatag_article", "", ['article_id' => $id, 'type' => 'promotion']);
+
+		if ($check_metatag)
+		{
+			$res_metatag = $this->db->sql_prepare("select metatag_image from ml_metatag_article where article_id = :article_id and type = :type");
+			$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'promotion'], $res_metatag);
+			$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
+
+			if (file_exists($row_metatag['metatag_image']))
+			{
+				unlink($row_metatag['metatag_image']);
+			}
+		
+			$this->db->sql_delete("ml_metatag_article", ['article_id' => $id, 'type' => 'promotion']);
+
+			echo 'Ada';
+		}
+		else
+		{
+			echo 'Nggak Ada';
+		}
+
+		exit;
+	}
+
 	public function deletepost($id)
 	{
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
@@ -924,8 +980,8 @@ class manage_promotion extends Aruna_Controller
 
 			if ($check_metatag)
 			{
-				$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
-				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'promotion'], $res_metatag);
+				$res_metatag = $this->db->sql_prepare("select metatag_image from ml_metatag_article where article_id = :article_id and type = :type");
+				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'promotion'], $res_metatag);
 				$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 				if (file_exists($row_metatag['metatag_image']))
