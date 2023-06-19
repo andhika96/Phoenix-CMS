@@ -442,7 +442,7 @@
 	$config['csrf_cookie_name'] = 'csrf_phoenix_cms_2023';
 	$config['csrf_expire'] = 7200;
 	$config['csrf_regenerate'] = TRUE;
-	$config['csrf_exclude_uris'] = array('manage_section_content/footer');
+	$config['csrf_exclude_uris'] = array('manage_section_content/footer', 'manage_news/setseo', 'manage_news/editseo');
 
 	/*
 	|--------------------------------------------------------------------------

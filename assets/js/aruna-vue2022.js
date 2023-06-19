@@ -271,7 +271,8 @@ const Vue2FormArticle = new Vue(
 	{
 		form: {},
 		responseMessageSubmit: '',
-		imageEncode: ''
+		imageEncode: '',
+		metaImageEncode: ''
 	},
 	methods: 
 	{
@@ -608,6 +609,52 @@ const Vue2FormArticle = new Vue(
 
 			fileReader.readAsDataURL(files[0]);
 		},
+		previewMetaImage: function(event)
+		{
+			const fileReader = new FileReader();
+			const image = new Image();
+			const files = event.target.files;
+
+			const imagePreview = document.getElementById("meta-image-preview");
+
+			const filename = files[0].name;
+			fileReader.addEventListener('load', () => 
+			{
+				image.src = fileReader.result;
+
+				image.addEventListener('load', () => 
+				{
+					// console.log(image.width+' x '+image.height);
+
+					if (image.width > image.height)
+					{
+						imagePreview.classList.remove("h-100");
+
+						// console.log('Its Landscape');
+					} 
+					else if (image.width < image.height)
+					{
+						imagePreview.classList.add("h-100");
+
+						// console.log('Its Portrait');
+					}
+					else if (image.width == 0 && image.height == 0)
+					{
+						imagePreview.classList.add("h-100");
+					}
+					else
+					{
+						imagePreview.classList.remove("h-100");
+
+						// console.log('Its Square');
+					}
+
+					this.metaImageEncode = fileReader.result;
+				});
+			});
+
+			fileReader.readAsDataURL(files[0]);
+		},
 		previewImageExist: function()
 		{
 			if (document.querySelector(".ar-fetch-detail-article") !== null && 
@@ -621,37 +668,94 @@ const Vue2FormArticle = new Vue(
 				{
 					const imagePreview = document.getElementById("img-preview");
 
-					this.imageEncode = response.data[0].get_thumbnail;
-
-					image.src = this.imageEncode;
-
-					image.onload = function()
+					if (response.data[0].status != 'failed')
 					{
-						if (image.width > image.height)
-						{
-							imagePreview.classList.remove("h-100");
+						this.imageEncode = response.data[0].get_thumbnail;
 
-							// console.log('Its Landscape');
-						} 
-						else if (image.width < image.height)
-						{
-							imagePreview.classList.add("h-100");
+						image.src = this.imageEncode;
 
-							// console.log('Its Portrait');
-						}
-						else if (image.width == 0 && image.height == 0)
+						image.onload = function()
 						{
-							imagePreview.classList.add("h-100");
-						}
-						else
-						{
-							imagePreview.classList.remove("h-100");
+							if (image.width > image.height)
+							{
+								imagePreview.classList.remove("h-100");
 
-							// console.log('Its Square');
+								// console.log('Its Landscape');
+							} 
+							else if (image.width < image.height)
+							{
+								imagePreview.classList.add("h-100");
+
+								// console.log('Its Portrait');
+							}
+							else if (image.width == 0 && image.height == 0)
+							{
+								imagePreview.classList.add("h-100");
+							}
+							else
+							{
+								imagePreview.classList.remove("h-100");
+
+								// console.log('Its Square');
+							}
 						}
 					}
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					// Empty
+				});
+			}
+		},
+		previewMetaImageExist: function()
+		{
+			if (document.querySelector(".ar-fetch-detail-metatag-article") !== null && 
+				document.querySelector(".ar-fetch-detail-metatag-article").getAttribute("data-url") !== null)
+			{
+				const image = new Image();
+				const url = document.querySelector(".ar-fetch-detail-metatag-article").getAttribute("data-url");
 
-					console.log(image.width+' - '+image.height);
+				axios.get(url)
+				.then(response => 
+				{
+					const imagePreview = document.getElementById("meta-image-preview");
+
+					if (response.data[0].status != 'failed')
+					{
+						this.metaImageEncode = response.data[0].get_thumbnail;
+
+						image.src = this.metaImageEncode;
+
+						image.onload = function()
+						{
+							if (image.width > image.height)
+							{
+								imagePreview.classList.remove("h-100");
+
+								// console.log('Its Landscape');
+							} 
+							else if (image.width < image.height)
+							{
+								imagePreview.classList.add("h-100");
+
+								// console.log('Its Portrait');
+							}
+							else if (image.width == 0 && image.height == 0)
+							{
+								imagePreview.classList.add("h-100");
+							}
+							else
+							{
+								imagePreview.classList.remove("h-100");
+
+								// console.log('Its Square');
+							}
+						}
+					}
 				})
 				.catch(function(error) 
 				{
@@ -667,6 +771,8 @@ const Vue2FormArticle = new Vue(
 	created: function()
 	{
 		this.previewImageExist();
+
+		this.previewMetaImageExist();
 	}
 });
 
