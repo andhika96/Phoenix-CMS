@@ -25,7 +25,7 @@
 
 			<!-- Custom CSS -->
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.3').'">
+			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.4').'">
 			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v=0.0.4').'">
 
 			<title>'.get_ctitle().'</title>

@@ -104,9 +104,9 @@ class widget_content
 				$button2 = '';
 			}
 
-			$left_position_1	= ($get_vars['style']['position'] == 'left') ? 'top-50 start-35' : '';
+			$left_position_1	= ($get_vars['style']['position'] == 'left') ? 'top-50 start-50 start-lg-35' : '';
 			$center_position_1	= ($get_vars['style']['position'] == 'center') ? 'top-50 start-50' : '';
-			$right_position_1	= ($get_vars['style']['position'] == 'right') ? 'top-50 start-65' : '';
+			$right_position_1	= ($get_vars['style']['position'] == 'right') ? 'top-50 start-50 start-lg-65' : '';
 
 			$left_text_1	= ($get_vars['style']['position'] == 'left') ? 'text-start' : '';
 			$center_text_1	= ($get_vars['style']['position'] == 'center') ? 'text-center' : '';
@@ -120,11 +120,12 @@ class widget_content
 			{
 				$output .= '
 				<div class="swiper-slide position-relative">
-					<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid">
+					<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid d-none d-md-block">
+					<img src="'.base_url($row_slideshow['image_mobile']).'" class="img-fluid d-block d-md-none">
 
 					<div class="container position-absolute '.$left_position_1.$center_position_1.$right_position_1.' translate-middle text-white">
 						<div class="row">
-							<div class="col-md-8 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
+							<div class="col-md-8 col-9 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
 								<h2>'.$row_slideshow['title'].'</h2>
 								<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
 
