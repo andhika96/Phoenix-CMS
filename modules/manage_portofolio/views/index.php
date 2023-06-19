@@ -137,7 +137,7 @@
 
 									<td class="align-middle text-nowrap">
 										<a :href="\''.site_url('manage_portofolio/editpost/\'+info.id+\'').'\'" class="btn btn-light"><i class="fas fa-edit font-size-inherit"></i></a>
-										<a href="javascript:void(0)" v-on:click="deleteData(getData, index, info.id); show = !show" class="ar-alert-bootbox btn btn-light text-danger font-size-inherit ms-1" v-bind:data-url="\''.site_url('manage_news/deletepost/').'\'"><i class="fas fa-trash"></i></a>
+										<a href="javascript:void(0)" v-on:click="deleteData(getData, index, info.id); show = !show" class="ar-alert-bootbox btn btn-light text-danger font-size-inherit ms-1" v-bind:data-url="\''.site_url('manage_portofolio/deletepost/').'\'"><i class="fas fa-trash"></i></a>
 									</td>
 								</tr>
 							</tbody>

@@ -222,3 +222,22 @@ ERROR - 2023-06-19 11:42:17 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-19 11:42:27 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:42:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:43:00 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:48:37 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:48:40 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:51:01 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:03 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_portofolio\views\editpost.php 179
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_portofolio\views\editpost.php 179
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_portofolio\views\editpost.php 184
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_portofolio\views\editpost.php 184
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Undefined variable $output D:\Xampp_8.2.0\htdocs\cms\application\views\widget\slideshow\widget_slideshow.php 13
+ERROR - 2023-06-19 11:53:38 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:53:53 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:54:43 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:54:44 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:54:48 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:55:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:55:16 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
