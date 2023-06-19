@@ -126,3 +126,53 @@ ERROR - 2023-06-19 11:12:17 --> Severity: Warning --> Undefined array key "meta_
 ERROR - 2023-06-19 11:12:17 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:12:31 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:13:06 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:15:45 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:15:47 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:16:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:16:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:16:40 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:16:48 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:17:34 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:19:32 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:21:18 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:21:21 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:21:23 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:21:23 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:21:23 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:21:23 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:21:23 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "style_class_name" D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 1663
+ERROR - 2023-06-19 11:21:24 --> Severity: 8192 --> str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 17
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 20
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 20
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 21
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 22
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 23
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 24
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 24
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 26
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 27
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 53
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 70
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 70
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 70
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "title" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 130
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 135
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:21:24 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:28:01 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:28:06 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:28:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:28:22 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:28:28 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:30:04 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:30:04 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:30:04 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:30:07 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 179
+ERROR - 2023-06-19 11:30:07 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Xampp_8.2.0\htdocs\cms\modules\manage_promotion\views\editpost.php 184
+ERROR - 2023-06-19 11:30:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:30:26 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:30:37 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874

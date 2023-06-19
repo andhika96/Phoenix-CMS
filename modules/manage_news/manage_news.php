@@ -339,8 +339,8 @@ class manage_news extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
 
-		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id");
-		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id], $res_metatag);
+		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'news'], $res_metatag);
 		$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 		$timezone  			= +7;
@@ -597,8 +597,8 @@ class manage_news extends Aruna_Controller
 	{
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
-			$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id");
-			$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id], $res_metatag);
+			$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+			$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'news'], $res_metatag);
 			$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 			if ( ! $this->db->sql_counts($bindParam_metatag))
@@ -694,8 +694,8 @@ class manage_news extends Aruna_Controller
 
 	public function editseo($article_id = 0)
 	{
-		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id");
-		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id], $res_metatag);
+		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'news'], $res_metatag);
 		$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 		$this->form_validation->set_rules('meta_title', 'Meta tag title', 'required');
@@ -779,7 +779,7 @@ class manage_news extends Aruna_Controller
 				
 				if ($status_upload == 0)
 				{
-					$this->db->sql_update($data, 'ml_metatag_article', ['article_id' => $article_id]);
+					$this->db->sql_update($data, 'ml_metatag_article', ['article_id' => $article_id, 'type' => 'news']);
 
 					echo json_encode(['status' => 'success', 'url' => site_url('manage_news')]);
 					exit;
@@ -938,8 +938,8 @@ class manage_news extends Aruna_Controller
 
 	public function getDetailMetatag($article_id)
 	{
-		$res = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id");
-		$bindParam = $this->db->sql_bindParam(['article_id' => $article_id], $res);
+		$res = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'news'], $res);
 		while ($row = $this->db->sql_fetch_single($bindParam))
 		{
 			$row['get_thumbnail'] = base_url($row['metatag_image']);
@@ -964,7 +964,7 @@ class manage_news extends Aruna_Controller
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
 		$check = $this->db->num_rows("ml_news_article", "", ['id' => $id]);
-		$check_metatag = $this->db->num_rows("ml_metatag_article", "", ['article_id' => $id]);
+		$check_metatag = $this->db->num_rows("ml_metatag_article", "", ['article_id' => $id, 'type' => 'news']);
 
 		if ($check)
 		{
@@ -986,8 +986,8 @@ class manage_news extends Aruna_Controller
 
 			if ($check_metatag)
 			{
-				$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id");
-				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id], $res_metatag);
+				$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'news'], $res_metatag);
 				$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 				if (file_exists($row_metatag['metatag_image']))
@@ -995,7 +995,7 @@ class manage_news extends Aruna_Controller
 					unlink($row_metatag['metatag_image']);
 				}
 			
-				$this->db->sql_delete("ml_metatag_article", ['article_id' => $id]);
+				$this->db->sql_delete("ml_metatag_article", ['article_id' => $id, 'type' => 'news']);
 			}
 
 			$this->output->set_content_type('application/json', 'utf-8')
