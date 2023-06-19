@@ -241,3 +241,60 @@ ERROR - 2023-06-19 11:54:44 --> Severity: Warning --> Undefined variable $buffer
 ERROR - 2023-06-19 11:54:48 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:55:08 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
 ERROR - 2023-06-19 11:55:16 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 11:55:45 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:11:56 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:11:59 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:12:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:12:27 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:19:41 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:27:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:30:11 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:45:30 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:45:32 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:45:35 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:45:35 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:45:35 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:45:35 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:45:35 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "style_class_name" D:\Xampp_8.2.0\htdocs\cms\application\common\function.php 1663
+ERROR - 2023-06-19 15:45:36 --> Severity: 8192 --> str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 17
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 20
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 20
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 21
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 22
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 23
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 24
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "schedule_pub" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 24
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "event_date" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 25
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "event_date" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 25
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 27
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "status" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 28
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 54
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "cid" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 71
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "event_location" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 105
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "event_address" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 111
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "title" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 149
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined array key "uri" D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 154
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:45:36 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:48:25 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:48:25 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:48:25 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:48:25 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:48:25 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:49:07 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:49:07 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:49:07 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:49:07 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:49:07 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:49:24 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:49:31 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:49:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 198
+ERROR - 2023-06-19 15:49:31 --> Severity: Warning --> Undefined variable $row_metatag D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:49:31 --> Severity: Warning --> Trying to access array offset on value of type null D:\Xampp_8.2.0\htdocs\cms\modules\manage_event\views\editpost.php 203
+ERROR - 2023-06-19 15:49:31 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:49:52 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
+ERROR - 2023-06-19 15:49:54 --> Severity: Warning --> Undefined variable $buffer D:\Xampp_8.2.0\htdocs\cms\aruna\system\Loader.php 874
