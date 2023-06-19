@@ -301,7 +301,12 @@ class manage_portofolio extends Aruna_Controller
 				{
 					$this->db->sql_insert($data, 'ml_portofolio_article');
 
-					echo json_encode(['status' => 'success', 'url' => site_url('manage_portofolio')]);
+					// Get latest ID
+					$getLatestID = $this->db->insert_id();
+
+					$this->setseo($getLatestID);
+
+					echo json_encode(['status' => 'success', 'url' => site_url('manage_portofolio/editpost/'.$getLatestID)]);
 					exit;
 				}
 			}
@@ -321,6 +326,10 @@ class manage_portofolio extends Aruna_Controller
 		$res = $this->db->sql_prepare("select * from ml_portofolio_article where id = :id");
 		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
+
+		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'portofolio'], $res_metatag);
+		$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
 
 		$timezone  			= +7;
 		$get_schedule_posts = ( ! empty($row['schedule_pub'])) ? gmdate("m/d/Y G:i", $row['schedule_pub']+$timezone*3600) : gmdate("m/d/Y G:i", time()+$timezone*3600);
@@ -355,6 +364,9 @@ class manage_portofolio extends Aruna_Controller
 
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row_metatag = ($row_metatag !== FALSE) ? $row_metatag : [];
 
 		$row['id'] = isset($row['id']) ? $row['id'] : NULL;
 		$row['content'] = isset($row['content']) ? $row['content'] : NULL;
@@ -526,6 +538,201 @@ class manage_portofolio extends Aruna_Controller
 		return view('editpost', $data);
 	}
 
+	public function setseo($article_id = 0, $first_create = 'from_add_post')
+	{
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+			$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'portofolio'], $res_metatag);
+			$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
+
+			if ( ! $this->db->sql_counts($bindParam_metatag))
+			{
+				if ($first_create == 'from_add_post')
+				{
+					$data = [
+						'type'					=> 'portofolio',
+						'article_id'			=> $article_id,
+						'created'	 			=> time()
+					];
+					
+					$this->db->sql_insert($data, 'ml_metatag_article');
+				}
+				else
+				{
+					if ( ! empty($_FILES['meta_image']))
+					{
+						$dir_yearmonth	= date("Ym", time());
+						$subdir_date	= 'date_'.date("d", time());
+
+						// For database only with dot and slash at the front folder
+						$s_parentfolder = './contents/userfiles/metatag/articles/'.$dir_yearmonth.'/';
+						$s_subfolder = './contents/userfiles/metatag/articles/'.$dir_yearmonth.'/'.$subdir_date.'/';
+
+						// For database only without dot and slash at the front folder
+						$x_folder = 'contents/userfiles/metatag/articles/'.$dir_yearmonth.'/'.$subdir_date.'/';
+
+						if ( ! is_dir($s_parentfolder)) 
+						{
+							mkdir($s_parentfolder, 0777);
+						}
+
+						if ( ! is_dir($s_subfolder)) 
+						{
+							mkdir($s_subfolder, 0777);
+						}
+
+						$configs['upload_path']		= $s_subfolder;
+						$configs['allowed_types']	= 'jpg|jpeg|png';
+						$configs['overwrite']		= TRUE;
+						$configs['remove_spaces']	= TRUE;
+						$configs['encrypt_name']	= TRUE;
+						$configs['max_size']		= 8000;
+
+						$upload = load_lib('upload', $configs);
+
+						if ( ! $upload->do_upload('meta_image'))
+						{
+							if ($_FILES['meta_image']['error'] != 4)
+							{	
+								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								exit;
+							}
+
+							$meta_image = FALSE;
+							$status_upload = 1;
+						}
+						else 
+						{
+							$status_upload = 0;
+							$meta_image = $x_folder.$upload->data('file_name');
+						}
+					}
+
+					$status_upload = 0;
+
+					$data = [
+						'type'					=> 'portofolio',
+						'article_id'			=> $article_id,
+						'metatag_image' 		=> $meta_image,
+						'metatag_title' 		=> $this->input->post('meta_title'),
+						'metatag_description'	=> $this->input->post('meta_description'),
+						'created'	 			=> time()
+					];
+					
+					if ($status_upload == 0)
+					{
+						$this->db->sql_insert($data, 'ml_metatag_article');
+
+						echo json_encode(['status' => 'success', 'url' => site_url('manage_portofolio')]);
+						exit;
+
+					}
+				}
+			}
+			else
+			{
+				$this->editseo($article_id);
+			}
+		}
+	}
+
+	public function editseo($article_id = 0)
+	{
+		$res_metatag = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'portofolio'], $res_metatag);
+		$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
+
+		$this->form_validation->set_rules('meta_title', 'Meta tag title', 'required');
+		$this->form_validation->set_rules('meta_description', 'Meta tag description', 'required');
+
+		if (empty($article_id))
+		{
+			$this->form_validation->set_rules('article_id', 'Article ID must be set', 'required');
+		}
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			if ($this->form_validation->run($this) == FALSE)
+			{
+				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				exit;
+			}
+			else
+			{
+				if ( ! empty($_FILES['meta_image']))
+				{
+					$dir_yearmonth	= date("Ym", time());
+					$subdir_date	= 'date_'.date("d", time());
+
+					// For database only with dot and slash at the front folder
+					$s_parentfolder = './contents/userfiles/metatag/articles/'.$dir_yearmonth.'/';
+					$s_subfolder = './contents/userfiles/metatag/articles/'.$dir_yearmonth.'/'.$subdir_date.'/';
+
+					// For database only without dot and slash at the front folder
+					$x_folder = 'contents/userfiles/metatag/articles/'.$dir_yearmonth.'/'.$subdir_date.'/';
+
+					if ( ! is_dir($s_parentfolder)) 
+					{
+						mkdir($s_parentfolder, 0777);
+					}
+
+					if ( ! is_dir($s_subfolder)) 
+					{
+						mkdir($s_subfolder, 0777);
+					}
+
+					$configs['upload_path']		= $s_subfolder;
+					$configs['allowed_types']	= 'jpg|jpeg|png';
+					$configs['overwrite']		= TRUE;
+					$configs['remove_spaces']	= TRUE;
+					$configs['encrypt_name']	= TRUE;
+					$configs['max_size']		= 8000;
+
+					$upload = load_lib('upload', $configs);
+
+					if ( ! $upload->do_upload('meta_image'))
+					{
+						if ($_FILES['meta_image']['error'] != 4)
+						{	
+							echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+							exit;
+						}
+
+						$meta_image = $row_metatag['metatag_image'];
+						$status_upload = 1;
+					}
+					else 
+					{
+						if (file_exists($row_metatag['metatag_image']))
+						{
+							unlink($row_metatag['metatag_image']);
+						}
+
+						$status_upload = 0;
+						$meta_image = $x_folder.$upload->data('file_name');
+					}
+				}
+
+				$status_upload = 0;
+
+				$data = [
+					'metatag_image' 		=> $meta_image,
+					'metatag_title' 		=> $this->input->post('meta_title'),
+					'metatag_description'	=> $this->input->post('meta_description')
+				];
+				
+				if ($status_upload == 0)
+				{
+					$this->db->sql_update($data, 'ml_metatag_article', ['article_id' => $article_id, 'type' => 'portofolio']);
+
+					echo json_encode(['status' => 'success', 'url' => site_url('manage_portofolio')]);
+					exit;
+				}
+			}
+		}
+	}
+
 	public function layout()
 	{
 		set_title('Layout News Settings');
@@ -651,11 +858,58 @@ class manage_portofolio extends Aruna_Controller
 		exit;
 	}
 
+	public function getDetailPost($id)
+	{
+		$res = $this->db->sql_prepare("select * from ml_portofolio_article where id = :id");
+		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+		while ($row = $this->db->sql_fetch_single($bindParam))
+		{
+			$row['get_thumbnail'] = base_url($row['thumb_l']);
+
+			$output[] = $row;
+		}
+
+		if ( ! $this->db->sql_counts($res))
+		{
+			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+		}
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
+
+	public function getDetailMetatag($article_id)
+	{
+		$res = $this->db->sql_prepare("select * from ml_metatag_article where article_id = :article_id and type = :type");
+		$bindParam = $this->db->sql_bindParam(['article_id' => $article_id, 'type' => 'portofolio'], $res);
+		while ($row = $this->db->sql_fetch_single($bindParam))
+		{
+			$row['get_thumbnail'] = base_url($row['metatag_image']);
+
+			$output[] = $row;
+		}
+
+		if ( ! $this->db->sql_counts($res))
+		{
+			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+		}
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
+
 	public function deletepost($id)
 	{
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
 		$check = $this->db->num_rows("ml_portofolio_article", "", ['id' => $id]);
+		$check_metatag = $this->db->num_rows("ml_metatag_article", "", ['article_id' => $id, 'type' => 'portofolio']);
 
 		if ($check)
 		{
@@ -674,6 +928,21 @@ class manage_portofolio extends Aruna_Controller
 			}
 
 			$this->db->sql_delete("ml_portofolio_article", ['id' => $id]);
+
+			if ($check_metatag)
+			{
+				$res_metatag = $this->db->sql_prepare("select metatag_image from ml_metatag_article where article_id = :article_id and type = :type");
+				$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'portofolio'], $res_metatag);
+				$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
+
+				if (file_exists($row_metatag['metatag_image']))
+				{
+					unlink($row_metatag['metatag_image']);
+				}
+			
+				$this->db->sql_delete("ml_metatag_article", ['article_id' => $id, 'type' => 'portofolio']);
+			}
+
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
 					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))

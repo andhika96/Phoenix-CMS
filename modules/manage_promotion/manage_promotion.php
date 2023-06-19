@@ -377,6 +377,9 @@ class manage_promotion extends Aruna_Controller
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row_metatag = ($row_metatag !== FALSE) ? $row_metatag : [];
+
 		$row['id'] = isset($row['id']) ? $row['id'] : NULL;
 		$row['content'] = isset($row['content']) ? $row['content'] : NULL;
 
@@ -923,33 +926,6 @@ class manage_promotion extends Aruna_Controller
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
 					 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
 					 ->_display();
-		exit;
-	}
-
-	public function asd($id)
-	{
-		$check_metatag = $this->db->num_rows("ml_metatag_article", "", ['article_id' => $id, 'type' => 'promotion']);
-
-		if ($check_metatag)
-		{
-			$res_metatag = $this->db->sql_prepare("select metatag_image from ml_metatag_article where article_id = :article_id and type = :type");
-			$bindParam_metatag = $this->db->sql_bindParam(['article_id' => $id, 'type' => 'promotion'], $res_metatag);
-			$row_metatag = $this->db->sql_fetch_single($bindParam_metatag);
-
-			if (file_exists($row_metatag['metatag_image']))
-			{
-				unlink($row_metatag['metatag_image']);
-			}
-		
-			$this->db->sql_delete("ml_metatag_article", ['article_id' => $id, 'type' => 'promotion']);
-
-			echo 'Ada';
-		}
-		else
-		{
-			echo 'Nggak Ada';
-		}
-
 		exit;
 	}
 
