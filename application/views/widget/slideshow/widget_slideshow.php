@@ -18,31 +18,6 @@ class widget_content
 			--swiper-navigation-size: 25px !important; 
 		}
 
-		.swiper-slide::before
-		{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			display: block;
-			left: 0;
-			top: 0;
-			content: "";
-			z-index: 0 !important;
-			background-color: rgba(0, 0, 0, 0.463);
-		}
-
-		.swiper-slide::after
-		{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			display: block;
-			left: 0;
-			top: 0;
-			content: "";
-			background-color: rgba(0, 0, 0, 0.463);
-		}
-
 		.swiper-slide .container
 		{
 			z-index: 1;
@@ -80,6 +55,7 @@ class widget_content
 		<div class="swiper">
 			<div class="swiper-wrapper">';
 
+		$i = 0;
 		$res_slideshow = $Aruna->db->sql_prepare("select * from ml_slideshow where uri = :uri");
 		$bindParam_slideshow = $Aruna->db->sql_bindParam(['uri' => $page], $res_slideshow);
 		while ($row_slideshow = $Aruna->db->sql_fetch_single($bindParam_slideshow))
@@ -116,33 +92,45 @@ class widget_content
 			// $center_position_2	=
 			// $right_position_2	=
 
+			$output .= '
+			<style>
+			.swiper-slide-'.$i.'::before
+			{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: block;
+				left: 0;
+				top: 0;
+				content: "";
+				z-index: 0 !important;
+				background-color: '.$get_vars['style']['background_overlay'].';
+			}
+
+			.swiper-slide-'.$i.'::after
+			{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				display: block;
+				left: 0;
+				top: 0;
+				content: "";
+				background-color: '.$get_vars['style']['background_overlay'].';
+			}
+			</style>';
+
 			if ($row_layout['display_slideshow'] == 'only_image')
 			{
-				$output .= '
-				<div class="swiper-slide position-relative">
-					<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid d-none d-md-block">
-					<img src="'.base_url($row_slideshow['image_mobile']).'" class="img-fluid d-block d-md-none">
+				if ($Aruna->agent->is_mobile())
+				{
+					$output .= '
+					<div class="swiper-slide swiper-slide-'.$i.' position-relative">
+						<img src="'.base_url($row_slideshow['image_mobile']).'" class="img-fluid">
 
-					<div class="container position-absolute '.$left_position_1.$center_position_1.$right_position_1.' translate-middle text-white">
-						<div class="row">
-							<div class="col-md-8 col-9 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
-								<h2>'.$row_slideshow['title'].'</h2>
-								<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
-
-								'.$button1.$button2.'
-							</div>
-						</div>
-					</div>
-				</div>';
-			}
-			elseif ($row_layout['display_slideshow'] == 'background_image')
-			{
-				$output .= '
-				<div class="swiper-slide">
-					<div class="swiper-background-image d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_web']).');background-repeat: no-repeat;background-size: auto 800px;background-position: center center;height: 100vh;">
-						<div class="container text-white">
+						<div class="container position-absolute '.$left_position_1.$center_position_1.$right_position_1.' translate-middle text-white">
 							<div class="row">
-								<div class="col-md-8 mx-auto text-center">
+								<div class="col-md-8 col-9 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
 									<h2>'.$row_slideshow['title'].'</h2>
 									<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
 
@@ -150,11 +138,69 @@ class widget_content
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>';
-			}
-		}
+					</div>';
+				}
+				else
+				{
+					$output .= '
+					<div class="swiper-slide swiper-slide-'.$i.' position-relative">
+						<img src="'.base_url($row_slideshow['image_web']).'" class="img-fluid">
 
+						<div class="container position-absolute '.$left_position_1.$center_position_1.$right_position_1.' translate-middle text-white">
+							<div class="row">
+								<div class="col-md-8 col-9 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
+									<h2>'.$row_slideshow['title'].'</h2>
+									<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
+
+									'.$button1.$button2.'
+								</div>
+							</div>
+						</div>
+					</div>';
+				}
+			}
+			elseif ($row_layout['display_slideshow'] == 'background_image')
+			{
+				if ($Aruna->agent->is_mobile())
+				{
+					$output .= '
+					<div class="swiper-slide swiper-slide-'.$i.' d-block d-md-none">
+						<div class="swiper-background-image d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_mobile']).');background-repeat: no-repeat;background-size: auto 100vh;background-position: center center;height: 100vh;">
+							<div class="container text-white">
+								<div class="row">
+									<div class="col-9 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
+										<h2>'.$row_slideshow['title'].'</h2>
+										<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
+
+										'.$button1.$button2.'
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>';
+				}
+				elseif ( ! $Aruna->agent->is_mobile())
+				{
+					$output .= '
+					<div class="swiper-slide swiper-slide-'.$i.' d-none d-md-block">
+						<div class="swiper-background-image d-flex align-items-center justify-content-center" style="background-image: url('.base_url($row_slideshow['image_web']).');background-repeat: no-repeat;background-size: auto 100vh;background-position: center center;height: 100vh;">
+							<div class="container text-white">
+								<div class="row">
+									<div class="col-md-8 mx-auto '.$left_text_1.$center_text_1.$right_text_1.'">
+										<h2>'.$row_slideshow['title'].'</h2>
+										<h4 class="font-weight-light mb-3">'.$row_slideshow['caption'].'</h4>
+
+										'.$button1.$button2.'
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>';
+				}
+			}
+
+			$i++;
+		}
 		
 		$autoPlay = ($row_layout['autoplay'] == 'active') ? 'autoplay: { delay: '.$row_layout['autoplay_delay'].', disableOnInteraction: false },' : '';
 		$slidesPerView = ($row_layout['slide_per_view'] > 1) ? 'slidesPerView: '.$row_layout['slide_per_view'].', spaceBetween: 30,' : '';

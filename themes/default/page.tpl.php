@@ -9,6 +9,25 @@
 			<!-- Required meta tags -->
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<meta name="author" content="Andhika Adhitia N">
+			<meta name="generator" content="Powered by Aruna Development Project Framework PHP">
+			<meta name="copyright" content="'.get_csite('site_name').' '.date("Y").'">
+			<meta name="title" content="'.get_csite('site_name').'">
+			<meta name="description" content="'.get_csite('site_description').'">
+
+			<!-- Open Graph / Facebook -->
+			<meta property="og:type" content="website">
+			<meta property="og:url" content="'.get_meta('url').'">
+			<meta property="og:title" content="'.get_meta('title').'">
+			<meta property="og:description" content="'.get_meta('description').'">
+			<meta property="og:image" content="'.get_meta('image').'">
+
+			<!-- Twitter -->
+			<meta property="twitter:card" content="summary_large_image">
+			<meta property="twitter:url" content="'.get_meta('url').'">
+			<meta property="twitter:title" content="'.get_meta('title').'">
+			<meta property="twitter:description" content="'.get_meta('description').'">
+			<meta property="twitter:image" content="'.get_meta('image').'">
 
 			<!-- Favicons -->
 			<link rel="apple-touch-icon" href="'.base_url('assets/favicons/apple-touch-icon.png').'" sizes="180x180">

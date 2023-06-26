@@ -24,12 +24,15 @@ class home extends Aruna_Controller
 
 	public function index()
 	{
-		return view('index');
+		$data['agent'] = $this->agent;
+
+		return view('index', $data);
 	}
 
 	public function landing()
 	{
 		$data['db'] = $this->db;
+		$data['agent'] = $this->agent;
 
 		return view('landing', $data);
 	}

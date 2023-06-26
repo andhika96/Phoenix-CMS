@@ -1288,6 +1288,36 @@
 	// ------------------------------------------------------------------------
 	
 	/**
+	 * Set Meta Function
+	 * 
+	 * Berfungsi untuk set meta title, description, dan image dengan global variable
+	 * 
+	 * @return string
+	 */
+
+	function auto_set_meta($page, $article_id)
+	{	
+		$Aruna =& get_instance();
+
+		$res = $Aruna->db->sql_prepare("select a.id, a.uri, mt.article_id, mt.type, mt.metatag_title, mt.metatag_description, mt.metatag_image from ml_".$page."_article as a right join ml_metatag_article as mt on mt.article_id = a.id where mt.type = :page and a.id = :article_id");
+		$bindParam = $Aruna->db->sql_bindParam(['page' => $page, 'article_id' => $article_id], $res);
+		$row = $Aruna->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		if (isset($row['metatag_title']) && isset($row['metatag_description']) && isset($row['metatag_image']))
+		{
+			$GLOBALS['meta']['url'] = site_url($page.'/'.$row['uri']);	
+			$GLOBALS['meta']['title'] = $row['metatag_title'];
+			$GLOBALS['meta']['description'] = $row['metatag_description'];
+			$GLOBALS['meta']['image'] = $row['metatag_image'];
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	
+	/**
 	 * Get Meta Description
 	 * 
 	 * Berfungsi untuk mendapatkan data meta description dari function set_meta()

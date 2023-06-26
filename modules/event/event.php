@@ -34,6 +34,8 @@ class event extends Aruna_Controller
 	{
 		set_title(t('Event'));
 
+		set_meta(site_url('event'), 'Event', 'Get the latest event', NULL);
+
 		if (get_layout('event', 'view_type') == 'grid')
 		{
 			$data['layout_view'] = $this->grid_view();
@@ -98,12 +100,15 @@ class event extends Aruna_Controller
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
+		$row['id'] = isset($row['id']) ? $row['id'] : '';
 		$row['uri'] = isset($row['uri']) ? $row['uri'] : '';
 		$row['title'] = isset($row['title']) ? $row['title'] : '';
 		$row['content'] = isset($row['content']) ? $row['content'] : '';
 		$row['created'] = isset($row['created']) ? $row['created'] : time();
 
 		set_title($row['title']);
+
+		auto_set_meta('event', $row['id']);
 
 		if ( ! $row['uri'])
 		{

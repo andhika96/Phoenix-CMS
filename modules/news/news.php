@@ -34,6 +34,8 @@ class news extends Aruna_Controller
 	{
 		set_title(t('News'));
 
+		set_meta(site_url('news'), 'News', 'Get the latest news', NULL);
+
 		if (get_layout('news', 'view_type') == 'grid')
 		{
 			$data['layout_view'] = $this->grid_view();
@@ -98,12 +100,15 @@ class news extends Aruna_Controller
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
+		$row['id'] = isset($row['id']) ? $row['id'] : '';
 		$row['uri'] = isset($row['uri']) ? $row['uri'] : '';
 		$row['title'] = isset($row['title']) ? $row['title'] : '';
 		$row['content'] = isset($row['content']) ? $row['content'] : '';
 		$row['created'] = isset($row['created']) ? $row['created'] : time();
 
 		set_title($row['title']);
+
+		auto_set_meta('news', $row['id']);
 
 		if ( ! $row['uri'])
 		{

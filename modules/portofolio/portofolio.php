@@ -32,7 +32,9 @@ class portofolio extends Aruna_Controller
 
 	public function index()
 	{
-		set_title(t('Event'));
+		set_title(t('Portofolio'));
+
+		set_meta(site_url('portofolio'), 'Portofolio', 'List of Our Portofolio', NULL);
 
 		if (get_layout('portofolio', 'view_type') == 'grid')
 		{
@@ -98,12 +100,15 @@ class portofolio extends Aruna_Controller
 		// Prportofolio from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
+		$row['id'] = isset($row['id']) ? $row['id'] : '';
 		$row['uri'] = isset($row['uri']) ? $row['uri'] : '';
 		$row['title'] = isset($row['title']) ? $row['title'] : '';
 		$row['content'] = isset($row['content']) ? $row['content'] : '';
 		$row['created'] = isset($row['created']) ? $row['created'] : time();
 
 		set_title($row['title']);
+
+		auto_set_meta('portofolio', $row['id']);
 
 		if ( ! $row['uri'])
 		{
