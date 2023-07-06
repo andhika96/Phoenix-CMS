@@ -473,6 +473,22 @@ class awesome_admin extends Aruna_Controller
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post') 
 		{
+			foreach ($this_modules as $key => $module) 
+			{
+				$module_key 			= $key.'_actived';
+				$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
+				$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
+
+				if (is_array($current_modules[$key]))
+				{
+					$this->db->sql_update(['actived' => $actived, 'type' => $module['type'], 'hooking' => $module['hooking']], 'ml_modules', ['name' => $key]);
+				}
+				else
+				{
+					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'hooking' => $module['hooking'], 'actived' => $actived], 'ml_modules');
+				}
+			}
+			
 			$init_install 	= $this->check_install();
 			$list_config 	= array();
 
@@ -698,6 +714,7 @@ class awesome_admin extends Aruna_Controller
 				}
 			}
 
+			/*
 			foreach ($this_modules as $key => $module) 
 			{
 				$module_key 			= $key.'_actived';
@@ -713,6 +730,7 @@ class awesome_admin extends Aruna_Controller
 					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'hooking' => $module['hooking'], 'actived' => $actived], 'ml_modules');
 				}
 			}
+			*/
 
 			echo json_encode(['status' => 'success', 'msg' => 'Success']);
 			exit;

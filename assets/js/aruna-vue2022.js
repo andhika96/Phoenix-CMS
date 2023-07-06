@@ -3375,3 +3375,851 @@ const Vue2Translate = new Vue(
 		}
 	}
 });
+
+const Vue2ListDataForDropdown = new Vue(
+{
+	el: "#ar-app-listdata-dropdown",
+	data: 
+	{
+		getData: [{ menu_type: '', menu_name: '', menu_link: '', menu_icon: '' }],
+		getNewMenu: '',
+		getNewCustomMenu:
+		{
+			menu_name: '',
+			menu_link: ''
+		},
+		statusData: '',
+		msgData: '',
+		msgDataModal: '',
+		menu_type: '',
+		menu_id: 0,
+		menu_icon: '',
+		show: true,
+		showData: true,
+		showDataModal: true,
+		loading: true,
+		loadingnextpage: true,
+		loadingmodal: true
+	},
+	methods: 
+	{
+		submit: function(event)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit = document.getElementById("ar-form-submit");
+
+			// Get value of attribute in HTML.
+			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs.formHTML);
+
+			formData.append('menu_vars', JSON.stringify(this.getData));
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit")[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data"}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.msg;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+
+					this.listData();
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+				}
+				else if (response.data.status == 'failed')
+				{
+					this.responseMessageSubmit = response.data.msg;
+					
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+				}
+
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+				}
+			});
+		},
+		listData: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-dropdown") !== null && 
+				document.querySelector(".ar-fetch-listdata-dropdown").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-dropdown").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					this.getData = response.data;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loading = false;
+				});
+			}
+
+			if (document.querySelector(".ar-data-status") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-status").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-load").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-total-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-total-data-load").style.display = 'block';
+				}
+			}
+		},
+		deleteData: function(getDataInfo, index, getId)
+		{
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+getId;
+			const getParentClass = initClass.parentNode;
+
+			bootbox.confirm(
+			{
+				title: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this item?",
+				centerVertical: true,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						axios.get(getDataURL)
+						.then(response => 
+						{
+							if (response.data.status == 'success')
+							{
+								getDataInfo.splice(index, 1);
+
+								bootbox.alert({
+									title: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+									message: "<div class=\"text-center\">Data deleted !!</div>",
+									centerVertical: true,
+								});
+							}
+							else
+							{
+								bootbox.alert({
+									title: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+									message: "<div class=\"text-center\">Invalid Data Selected</div>",
+									centerVertical: true,
+								});
+							}
+						})
+						.catch(function(error)
+						{
+						 	console.log(error);
+						});
+					}
+				}
+			});
+		},
+		deleteDataMenuIcon: function(getDataInfo, index, getId)
+		{
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+getId;
+			const getParentClass = initClass.parentNode;
+
+			bootbox.confirm(
+			{
+				title: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this menu icon, this action cannot be undone if you click Confirm?",
+				centerVertical: true,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						axios.get(getDataURL)
+						.then(response => 
+						{
+							if (response.data.status == 'success')
+							{
+								getDataInfo.splice(index, 1);
+
+								bootbox.alert({
+									title: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+									message: "<div class=\"text-center\">Data deleted !!</div>",
+									centerVertical: true,
+								});
+							}
+							else
+							{
+								bootbox.alert({
+									title: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+									message: "<div class=\"text-center\">Invalid Data Selected</div>",
+									centerVertical: true,
+								});
+							}
+						})
+						.catch(function(error)
+						{
+						 	console.log(error);
+						});
+					}
+				}
+			});
+		},
+		selectMenuType: function(event) 
+		{
+			if (event.target.value == 'page')
+			{
+				if (document.querySelector(".ar-form-dropdown-type-page") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-dropdown-type-page'), null).display == 'none')
+					{
+						document.querySelector(".ar-form-dropdown-type-page").style.display = 'flex';
+					}
+				}
+
+				if (document.querySelector(".ar-form-dropdown-type-custom") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-dropdown-type-custom'), null).display == 'flex')
+					{
+						document.querySelector(".ar-form-dropdown-type-custom").style.display = 'none';
+					}
+				}
+			}
+			else if (event.target.value == 'custom_link')
+			{
+				if (document.querySelector(".ar-form-dropdown-type-page") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-dropdown-type-page'), null).display == 'flex')
+					{
+						document.querySelector(".ar-form-dropdown-type-page").style.display = 'none';
+					}
+				}
+
+				if (document.querySelector(".ar-form-dropdown-type-custom") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-dropdown-type-custom'), null).display == 'none')
+					{
+						document.querySelector(".ar-form-dropdown-type-custom").style.display = 'flex';
+					}
+				}
+			}
+
+			this.menu_type = event.target.value;
+
+			document.getElementsByClassName("menu_type")[0].setAttribute("value", event.target.value);
+		},
+		addIcon: function(event)
+		{
+			this.menu_icon = event.target.files[0];
+		},
+		addMenu: function() 
+		{
+			if (this.menu_type == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please select menu type</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else if (this.menu_type == 'page' && this.getNewMenu == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please select menu</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else if (this.menu_type == 'custom_link' && this.getNewCustomMenu.menu_name == '' ||
+					 this.menu_type == 'custom_link' && this.getNewCustomMenu.menu_link == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please enter Menu Name and Menu Link</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">New menu added</div></div>";					
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+
+				if (this.menu_type == 'page')
+				{					
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_name: this.ucFirst(this.getNewMenu), menu_link: this.getNewMenu, menu_icon: this.menu_icon });
+				
+					// Reset value after succesfully add the new menu
+					this.getNewMenu = '';
+				}
+				else if (this.menu_type == 'custom_link')
+				{
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_name: this.ucFirst(this.getNewCustomMenu.menu_name), menu_link: this.getNewCustomMenu.menu_link, menu_icon: this.menu_icon });
+				
+					// Reset value after succesfully add the new menu
+					this.getNewCustomMenu.menu_name = '';
+					this.getNewCustomMenu.menu_link = '';
+				}
+
+				const getBeforeLatestIndex = this.getData.length-1;
+
+				if (this.menu_icon !== '')
+				{
+					// Create a new File object
+					const myFile = new File([this.menu_icon.slice(0, this.menu_icon.size, this.menu_icon.type)], this.menu_icon.name);
+
+					const getResetFile = document.querySelector('.form-control-file-0').value = '';
+
+					this.menu_icon = '';
+
+					setTimeout(function()
+					{
+						const fileInput = document.querySelector(".menu_icon_"+getBeforeLatestIndex);
+
+						// Now let's create a DataTransfer to get a FileList
+						const dataTransfer = new DataTransfer();
+						dataTransfer.items.add(myFile);
+						fileInput.files = dataTransfer.files;
+					}, 100);
+				}
+			}
+		},
+		removeMenu: function(getData, index, menu_id)
+		{
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+index+'/'+menu_id;
+			const getParentClass = initClass.parentNode;
+
+			bootbox.confirm(
+			{
+				title: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this menu, this action cannot be undone if you click Confirm?",
+				centerVertical: true,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						axios.get(getDataURL)
+						.then(response => 
+						{
+							if (response.data.status == 'success')
+							{
+								getData.splice(index, 1);
+
+								document.querySelector("input[type='submit']").click();
+
+								bootbox.alert({
+									title: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+									message: "<div class=\"text-center\">Data deleted !!</div>",
+									centerVertical: true,
+								});
+							}
+							else
+							{
+								bootbox.alert({
+									title: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+									message: "<div class=\"text-center\">Invalid Data Selected</div>",
+									centerVertical: true,
+								});
+							}
+						})
+						.catch(function(error)
+						{
+						 	console.log(error);
+						});
+					}
+				}
+			});
+		},
+		ucFirst: function(string)
+		{
+			string = string.toLowerCase().replace(/\b[a-z]/g, function(letter) 
+			{
+				return letter.toUpperCase();
+			});
+
+			return string;
+		}
+	},
+	created: function()
+	{
+		this.listData();
+	}
+});
+
+const Vue2ListDataForHeader = new Vue(
+{
+	el: "#ar-app-listdata-header",
+	data: 
+	{
+		getData: [{ menu_type: '', menu_code: '', menu_name: '', menu_link: '', menu_icon: '' }],
+		getNewMenu: '',
+		getNewCustomMenu:
+		{
+			menu_name: '',
+			menu_link: ''
+		},
+		statusData: '',
+		msgData: '',
+		msgDataModal: '',
+		menu_type: '',
+		menu_id: 0,
+		show: true,
+		showData: true,
+		loading: true
+	},
+	methods: 
+	{
+		submit: function(event)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit = document.getElementById("ar-form-submit");
+
+			// Get value of attribute in HTML.
+			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs.formHTML);
+
+			formData.append('hmenu_vars', JSON.stringify(this.getData));
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit")[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data"}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.msg;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+
+					this.listData();
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+				}
+				else if (response.data.status == 'failed')
+				{
+					this.responseMessageSubmit = response.data.msg;
+					
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+				}
+
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+				}
+			});
+		},
+		listData: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-header") !== null && 
+				document.querySelector(".ar-fetch-listdata-header").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-header").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					this.getData = response.data;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loading = false;
+				});
+			}
+
+			if (document.querySelector(".ar-data-status") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-status").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-load").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-total-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-total-data-load").style.display = 'block';
+				}
+			}
+		},
+		selectMenuType: function(event) 
+		{
+			if (event.target.value == 'page')
+			{
+				if (document.querySelector(".ar-form-header-type-page") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-header-type-page'), null).display == 'none')
+					{
+						document.querySelector(".ar-form-header-type-page").style.display = 'flex';
+					}
+				}
+
+				if (document.querySelector(".ar-form-header-type-custom") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-header-type-custom'), null).display == 'flex')
+					{
+						document.querySelector(".ar-form-header-type-custom").style.display = 'none';
+					}
+				}
+			}
+			else if (event.target.value == 'custom_link')
+			{
+				if (document.querySelector(".ar-form-header-type-page") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-header-type-page'), null).display == 'flex')
+					{
+						document.querySelector(".ar-form-header-type-page").style.display = 'none';
+					}
+				}
+
+				if (document.querySelector(".ar-form-header-type-custom") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-form-header-type-custom'), null).display == 'none')
+					{
+						document.querySelector(".ar-form-header-type-custom").style.display = 'flex';
+					}
+				}
+			}
+
+			this.menu_type = event.target.value;
+
+			document.getElementsByClassName("menu_type")[0].setAttribute("value", event.target.value);
+		},
+		addMenu: function() 
+		{
+			if (this.menu_type == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please select menu type</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else if (this.menu_type == 'page' && this.getNewMenu == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please select menu</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else if (this.menu_type == 'custom_link' && this.getNewCustomMenu.menu_name == '' ||
+					 this.menu_type == 'custom_link' && this.getNewCustomMenu.menu_link == '')
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">Please enter Menu Name and Menu Link</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+			}
+			else
+			{
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">New menu added</div></div>";					
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+
+				if (this.menu_type == 'page')
+				{
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewMenu), menu_name: this.ucFirst(this.getNewMenu), menu_link: this.getNewMenu, menu_icon: '' });
+				
+					// Reset value after succesfully add the new menu
+					this.getNewMenu = '';
+				}
+				else if (this.menu_type == 'custom_link')
+				{
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewCustomMenu.menu_name), menu_name: this.getNewCustomMenu.menu_name, menu_link: this.getNewCustomMenu.menu_link, menu_icon: '' });
+				
+					// Reset value after succesfully add the new menu
+					this.getNewCustomMenu.menu_name = '';
+					this.getNewCustomMenu.menu_link = '';
+				}
+			}
+		},
+		removeMenu: function(index)
+		{
+			this.getData.splice(index, 1);
+		},
+		ucFirst: function(string)
+		{
+			string = string.toLowerCase().replace(/\b[a-z]/g, function(letter) 
+			{
+				return letter.toUpperCase();
+			});
+
+			return string;
+		},
+		strToLowerCase: function(string)
+		{
+			string = string.toLowerCase().replace(/\s/g, "");
+
+			return string;
+		}
+	},
+	created: function()
+	{
+		this.listData();
+	}
+});

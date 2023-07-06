@@ -47,12 +47,15 @@
 			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.4').'">
 			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v=0.0.4').'">
 
+			<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
 			<title>'.get_ctitle().'</title>
 
 			<style>
 			/* Default Custom CSS from PHOENIX CMS*/
 			.ph-navbar
 			{
+				transition: all 300ms ease 0s;
 				background-color: '.get_section_header('background_color').' !important;
 			}
 
@@ -70,18 +73,106 @@
 			}
 
 			.ph-navbar .nav-link.active, 
+			.ph-navbar .nav-link.show,
 			.ph-navbar .show > .nav-link
 			{
 				color: '.get_section_header('link_color_active').';
 				background-color: '.get_section_header('background_link_color_active').';
 			}
+
+			.ph-navbar-transparent .navbar-brand
+			{
+				filter: brightness(0) invert(1);
+			}
+
+			.ph-navbar-white
+			{
+				background-color: '.get_section_header('background_color_active').' !important;
+			}
+
+			.ph-navbar-white .navbar-brand
+			{
+				filter: none;
+			}
+
+			.ph-navbar-white .nav-link
+			{
+				color: #000;
+			}
+
+			.ph-navbar .megamenu 
+			{ 
+				padding: 4rem; 
+			}
+
+			.ph-navbar .megamenu a
+			{
+				color: #212529;
+				text-decoration: none;
+			}
+
+			@media all and (min-width: 992px) 
+			{
+				.ph-navbar .has-megamenu 
+				{
+					position: static !important;
+				}
+
+				.ph-navbar .megamenu 
+				{
+					left: 0; 
+					right: 0; 
+					width: 100%; 
+					margin-top: 0;
+				}
+			}	
+
+			@media(max-width: 991px) 
+			{
+				.ph-navbar.fixed-top .ph-navbar-collapse, .ph-navbar.sticky-top .ph-navbar-collapse 
+				{
+					overflow-y: auto;
+					max-height: 90vh;
+					margin-top:10px;
+				}
+			}
+
+			.has-megamenu .dropdown-menu
+			{
+				border: 0;
+				border-radius: 0;
+				background-color: #f8f9fa;
+			}
+
+			.dropdown-toggle[data-bs-toggle="dropdown"]
+			{
+				position: relative;
+			}
+
+			.dropdown-toggle[data-bs-toggle="dropdown"]::after
+			{
+				padding: 3px;
+				border: solid;
+				margin-left: .75rem;
+				vertical-align: .1rem
+				display: inline-block;
+				transform: rotate(46.8deg);
+				transition: all .2s ease-out;
+				border-width: 0 .1rem .1rem 0;
+			}
+
+			.dropdown-toggle[data-bs-toggle="dropdown"][aria-expanded="true"]::after
+			{
+				transform: rotate(-135deg);
+				vertical-align: .0rem 
+			}
 			</style>
 		</head>
 
 		<body class="ph-custom-css">
-			<header class="ph-navbar navbar navbar-expand-lg bg-light '.get_section_header('section_type').' shadow-sm border-bottom">
+			<header class="ph-navbar '.is_fixed_navbar().' navbar navbar-expand-lg bg-light" style="border-bottom: 1px '.get_section_header('background_border_bottom').' solid">
 				<div class="container">
-					<a class="navbar-brand" href="#">
+					<a class="navbar-brand me-lg-4" href="#">
 						<img src="'.base_url(get_logo(1, 'image')).'" class="d-none d-md-block" style="width: '.get_logo(1, 'size').'">
 						<img src="'.base_url(get_logo(2, 'image')).'" class="d-block d-md-none" style="width: '.get_logo(2, 'size').'">
 					</a>
@@ -92,10 +183,6 @@
 
 					<div class="collapse navbar-collapse '.get_section_header('menu_position').'" id="navbarNavDropdown">
 						<ul class="navbar-nav">
-							<li class="nav-item" style="'.get_section_header('margin_link').'">
-								<a class="nav-link '.getNavMenu().'" style="'.get_section_header('padding_link').'" aria-current="page" href="'.site_url().'">Home</a>
-							</li>
-
 							'.get_list_menu_header().'
 						</ul>
 					</div>
@@ -128,7 +215,33 @@
 			<script src="'.base_url('assets/plugins/parallax/1.5.0/parallax.js').'"></script>
 
 			<script>
-			$(document).ready(function() { $(".parallax-window").parallax({ "positionY": "center", "androidFix": false }); });
+			$(document).ready(function() 
+			{ 
+				$(".parallax-window").parallax({ "positionY": "center", "androidFix": false }); 
+
+				if (document.querySelector(".ph-navbar-transparent") !== null)
+				{
+					if (window.pageYOffset != 0)
+					{
+						$(".ph-navbar").addClass("ph-navbar-white");
+						$(".ph-navbar").removeClass("ph-navbar-transparent");
+					}
+
+					$(window).scroll(function() 
+					{
+						if ($(window).scrollTop() == 0) 
+						{
+							$(".ph-navbar").addClass("ph-navbar-transparent");
+							$(".ph-navbar").removeClass("ph-navbar-white");
+						}
+						else 
+						{
+							$(".ph-navbar").addClass("ph-navbar-white");
+							$(".ph-navbar").removeClass("ph-navbar-transparent");
+						}
+					});
+				}
+			});
 			</script>			
 
 			'.load_js().'	

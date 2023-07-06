@@ -731,6 +731,26 @@
 
 	// ------------------------------------------------------------------------
 
+	function get_header_type()
+	{
+		$Aruna =& get_instance();
+
+		$res = $Aruna->db->sql_prepare("select * from ml_section where uri = :uri");
+		$bindParam = $Aruna->db->sql_bindParam(['uri' => 'header'], $res);
+		$row = $Aruna->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		$row['section_type'] = isset($row['section_type']) ? $row['section_type'] : NULL;
+
+		$get_class_name = ($row['section_type'] == 'fixed-top') ? 'ph-navbar-transparent' : '';
+
+		return $get_class_name;
+	}
+
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Get Category
 	 * 
@@ -1498,6 +1518,12 @@
 
 	// ------------------------------------------------------------------------
 
+	/*
+	 * Disabled by Andhika Adhitia N
+	 * 
+	 */
+
+	/*
 	function get_list_menu_header()
 	{
 		$Aruna =& get_instance();
@@ -1561,14 +1587,412 @@
 		{
 			if ($module['actived'] == 1)
 			{
-				$output .= '
-				<li class="nav-item" style="'.get_section_header('margin_link').'">
-					<a class="nav-link '.getNavMenu($module['name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($module['name']).'">'.$this_modules[$module['name']]['name'].'</a>
-				</li>';
+				$res_dd_parent = $Aruna->db->sql_prepare("select * from ml_dropdown_parent where page_name = :page_name");
+				$bindParam_dd_parent = $Aruna->db->sql_bindParam(['page_name' => $module['name']], $res_dd_parent);
+				$row_dd_parent = $Aruna->db->sql_fetch_single($bindParam_dd_parent);
+
+				if ($Aruna->db->sql_counts($bindParam_dd_parent))
+				{
+					$res_dd_menu = $Aruna->db->sql_prepare("select * from ml_dropdown_menu where dropdown_id = :dropdown_id");
+					$bindParam_dd_menu = $Aruna->db->sql_bindParam(['dropdown_id' => $row_dd_parent['id']], $res_dd_menu);
+					$row_dd_menu = $Aruna->db->sql_fetch($bindParam_dd_menu);
+
+					if ($row_dd_parent['dropdown_type'] == 'normal')
+					{
+						$output .= '
+						<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
+							<a class="nav-link dropdown-toggle '.getNavMenu($module['name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($module['name']).'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$this_modules[$module['name']]['name'].'</a>
+						
+							<ul class="dropdown-menu font-size-inherit">';
+
+						foreach ($row_dd_menu as $key => $value) 
+						{
+							$output .= '
+								<li><a class="dropdown-item" href="'.site_url($value['menu_name']).'">'.ucfirst($value['menu_name']).'</a></li>';
+						}
+
+						$output .= '
+							</ul>
+						</li>';
+					}
+					elseif ($row_dd_parent['dropdown_type'] == 'megamenu')
+					{
+						$output .= '
+						<li class="nav-item" style="'.get_section_header('margin_link').'">
+							<a class="nav-link '.getNavMenu($module['name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($module['name']).'">'.$this_modules[$module['name']]['name'].'</a>
+						</li>';
+					}
+				}
+				else
+				{
+					$output .= '
+					<li class="nav-item" style="'.get_section_header('margin_link').'">
+						<a class="nav-link '.getNavMenu($module['name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($module['name']).'">'.$this_modules[$module['name']]['name'].'</a>
+					</li>';
+				}
 			}
 		}
 
 		return $output;
+	}
+	*/
+
+	// ------------------------------------------------------------------------
+
+	function get_list_menu_header()
+	{
+		$Aruna =& get_instance();
+
+		$modules = array();
+
+		$res = $Aruna->db->sql_select("select * from ml_header_menu where hmenu_type = 'main'");
+		$row = $Aruna->db->sql_fetch_single($res);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		$row['hmenu_vars'] = isset($row['hmenu_vars']) ? $row['hmenu_vars'] : '';
+
+		$get_vars = json_decode($row['hmenu_vars'], TRUE);
+
+		if ($handle = opendir('modules')) 
+		{
+			while (false !== ($file = readdir($handle))) 
+			{
+				$module = array();
+				$ignores = array('.svn');
+
+				if (is_dir('modules/' .$file) && $file != '.' && $file != '..' && ! in_array($file, $ignores) && file_exists('modules/'.$file.'/'.$file.'.info')) 
+				{
+					$module['name'] = $file;
+
+					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
+					{
+						$filename = 'modules/'.$file.'/'.$file.'.info';
+						$handle2 = fopen($filename, "r");
+						$info = fread($handle2, filesize($filename));
+						fclose($handle2);
+						$arr = explode("\r\n", $info);
+
+						foreach ($arr as $item) 
+						{
+							$info = explode('=',$item);
+							$key = trim($info[0]);
+
+							$value = trim($info[1]);
+							$module[$key] = $value;
+							$module['flag'] = $file;
+						}
+					}
+					else 
+					{
+						$module['flag'] 		= $file;
+						$module['version'] 		= 'Unknown';
+						$module['description'] 	= '';
+						$module['type'] 		= '';
+						$module['manage_path'] 	= '';
+					}
+
+					$this_modules[$file] = $module;
+				}
+			}
+
+			closedir($handle);
+		}
+
+		$output = '';
+
+		if (is_array($get_vars))
+		{
+			foreach ($get_vars as $key => $value) 
+			{	
+				if ($value['menu_link'] == 'home')
+				{
+					$output .= '
+					<li class="nav-item" style="'.get_section_header('margin_link').'">
+						<a class="nav-link '.getNavMenu().'" style="'.get_section_header('padding_link').'" href="'.site_url().'">'.$value['menu_name'].'</a>
+					</li>';
+				}
+				else
+				{
+					$res_dd_parent = $Aruna->db->sql_prepare("select * from ml_dropdown_parent where page_name = :page_name");
+					$bindParam_dd_parent = $Aruna->db->sql_bindParam(['page_name' => $value['menu_link']], $res_dd_parent);
+					$row_dd_parent = $Aruna->db->sql_fetch_single($bindParam_dd_parent);
+
+					if ($Aruna->db->sql_counts($bindParam_dd_parent))
+					{
+						$res_dd_menu = $Aruna->db->sql_prepare("select * from ml_dropdown_menu where dropdown_id = :dropdown_id");
+						$bindParam_dd_menu = $Aruna->db->sql_bindParam(['dropdown_id' => $row_dd_parent['id']], $res_dd_menu);
+						$row_dd_menu = $Aruna->db->sql_fetch_single($bindParam_dd_menu);
+
+						// Prevent from Automatic conversion of false to array is deprecated
+						$row_dd_menu = ($row_dd_menu !== FALSE) ? $row_dd_menu : [];
+						
+						if ($row_dd_menu['menu_vars'] != null && $row_dd_menu['menu_vars'] != '[]')
+						{
+							$get_dropdown_vars = json_decode($row_dd_menu['menu_vars'], TRUE);
+
+							if ($row_dd_parent['dropdown_type'] == 'normal_menu')
+							{
+								if ($value['menu_type'] == 'page')
+								{
+									$res_modules = $Aruna->db->sql_prepare("select * from ml_modules where type = 'page' and name = :name");
+									$bindParam_modules = $Aruna->db->sql_bindParam(['name' => $value['menu_link']], $res_modules);
+									$row_modules = $Aruna->db->sql_fetch_single($bindParam_modules);
+
+									if ($row_modules['actived'] == 1)
+									{
+										$output .= '
+										<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
+											<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$this_modules[$value['menu_link']]['name'].'</a>
+										
+											<ul class="dropdown-menu font-size-inherit">';
+
+										foreach ($get_dropdown_vars as $key1 => $value1) 
+										{
+											$output .= '
+												<li><a class="dropdown-item" href="'.site_url($value1['menu_link']).'">'.ucfirst($value1['menu_name']).'</a></li>';
+										}
+
+										$output .= '
+											</ul>
+										</li>';
+									}
+								}
+								elseif ($value['menu_type'] == 'custom_link')
+								{
+									$output .= '
+									<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
+										<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
+									
+										<ul class="dropdown-menu font-size-inherit">';
+
+									foreach ($get_dropdown_vars as $key1 => $value1) 
+									{
+										$output .= '
+											<li><a class="dropdown-item" href="'.site_url($value1['menu_link']).'">'.ucfirst($value1['menu_name']).'</a></li>';
+									}
+
+									$output .= '
+										</ul>
+									</li>';
+								}
+							}
+							elseif ($row_dd_parent['dropdown_type'] == 'mega_menu')
+							{
+								if ($value['menu_type'] == 'page')
+								{
+									$res_modules = $Aruna->db->sql_prepare("select * from ml_modules where type = 'page' and name = :name");
+									$bindParam_modules = $Aruna->db->sql_bindParam(['name' => $value['menu_link']], $res_modules);
+									$row_modules = $Aruna->db->sql_fetch_single($bindParam_modules);
+
+									if ($row_modules['actived'] == 1)
+									{
+										$output .= '
+										<li class="nav-item dropdown has-megamenu" style="'.get_section_header('margin_link').'">
+											<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$this_modules[$value['menu_link']]['name'].'</a>
+										
+											<div class="dropdown-menu megamenu shadow font-size-inherit">
+												<div class="d-flex justify-content-center">';
+
+										foreach ($get_dropdown_vars as $key1 => $value1) 
+										{
+											if ($value1['menu_icon'] !== '')
+											{
+												$menu_icon = '<img src="'.base_url($value1['menu_icon']).'" class="img-fluid mb-2" style="width: 215px">';
+											}
+											else
+											{
+												$menu_icon = '<div class="placeholder mb-2" style="width: 215px;height: 135px;border-radius: 10px;"></div>';
+											}
+
+											$output .= '
+													<div class="row g-4">
+														<div class="col-lg-auto text-center">
+															<a class="dropdown-item" href="'.site_url($value1['menu_link']).'">
+																'.$menu_icon.'
+
+																<p class="fs-6 m-0">'.ucfirst($value1['menu_name']).'</p>
+															</a>
+														</div>
+													</div>';
+										}
+
+										$output .= '
+												</div>
+											</div>
+										</li>';
+									}
+								}
+								elseif ($value['menu_type'] == 'custom_link')
+								{
+									$output .= '
+									<li class="nav-item dropdown has-megamenu" style="'.get_section_header('margin_link').'">
+										<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
+									
+										<div class="dropdown-menu megamenu shadow font-size-inherit">
+											<div class="d-flex justify-content-center">';
+
+									foreach ($get_dropdown_vars as $key1 => $value1) 
+									{
+										if ($value1['menu_icon'] !== '')
+										{
+											$menu_icon = '<img src="'.base_url($value1['menu_icon']).'" class="img-fluid mb-2" style="width: 215px">';
+										}
+										else
+										{
+											$menu_icon = '<div class="placeholder mb-2" style="width: 215px;height: 135px;border-radius: 10px;"></div>';
+										}
+
+										$output .= '
+												<div class="row g-4">
+													<div class="col-lg-auto text-center">
+														<a class="dropdown-item" href="'.site_url($value1['menu_link']).'">
+															'.$menu_icon.'
+
+															<p class="fs-6 fw-semibold m-0">'.ucfirst($value1['menu_name']).'</p>
+														</a>
+													</div>
+												</div>';
+									}
+
+									$output .= '
+											</div>
+										</div>
+									</li>';
+								}
+							}
+						}
+						else
+						{
+							if ($value['menu_type'] == 'page')
+							{
+								$res_modules = $Aruna->db->sql_prepare("select * from ml_modules where type = 'page' and name = :name");
+								$bindParam_modules = $Aruna->db->sql_bindParam(['name' => $value['menu_link']], $res_modules);
+								$row_modules = $Aruna->db->sql_fetch_single($bindParam_modules);
+
+								if ($row_modules['actived'] == 1)
+								{
+									$output .= '
+									<li class="nav-item" style="'.get_section_header('margin_link').'">
+										<a class="nav-link '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'">'.$this_modules[$value['menu_link']]['name'].'</a>
+									</li>';
+								}
+							}
+							elseif ($value['menu_type'] == 'custom_link')
+							{
+								$output .= '
+								<li class="nav-item" style="'.get_section_header('margin_link').'">
+									<a class="nav-link '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'">'.$value['menu_name'].'</a>
+								</li>';
+							}
+						}
+						
+					}
+					else
+					{
+						if ($value['menu_type'] == 'page')
+						{
+							$res_modules = $Aruna->db->sql_prepare("select * from ml_modules where type = 'page' and name = :name");
+							$bindParam_modules = $Aruna->db->sql_bindParam(['name' => $value['menu_link']], $res_modules);
+							$row_modules = $Aruna->db->sql_fetch_single($bindParam_modules);
+
+							if ($row_modules['actived'] == 1)
+							{
+								$output .= '
+								<li class="nav-item" style="'.get_section_header('margin_link').'">
+									<a class="nav-link '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'">'.$this_modules[$value['menu_link']]['name'].'</a>
+								</li>';
+							}
+						}
+						elseif ($value['menu_type'] == 'custom_link')
+						{
+							$output .= '
+							<li class="nav-item" style="'.get_section_header('margin_link').'">
+								<a class="nav-link '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'">'.$value['menu_name'].'</a>
+							</li>';
+						}
+					}
+				}			
+			}
+		}
+
+		return $output;
+	}
+
+	// ------------------------------------------------------------------------
+
+	function is_fixed_navbar()
+	{
+		$Aruna =& get_instance();
+
+		$ext = load_ext(['url']);
+
+		if (get_section_header('section_type') == 'fixed-top')
+		{
+			$res = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and type = :type");
+			$bindParam = $Aruna->db->sql_bindParam(['name' => uri_string(), 'type' => 'page'], $res);
+			$row = $Aruna->db->sql_fetch_single($bindParam);
+
+			// Prevent from Automatic conversion of false to array is deprecated
+			$row = ($row !== FALSE) ? $row : [];
+
+			$row['active_coverimage'] = isset($row['active_coverimage']) ? $row['active_coverimage'] : NULL;
+			$row['active_slideshow'] = isset($row['active_slideshow']) ? $row['active_slideshow'] : NULL;
+
+			if ($row['active_coverimage'] == 1)
+			{
+				$res_coverimage = $Aruna->db->sql_prepare("select * from ml_coverimage where uri = :uri");
+				$bindParam_coverimage = $Aruna->db->sql_bindParam(['uri' => $row['name']], $res_coverimage);
+				$row_coverimage = $Aruna->db->sql_fetch_single($bindParam_coverimage);
+
+				// Prevent from Automatic conversion of false to array is deprecated
+				$row_coverimage = ($row_coverimage !== FALSE) ? $row_coverimage : [];
+
+				$row_coverimage['image_web'] = isset($row_coverimage['image_web']) ? $row_coverimage['image_web'] : '';
+				$row_coverimage['image_mobile'] = isset($row_coverimage['image_mobile']) ? $row_coverimage['image_mobile'] : '';
+
+				if (file_exists($row_coverimage['image_web']) && file_exists($row_coverimage['image_mobile']))
+				{
+					$get_deactive_fixed_navbar = 'ph-navbar-white sticky-top shadow-sm';
+				}
+				else
+				{
+					$get_deactive_fixed_navbar = 'ph-navbar-white sticky-top shadow-sm';
+				}
+			}
+			elseif ($row['active_slideshow'] == 1)
+			{
+				$res_coverimage = $Aruna->db->sql_prepare("select * from ml_coverimage where uri = :uri");
+				$bindParam_coverimage = $Aruna->db->sql_bindParam(['uri' => $row['name']], $res_coverimage);
+				$row_coverimage = $Aruna->db->sql_fetch_single($bindParam_coverimage);
+
+				// Prevent from Automatic conversion of false to array is deprecated
+				$row_coverimage = ($row_coverimage !== FALSE) ? $row_coverimage : [];
+
+				$row_coverimage['image_web'] = isset($row_coverimage['image_web']) ? $row_coverimage['image_web'] : '';
+				$row_coverimage['image_mobile'] = isset($row_coverimage['image_mobile']) ? $row_coverimage['image_mobile'] : '';
+
+				if (file_exists($row_coverimage['image_web']) && file_exists($row_coverimage['image_mobile']))
+				{
+					$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+				}
+				else
+				{
+					$get_deactive_fixed_navbar = 'ph-navbar-white sticky-top shadow-sm';
+				}
+			}
+			else
+			{
+				$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+			}
+		}
+		else
+		{
+			$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+		}
+
+		return $get_deactive_fixed_navbar;
 	}
 
 	// ------------------------------------------------------------------------

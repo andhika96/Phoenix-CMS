@@ -439,7 +439,7 @@
 		}
 		else 
 		{
-			$app->{$URI->segments[1]}($URI->segments[2], $URI->segments[3]);
+			$app->{$URI->segments[1]}($URI->segments[2], $URI->segments[3], $URI->segments[4]);
 		}
 	}
 
