@@ -41,8 +41,17 @@ function manage_aboutus_menu()
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'About Us',
-		'type' 	=> 'single',
+		'name' 	=> 'About Us 1',
+		'type' 	=> 'child',
+		'icon' 	=> '<i class="fad fa-address-card fa-fw me-2"></i>',
+		'roles' => '99',
+		'path' 	=> 'manage_aboutus'
+	];
+
+	$list_menu[] = 
+	[
+		'name' 	=> 'About Us 2 asdasd',
+		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-address-card fa-fw me-2"></i>',
 		'roles' => '99',
 		'path' 	=> 'manage_aboutus'

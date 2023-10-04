@@ -156,9 +156,9 @@ class manage_event extends Aruna_Controller
 		register_js([
 			'<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>',
 			'<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>',
-			'<script src="'.base_url('assets/plugins/ckeditor5/build/ckeditor.js').'"></script>',
+			'<script src="'.base_url('assets/plugins/ckeditor5/build/ckeditor.js?v=0.0.3').'"></script>',
 			'<script src="'.base_url('assets/plugins/ckfinder/ckfinder.js').'"></script>',
-			'<script src="'.base_url('assets/js/cs-ckeditor5.js?v=0.0.1').'"></script>'
+			'<script src="'.base_url('assets/js/cs-ckeditor5.js?v=0.0.3').'"></script>'
 		]);
 
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);

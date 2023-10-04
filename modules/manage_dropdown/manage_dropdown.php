@@ -69,8 +69,8 @@ class manage_dropdown extends Aruna_Controller
 				if ( ! $this->db->sql_counts($bindParam))
 				{
 					$get_page_name = str_replace(" ", "", strtolower($this->input->post('page_name')));
-					$get_page_name = str_replace("&", "-", $get_page_name);
-					$get_page_name = str_replace("/", "-", $get_page_name);
+					$get_page_name = str_replace("&", "", $get_page_name);
+					$get_page_name = str_replace("/", "", $get_page_name);
 
 					$data_dropdown_parent = [
 						'page_id' 		=> $this->input->post('page_id'),
@@ -236,7 +236,7 @@ class manage_dropdown extends Aruna_Controller
 					}
 
 					$configs['upload_path']		= $s_folder;
-					$configs['allowed_types']	= 'jpg|jpeg|png|gif';
+					$configs['allowed_types']	= 'jpg|jpeg|png|gif|svg';
 					$configs['overwrite']		= TRUE;
 					$configs['remove_spaces']	= TRUE;
 					$configs['encrypt_name']	= TRUE;
@@ -289,7 +289,7 @@ class manage_dropdown extends Aruna_Controller
 		}
 
 		$data['id']		= $id;
-		$data['menus'] 	= $this->_getListMenus();
+		$data['menus'] 	= $this->_getListPages();
 
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
@@ -316,6 +316,18 @@ class manage_dropdown extends Aruna_Controller
 					 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
 					 ->_display();
 		exit;
+	}
+
+	public function _getListPages()
+	{
+		$res = $this->db->sql_prepare("select * from ml_modules where type = :type order by id desc");
+		$bindParam = $this->db->sql_bindParam(['type' => 'page'], $res);
+		while ($row = $this->db->sql_fetch_single($bindParam))
+		{
+			$output[] = $row;
+		}
+
+		return $output;
 	}
 
 	public function _getListMenus()
@@ -438,7 +450,7 @@ class manage_dropdown extends Aruna_Controller
 		}
 	}
 
-	public function deletedropdown_iconmenu($index, $id)
+	public function deletedropdown_menu($index, $id)
 	{
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 

@@ -14,10 +14,10 @@
 
 	$db['default'] = [
 		'host' 		=> 'localhost', 
-		'user' 		=> 'root', 
-		'password' 	=> '', 
+		'user' 		=> 'aruna', 
+		'password' 	=> 'Cybernet1906!', 
 		'dbtype' 	=> 'MySQL', 
-		'dbname' 	=> 'p01_ardev4_blog',
+		'dbname' 	=> 'aruna_cms',
 		'charset'	=> 'utf8'
 	];
 

@@ -44,12 +44,55 @@
 								<draggable v-model="getData" ghost-class="ghost" class="list-group">
 									<div v-for="(item, index) in getData" :key="item.menu_type" class="list-group-item">
 										<div class="row g-1">
-											<div class="col-md-10 mb-3 mb-md-0 d-flex align-items-center">
+											<div class="col-md-6 mb-3 mb-md-0 d-flex align-items-center">
 												<i class="fas fa-arrows-alt-v fa-fw me-1"></i> {{ item.menu_name }}
 											</div>
 
-											<div class="col-auto d-flex align-items-center">
-												<a href="javascript:void(0)" class="btn btn-link font-size-inherit" v-on:click="removeMenu(index)">'.t('Remove').'</a>
+											<div class="col-md-6 d-flex align-items-center justify-content-end">
+												<a href="javascript:void(0)" class="btn btn-link text-danger font-size-inherit" data-bs-toggle="collapse" :data-bs-target="\'#collapseHeaderMenu\'+index+\'\'" aria-expanded="false" aria-controls="collapseExample">'.t('View detail').'</a> |
+												<a href="javascript:void(0)" class="btn btn-link text-danger ar-alert-bootbox font-size-inherit" v-on:click="removeMenu(getData, index, \''.$id.'\')" v-bind:data-url="\''.site_url('manage_header/deleteheader_menu/').'\'">'.t('Remove').'</a>
+											</div>
+										</div>
+
+										<div class="collapse" :id="\'collapseHeaderMenu\'+index+\'\'">
+											<div class="border-top mt-2 py-2">
+												<div class="row">
+													<div class="col-md-6 mb-3">
+														<label class="form-label">Menu Name</label>
+														<input type="text" :class="\'menu_name\'+index+\' form-control font-size-inherit\'" v-model="item.menu_name">
+													</div>
+
+													<div class="col-md-6 mb-3">
+														<label class="form-label">Menu Link</label>
+														
+														<div v-if="item.menu_type == \'page\'">
+															<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" :value="\'\'+item.menu_link+\'\'" disabled>
+														</div>
+
+														<div v-else-if="item.menu_type == \'custom_link\'">
+															<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" v-model="item.menu_link">
+														</div>
+													</div>
+
+													<div class="col-12 mb-3">
+														<label class="form-label">Page Type</label>
+														<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" :value="\'\'+item.menu_type+\'\'" disabled>
+													</div>
+
+													<div class="col-12">
+														<label class="form-label">Menu Icon</label>
+
+														<div class="input-group">
+															<input type="file" :name="\'menu_icon_\'+index+\'\'" :class="\'menu_icon_\'+index+\' form-control font-size-inherit\'">
+														
+															<span v-if="item.menu_icon !== \'\'">
+																<a :href="\''.base_url('\'+item.menu_icon+\'').'\'" class="btn btn-outline-secondary font-size-inherit" target="_blank">View image</a>
+															</span>
+														</div>
+
+														<input type="hidden" :name="\'menu_type[\'+index+\']\'" :value="\'\'+item.menu_type+\'\'">
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -111,6 +154,14 @@
 						
 						<div class="col-md-8 mb-3">
 							<input type="text" name="menu_link" class="form-control" v-model="getNewCustomMenu.menu_link">
+						</div>
+					</div>
+
+					<div class="row">
+						<label for="formFile" class="col-md-4 col-form-label pr-md-0 text-md-end">'.t('Upload Icon or Logo').'</label>
+						
+						<div class="col-md-8 mb-3">
+							<input class="form-control form-control-file-0 font-size-inherit" type="file" id="formFile" v-on:change="addIcon($event)">
 						</div>
 					</div>
 

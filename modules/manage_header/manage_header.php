@@ -176,6 +176,7 @@ class manage_header extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
 
+		/*
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{							
 			$data_header_menu = [
@@ -186,6 +187,121 @@ class manage_header extends Aruna_Controller
 
 			echo json_encode(['status' => 'success', 'msg' => 'Success']);
 			exit;
+		}
+		*/
+
+		$get_vars = json_decode($row['hmenu_vars'], true);
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{		
+			$get_total_aside_menu1 = count(json_decode($row['hmenu_vars'], true));
+			$get_total_aside_menu2 = count(json_decode($this->input->post('hmenu_vars'), true));
+
+			if ($row['hmenu_type'] == 'aside' && $get_total_aside_menu2 > 3)
+			{
+				echo json_encode(['status' => 'failed', 'msg' => 'You can set menu aside only 3 menu']);
+				exit;
+			}	
+			else
+			{			
+				$is_upload 	= 0;
+				$get_total1 = count(json_decode($this->input->post('hmenu_vars'), true));
+				
+				if ( ! empty($row['hmenu_vars']))
+				{
+					$get_total2 = count(json_decode($row['hmenu_vars'], true));
+				}
+				else
+				{
+					$get_total2 = 0;
+				}
+
+				if ($get_total1 > $get_total2)
+				{
+					$get_vars = json_decode($this->input->post('hmenu_vars'), true);
+				}
+				elseif ($get_total1 == $get_total2)
+				{
+					$get_vars = json_decode($row['hmenu_vars'], true);
+				}
+				else
+				{
+					$get_vars = json_decode($this->input->post('hmenu_vars'), true);
+				}
+
+				for ($i = 0; $i < $get_total1; $i++) 
+				{ 
+					if ( ! empty($_FILES['menu_icon_'.$i]['name']))
+					{
+						// Image For Menu Icon
+						$_FILES['menu_icon_file']['name'] 		= $_FILES['menu_icon_'.$i]['name'];
+						$_FILES['menu_icon_file']['type'] 		= $_FILES['menu_icon_'.$i]['type'];
+						$_FILES['menu_icon_file']['tmp_name'] 	= $_FILES['menu_icon_'.$i]['tmp_name'];
+						$_FILES['menu_icon_file']['error'] 		= $_FILES['menu_icon_'.$i]['error'];
+						$_FILES['menu_icon_file']['size'] 		= $_FILES['menu_icon_'.$i]['size'];
+
+						$dir = date("Ym", time());
+						$s_folder = './contents/userfiles/menu_icon/'.$dir.'/';
+
+						// For database only without dot and slash at the front folder
+						$x_folder = 'contents/userfiles/menu_icon/'.$dir.'/';
+
+						if ( ! is_dir($s_folder)) 
+						{
+							mkdir($s_folder, 0777);
+						}
+
+						$configs['upload_path']		= $s_folder;
+						$configs['allowed_types']	= 'jpg|jpeg|png|gif|svg';
+						$configs['overwrite']		= TRUE;
+						$configs['remove_spaces']	= TRUE;
+						$configs['encrypt_name']	= TRUE;
+						$configs['max_size']		= 2000;
+
+						$upload = load_lib('upload', $configs);
+
+						if ( ! $upload->do_upload('menu_icon_file'))
+						{
+							if ($_FILES['menu_icon_file']['error'] != 4)
+							{
+								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								exit;
+							}
+
+							$get_vars[$i]['menu_icon'] = false;
+						}
+						else 
+						{
+							if ( ! empty($get_vars[$i]['menu_icon']) && file_exists($get_vars[$i]['menu_icon']))
+							{
+								unlink($get_vars[$i]['menu_icon']);
+							}
+
+							$get_vars[$i]['menu_icon'] = $x_folder.$upload->data('file_name');
+						}
+
+						$is_upload = 1;
+					}
+				}
+
+				if ($is_upload == 0)
+				{
+					$init_value = $this->input->post('hmenu_vars');
+				}
+				else
+				{
+					$init_value = ($get_total1 > $get_total2) ? json_encode($get_vars) : (($get_total1 == $get_total2) ? json_encode($get_vars) : $this->input->post('hmenu_vars'));
+				}
+
+				$data_header_menu = [
+					'hmenu_vars' => $init_value
+				];
+
+				$this->db->sql_update($data_header_menu, 'ml_header_menu', ['id' => $row['id']]);
+
+				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				exit;
+			}
 		}
 
 		$data['id']		= $id;
@@ -274,15 +390,25 @@ class manage_header extends Aruna_Controller
 		exit;
 	}
 
-	public function deletedropdown($id)
+	public function deleteheader_menu($index, $id)
 	{
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
-		$check = $this->db->num_rows("ml_dropdown_menu", "", ['id' => $id]);
+		$check = $this->db->num_rows("ml_header_menu", "", ['id' => $id]);
 
 		if ($check)
 		{
-			$this->db->sql_delete("ml_dropdown_menu", ['id' => $id]);
+			$res_menu = $this->db->sql_prepare("select * from ml_header_menu where id = :id");
+			$bindParam_menu = $this->db->sql_bindParam(['id' => $id], $res_menu);
+			$row_menu = $this->db->sql_fetch_single($bindParam_menu);
+
+			$get_vars = json_decode($row_menu['hmenu_vars'], true);
+
+			if (file_exists($get_vars[$index]['menu_icon']))
+			{
+				unlink($get_vars[$index]['menu_icon']);
+			}			
+
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
 					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))

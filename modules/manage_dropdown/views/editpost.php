@@ -44,17 +44,55 @@
 								<draggable v-model="getData" ghost-class="ghost" class="list-group">
 									<div v-for="(item, index) in getData" :key="item.menu_type" class="list-group-item">
 										<div class="row g-1">
-											<div class="col-md-4 mb-3 mb-md-0 d-flex align-items-center">
-												<i class="fas fa-arrows-alt-v fa-fw me-1"></i> {{ item.menu_name }}
+											<div class="col-md-6 mb-3 mb-md-0 d-flex align-items-center">
+												<i class="fas fa-arrows-alt-v fa-fw me-1"></i> {{ item.menu_name }} 
 											</div>
 
-											<div class="col-md-6 mb-3 mb-md-0">
-												<input type="file" :name="\'menu_icon_\'+index+\'\'" :class="\'menu_icon_\'+index+\' form-control\'">
-												<input type="hidden" :name="\'menu_type[\'+index+\']\'" :value="\'\'+item.menu_type+\'\'">
+											<div class="col-md-6 d-flex align-items-center justify-content-end">
+												<a href="javascript:void(0)" class="btn btn-link text-danger font-size-inherit" data-bs-toggle="collapse" :data-bs-target="\'#collapseDropdownMenu\'+index+\'\'" aria-expanded="false" :aria-controls="\'collapseDropdownMenu\'+index+\'\'">'.t('View detail').'</a> |
+												<a href="javascript:void(0)" class="btn btn-link text-danger ar-alert-bootbox font-size-inherit" v-on:click="removeMenu(getData, index, \''.$id.'\')" v-bind:data-url="\''.site_url('manage_dropdown/deletedropdown_menu/').'\'">'.t('Remove').'</a>
 											</div>
+										</div>
 
-											<div class="col-auto d-flex align-items-center">
-												<a href="javascript:void(0)" class="btn btn-link ar-alert-bootbox font-size-inherit" v-on:click="removeMenu(getData, index, \''.$id.'\')" v-bind:data-url="\''.site_url('manage_dropdown/deletedropdown_iconmenu/').'\'">'.t('Remove').'</a>
+										<div class="collapse" :id="\'collapseDropdownMenu\'+index+\'\'">
+											<div class="border-top mt-2 py-2">
+												<div class="row">
+													<div class="col-md-6 mb-3">
+														<label class="form-label">Menu Name</label>
+														<input type="text" :class="\'menu_name\'+index+\' form-control font-size-inherit\'" v-model="item.menu_name">
+													</div>
+
+													<div class="col-md-6 mb-3">
+														<label class="form-label">Menu Link</label>
+														
+														<div v-if="item.menu_type == \'page\'">
+															<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" :value="\'\'+item.menu_link+\'\'" disabled>
+														</div>
+
+														<div v-else-if="item.menu_type == \'custom_link\'">
+															<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" v-model="item.menu_link">
+														</div>
+													</div>
+
+													<div class="col-12 mb-3">
+														<label class="form-label">Page Type</label>
+														<input type="text" :class="\'menu_link\'+index+\' form-control font-size-inherit\'" :value="\'\'+item.menu_type+\'\'" disabled>
+													</div>
+
+													<div class="col-12">
+														<label class="form-label">Menu Icon</label>
+
+														<div class="input-group">
+															<input type="file" :name="\'menu_icon_\'+index+\'\'" :class="\'menu_icon_\'+index+\' form-control font-size-inherit\'">
+														
+															<span v-if="item.menu_icon !== \'\'">
+																<a :href="\''.base_url('\'+item.menu_icon+\'').'\'" class="btn btn-outline-secondary font-size-inherit" target="_blank">View image</a>
+															</span>
+														</div>
+
+														<input type="hidden" :name="\'menu_type[\'+index+\']\'" :value="\'\'+item.menu_type+\'\'">
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -97,7 +135,7 @@
 						foreach ($menus as $key => $value) 
 						{	
 							section_content('
-								<option value="'.$value['menu_link'].'">'.ucfirst($value['menu_name']).'</option>');
+								<option value="'.$value['name'].'">'.ucfirst($value['name']).'</option>');
 						}
 
 		section_content('

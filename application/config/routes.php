@@ -75,4 +75,6 @@
 	$route['portofolio/getDetail'] 		= 'portofolio/getDetail';
 	$route['portofolio/(:any)'] 		= 'portofolio/detail/$1';
 
+	$route['api']['GET'] = 'news/index';
+
 ?>

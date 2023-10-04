@@ -1052,12 +1052,6 @@
 	{
 		function set_ob_start($content = '')
 		{
-			if (config_item('set_header_cache') === TRUE)
-			{
-				$Aruna =& get_instance();
-				$Aruna->output->set_cache_header(time(), time()+(config_item('set_header_cache_expire')*60));
-			}
-
 			ob_start();
 
 			echo $content;
@@ -1248,7 +1242,15 @@
 
 		function display_content()
 		{
+			$Aruna =& get_instance();
+			
 			$url = load_ext(['url']);
+
+			if (config_item('set_header_cache') === TRUE)
+			{
+				$Aruna =& get_instance();
+				$Aruna->output->set_cache_header(time(), time()+(config_item('set_header_cache_expire')*60));
+			}
 			
 			$output = NULL;
 
@@ -1344,7 +1346,7 @@
 
 	if ( ! function_exists('offset'))
 	{
-		function offset()
+		function offset($default_offset = 0)
 		{
 			if (empty(get_data_global('page')))
 			{
@@ -1352,7 +1354,14 @@
 			}
 			else
 			{
-				return config_item('num_per_page')*(get_data_global('page')-1);
+				if (get_data_global('page') == 1)
+				{
+					return $default_offset;
+				}
+				else
+				{
+					return config_item('num_per_page')*(get_data_global('page')-1);
+				}
 			}
 		}
 	}

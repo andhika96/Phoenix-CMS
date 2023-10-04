@@ -200,7 +200,7 @@ class awesome_admin extends Aruna_Controller
 						$handle2 = fopen($filename, "r");
 						$info = fread($handle2, filesize($filename));
 						fclose($handle2);
-						$arr = explode("\r\n", $info);
+						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
@@ -323,7 +323,7 @@ class awesome_admin extends Aruna_Controller
 						$handle2 = fopen($filename, "r");
 						$info = fread($handle2, filesize($filename));
 						fclose($handle2);
-						$arr = explode("\r\n", $info);
+						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
@@ -438,7 +438,7 @@ class awesome_admin extends Aruna_Controller
 						$handle2 = fopen($filename, "r");
 						$info = fread($handle2, filesize($filename));
 						fclose($handle2);
-						$arr = explode("\r\n", $info);
+						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
@@ -1167,7 +1167,7 @@ class awesome_admin extends Aruna_Controller
 		$res = $this->db->sql_select("select m.*, mp.parent_code, mp.roles from ml_modules as m left join ml_menu_parent as mp on mp.parent_code = m.name where m.type = 'menu' order by id");
 		while ($row = $this->db->sql_fetch_single($res))
 		{
-			$current_modules[$row['name']] = explode(",", $row['roles']);
+			$current_modules[$row['name']] = explode(",", $row['roles'] ?? "");
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')
@@ -1234,6 +1234,42 @@ class awesome_admin extends Aruna_Controller
 			$function = $module['name'].'_menu';
 
 			if ($module['actived'] == 1 && function_exists($function))
+			{
+				$hooks[] = $module['name'];
+			}
+		}
+
+		if (isset($hooks) && is_array($hooks))
+		{
+			return $hooks;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	protected function check_menu_test()
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.menu.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.menu.php');
+			}
+
+			$function = $module['name'].'_menu';
+
+			if (function_exists($function))
 			{
 				$hooks[] = $module['name'];
 			}
@@ -1321,7 +1357,7 @@ class awesome_admin extends Aruna_Controller
 						$handle2 = fopen($filename, "r");
 						$info = fread($handle2, filesize($filename));
 						fclose($handle2);
-						$arr = explode("\r\n", $info);
+						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
@@ -1722,7 +1758,7 @@ class awesome_admin extends Aruna_Controller
 						$handle2 = fopen($filename, "r");
 						$info = fread($handle2, filesize($filename));
 						fclose($handle2);
-						$arr = explode("\r\n", $info);
+						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
@@ -1790,6 +1826,192 @@ class awesome_admin extends Aruna_Controller
 		// 		 ->set_output(json_encode($menu, JSON_PRETTY_PRINT))
 		// 		 ->_display();
 		// exit;
+	}
+
+	public function test3()
+	{
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		if ($handle = opendir('modules')) 
+		{
+			while (false !== ($file = readdir($handle))) 
+			{
+				$module = array();
+				$ignores = array('.svn');
+
+				if (is_dir('modules/' .$file) && $file != '.' && $file != '..' && ! in_array($file, $ignores) && file_exists('modules/'.$file.'/'.$file.'.info')) 
+				{
+					$module['name'] = $file;
+
+					if (file_exists('modules/'.$file.'/'.$file.'.hook.php')) 
+					{
+						$module['hooking'] = 1;
+					}
+					else 
+					{
+						$module['hooking'] = 0;
+					}
+
+					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
+					{
+						$filename = 'modules/'.$file.'/'.$file.'.info';
+						$handle2 = fopen($filename, "r");
+						$info = fread($handle2, filesize($filename));
+						fclose($handle2);
+						$arr = explode(PHP_EOL, $info);
+
+						foreach ($arr as $item) 
+						{
+							$info = explode('=',$item);
+							$key = trim($info[0]);
+
+							$value = trim($info[1]);
+							$module[$key] = $value;
+							$module['flag'] = $file;
+						}
+					}
+					else 
+					{
+						$module['flag'] 		= $file;
+						$module['version'] 		= 'Unknown';
+						$module['description'] 	= '';
+						$module['type'] 		= '';
+						$module['manage_path'] 	= '';
+					}
+
+					$this_modules[$file] = $module;
+				}
+			}
+
+			closedir($handle);
+		}
+
+		// Truncate table ml_menu before insert new data
+		$this->db->sql_select("TRUNCATE TABLE ml_menu_test");
+
+		// Truncate table ml_menu_parent before insert new data
+		$this->db->sql_select("TRUNCATE TABLE ml_menu_parent_test");
+
+		$menus 	= $this->check_menu();
+		$list_menu 	= array();
+
+		if ($menus)
+		{
+			foreach ($menus as $menu) 
+			{
+				$menu_function = $menu.'_menu';
+				$array_menu = $menu_function();
+
+				foreach ($array_menu as $key => $item) 
+				{
+					$item['module'] = $menu;
+
+					$list_menu[$menu_function][$key] = $item;
+				}
+			}
+
+			foreach ($list_menu as $key0 => $value0)
+			{
+				$get_real_module_name = str_replace("_menu", "", $key0);
+
+				foreach ($value0 as $key1 => $value1)
+				{
+					if ($value1['type'] == 'parent')
+					{
+						$res_parent = $this->db->sql_prepare("select * from ml_menu_parent_test where module = :module and parent_name = :parent_name");
+						$bindParam_parent = $this->db->sql_bindParam(['module' => $value1['module'], 'parent_name' => $value1['name']], $res_parent);
+
+						if ( ! $this->db->sql_counts($bindParam_parent))
+						{
+							$data_0 = 
+							[
+								'module'		=> $value1['module'],
+								'parent_name' 	=> $value1['name'],
+								'parent_code' 	=> $get_real_module_name,
+								'icon'			=> $value1['icon'],
+								'roles'			=> $value1['roles']
+							];
+
+							$this->db->sql_insert($data_0, 'ml_menu_parent_test');
+
+							$parent_id = $this->db->insert_id();
+
+							$res_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent_test where id = :id");
+							$bindParam_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_parent);
+							$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+						}
+						else
+						{
+							$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+						}
+					}
+					
+					if ($value1['type'] == 'child')
+					{				
+						$res_check_menu = $this->db->sql_prepare("select * from ml_menu_test where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id");
+						$bindParam_check_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_check_menu);
+
+						if ( ! $this->db->sql_counts($bindParam_check_menu))
+						{	
+							$data_1 = 
+							[
+								'module'			=> $value1['module'],
+								'menu_parent_id'	=> $row_parent['id'],
+								'menu_parent_name' 	=> $row_parent['parent_name'],
+								'menu_parent_code' 	=> $row_parent['parent_code'],
+								'menu_name'			=> $value1['name'],
+								'url'				=> $value1['path'],
+								'icon'				=> $value1['icon'],
+								'roles'				=> $value1['roles']
+							];
+
+							$output[] = $data_1;
+
+							$this->db->sql_insert($data_1, 'ml_menu_test');
+						}			
+					}
+					
+					if ($value1['type'] == 'single')
+					{				
+						$res_new_menu = $this->db->sql_prepare("select * from ml_menu_test where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id");
+						$bindParam_new_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
+
+						if ( ! $this->db->sql_counts($bindParam_new_menu))
+						{	
+							$this->db->sql_delete('ml_menu_test', ['module' => $value1['module']]);
+
+							$data_1 = 
+							[
+								'module'			=> $value1['module'],
+								'menu_parent_id'	=> $row_parent['id'],
+								'menu_parent_name' 	=> '',
+								'menu_parent_code' 	=> 'uncategorized_'.$row_parent['parent_code'],
+								'menu_name'			=> $value1['name'],
+								'url'				=> $value1['path'],
+								'icon'				=> $value1['icon'],
+								'roles'				=> $value1['roles']
+							];
+
+							$this->db->sql_insert($data_1, 'ml_menu_test');
+						}	
+					}
+					
+				}
+			}
+			
+		}
+
+		$this->output
+				 ->set_status_header(200)
+				 ->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
 	}
 }
 

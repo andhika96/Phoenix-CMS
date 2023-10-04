@@ -270,9 +270,19 @@ const Vue2FormArticle = new Vue(
 	data: 
 	{
 		form: {},
+		getDataVars: {},
+		getDataVarText: [{ key: '', value: '' }],
+		getDataVarImage: [{ key: '', value: '' }],
+		getListCategory: [],
+		getListSubcategory: [],
+		getSelectedCategory: [],
+		getSelectedSubcategory: [],
 		responseMessageSubmit: '',
 		imageEncode: '',
-		metaImageEncode: ''
+		metaImageEncode: '',
+		loadingVars: true,
+		loadingCategory: true,
+		loadingSubcategory: true
 	},
 	methods: 
 	{
@@ -532,6 +542,233 @@ const Vue2FormArticle = new Vue(
 				}
 			});
 		},
+		submitCustomField: function(event)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit = document.getElementById("ar-form-submit-custom-field");
+
+			// Get value of attribute in HTML.
+			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock = this.$refs.formHTMLCustomField.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill = this.$refs.formHTMLCustomField.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge = this.$refs.formHTMLCustomField.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs.formHTMLCustomField);
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit-custom-field")[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data"}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.msg;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+					}
+
+					// this.listDataVars();
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+				}
+				else if (response.data.status == 'failed')
+				{
+					this.responseMessageSubmit = response.data.msg;
+					
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+				}
+
+				document.getElementsByClassName("btn-token-submit-custom-field")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit-custom-field")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+				}
+			});
+		},
+		listDataVars: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-vars") !== null && 
+				document.querySelector(".ar-fetch-listdata-vars").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-vars").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					this.getDataVarText = (response.data.custom_field.text !== undefined) ? response.data.custom_field.text : [];
+					this.getDataVarImage = (response.data.custom_field.image !== undefined) ? response.data.custom_field.image : [];
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingVars = false;
+				});
+			}
+		},
+		addNewField: function(part_section)
+		{
+			if (part_section == 'custom_field_text')
+			{
+				this.getDataVarText.push({ key: '', value: ''});
+			}
+			else if (part_section == 'custom_field_image')
+			{
+				this.getDataVarImage.push({ key: '', value: ''});
+			}
+		},
+		removeField: function(getData, index, menu_id, type)
+		{
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+type+'/'+index+'/'+menu_id;
+			const getParentClass = initClass.parentNode;
+
+			bootbox.confirm(
+			{
+				title: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this menu, this action cannot be undone if you click Confirm?",
+				centerVertical: true,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						axios.get(getDataURL)
+						.then(response => 
+						{
+							if (response.data.status == 'success')
+							{
+								getData.splice(index, 1);
+
+								window.setTimeout(function() 
+								{
+									document.querySelector(".btn-malika-submit-custom-field").click();
+								}, 100);
+
+								bootbox.alert({
+									title: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+									message: "<div class=\"text-center\">Data deleted !!</div>",
+									centerVertical: true,
+								});
+							}
+							else
+							{
+								bootbox.alert({
+									title: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+									message: "<div class=\"text-center\">Invalid Data Selected</div>",
+									centerVertical: true,
+								});
+							}
+						})
+						.catch(function(error)
+						{
+						 	console.log(error);
+						});
+					}
+				}
+			});
+		},
 		activeSchedulePost: function()
 		{
 			// const getFormCheck = document.querySelectorAll('.form-check-input');
@@ -770,6 +1007,8 @@ const Vue2FormArticle = new Vue(
 	},
 	created: function()
 	{
+		this.listDataVars();
+		
 		this.previewImageExist();
 
 		this.previewMetaImageExist();
@@ -3792,7 +4031,7 @@ const Vue2ListDataForDropdown = new Vue(
 				}
 				else if (this.menu_type == 'custom_link')
 				{
-					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_name: this.ucFirst(this.getNewCustomMenu.menu_name), menu_link: this.getNewCustomMenu.menu_link, menu_icon: this.menu_icon });
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_name: this.getNewCustomMenu.menu_name, menu_link: this.getNewCustomMenu.menu_link, menu_icon: this.menu_icon });
 				
 					// Reset value after succesfully add the new menu
 					this.getNewCustomMenu.menu_name = '';
@@ -3890,6 +4129,12 @@ const Vue2ListDataForDropdown = new Vue(
 			});
 
 			return string;
+		},
+		strToLowerCase: function(string)
+		{
+			string = string.toLowerCase().replace(/\s/g, "");
+
+			return string;
 		}
 	},
 	created: function()
@@ -3915,6 +4160,7 @@ const Vue2ListDataForHeader = new Vue(
 		msgDataModal: '',
 		menu_type: '',
 		menu_id: 0,
+		menu_icon: '',
 		show: true,
 		showData: true,
 		loading: true
@@ -4142,6 +4388,10 @@ const Vue2ListDataForHeader = new Vue(
 
 			document.getElementsByClassName("menu_type")[0].setAttribute("value", event.target.value);
 		},
+		addIcon: function(event)
+		{
+			this.menu_icon = event.target.files[0];
+		},
 		addMenu: function() 
 		{
 			if (this.menu_type == '')
@@ -4183,24 +4433,102 @@ const Vue2ListDataForHeader = new Vue(
 
 				if (this.menu_type == 'page')
 				{
-					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewMenu), menu_name: this.ucFirst(this.getNewMenu), menu_link: this.getNewMenu, menu_icon: '' });
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewMenu), menu_name: this.ucFirst(this.getNewMenu), menu_link: this.getNewMenu, menu_icon: this.menu_icon });
 				
 					// Reset value after succesfully add the new menu
 					this.getNewMenu = '';
 				}
 				else if (this.menu_type == 'custom_link')
 				{
-					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewCustomMenu.menu_name), menu_name: this.getNewCustomMenu.menu_name, menu_link: this.getNewCustomMenu.menu_link, menu_icon: '' });
+					this.getData.push({ menu_type: document.getElementsByClassName("menu_type")[0].getAttribute("value"), menu_code: this.strToLowerCase(this.getNewCustomMenu.menu_name), menu_name: this.getNewCustomMenu.menu_name, menu_link: this.getNewCustomMenu.menu_link, menu_icon: this.menu_icon });
 				
 					// Reset value after succesfully add the new menu
 					this.getNewCustomMenu.menu_name = '';
 					this.getNewCustomMenu.menu_link = '';
 				}
+
+				const getBeforeLatestIndex = this.getData.length-1;
+
+				if (this.menu_icon !== '')
+				{
+					// Create a new File object
+					const myFile = new File([this.menu_icon.slice(0, this.menu_icon.size, this.menu_icon.type)], this.menu_icon.name);
+
+					const getResetFile = document.querySelector('.form-control-file-0').value = '';
+
+					this.menu_icon = '';
+
+					setTimeout(function()
+					{
+						const fileInput = document.querySelector(".menu_icon_"+getBeforeLatestIndex);
+
+						// Now let's create a DataTransfer to get a FileList
+						const dataTransfer = new DataTransfer();
+						dataTransfer.items.add(myFile);
+						fileInput.files = dataTransfer.files;
+					}, 100);
+				}
 			}
 		},
-		removeMenu: function(index)
+		removeMenu: function(getData, index, menu_id)
 		{
-			this.getData.splice(index, 1);
+			const initClass = document.getElementsByClassName("ar-alert-bootbox")[0];
+			const getDataURL = initClass.getAttribute("data-url")+index+'/'+menu_id;
+			const getParentClass = initClass.parentNode;
+
+			bootbox.confirm(
+			{
+				title: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this menu, this action cannot be undone if you click Confirm?",
+				centerVertical: true,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						axios.get(getDataURL)
+						.then(response => 
+						{
+							if (response.data.status == 'success')
+							{
+								getData.splice(index, 1);
+
+								document.querySelector("input[type='submit']").click();
+
+								bootbox.alert({
+									title: "<i class=\"fas fa-check text-success fa-fw mr-1\"></i> Success",
+									message: "<div class=\"text-center\">Data deleted !!</div>",
+									centerVertical: true,
+								});
+							}
+							else
+							{
+								bootbox.alert({
+									title: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
+									message: "<div class=\"text-center\">Invalid Data Selected</div>",
+									centerVertical: true,
+								});
+							}
+						})
+						.catch(function(error)
+						{
+						 	console.log(error);
+						});
+					}
+				}
+			});
 		},
 		ucFirst: function(string)
 		{

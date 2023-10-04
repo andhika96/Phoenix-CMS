@@ -186,6 +186,28 @@
 							'.get_list_menu_header().'
 						</ul>
 					</div>
+
+					<div class="offcanvas offcanvas-end d-lg-none flex-grow-1" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel" data-bs-scroll="true">
+						<div class="offcanvas-header px-4 pb-0">
+							<h5 class="offcanvas-title" id="offcanvasTopLabel">
+								<a href="'.site_url().'">
+									<img src="'.base_url(get_logo(2, 'image')).'" class="d-block d-md-none" style="width: '.get_logo(2, 'size').'">
+								</a>
+							</h5>
+							
+							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+						</div>
+
+						<div class="offcanvas-body" id="navbarNavDropdown">
+							<ul class="navbar-nav">
+								'.get_list_menu_header('mobile').'
+							</ul>
+						</div>
+					</div>
+
+					<ul class="navbar-nav '.get_aside_position_header().'">
+						'.get_list_aside_menu_header().'
+					</ul>
 				</div>
 			</header>');
 
