@@ -406,7 +406,7 @@ class awesome_admin extends Aruna_Controller
 
 		$current_modules = array();
 
-		$res = $this->db->sql_select("select * from ml_modules");
+		$res = $this->db->sql_select("select * from ml_modules order by name asc");
 		while ($row = $this->db->sql_fetch_single($res))
 		{
 			$current_modules[$row['name']] = $row;
@@ -524,6 +524,121 @@ class awesome_admin extends Aruna_Controller
 				}
 			}
 
+			// Truncate table ml_menu before insert new data
+			$this->db->sql_select("TRUNCATE TABLE ml_menu");
+
+			// Truncate table ml_menu_parent before insert new data
+			$this->db->sql_select("TRUNCATE TABLE ml_menu_parent");
+
+			$menus 	= $this->check_menu();
+			$list_menu 	= array();
+
+			if ($menus)
+			{
+				foreach ($menus as $menu) 
+				{
+					$menu_function = $menu.'_menu';
+					$array_menu = $menu_function();
+
+					foreach ($array_menu as $key => $item) 
+					{
+						$item['module'] = $menu;
+
+						$list_menu[$menu_function][$key] = $item;
+					}
+				}
+
+				foreach ($list_menu as $key0 => $value0)
+				{
+					$get_real_module_name = str_replace("_menu", "", $key0);
+
+					foreach ($value0 as $key1 => $value1)
+					{
+						if ($value1['type'] == 'parent')
+						{
+							$res_parent = $this->db->sql_prepare("select * from ml_menu_parent where module = :module and parent_name = :parent_name order by parent_name asc");
+							$bindParam_parent = $this->db->sql_bindParam(['module' => $value1['module'], 'parent_name' => $value1['name']], $res_parent);
+
+							if ( ! $this->db->sql_counts($bindParam_parent))
+							{
+								$data_0 = 
+								[
+									'module'		=> $value1['module'],
+									'parent_name' 	=> $value1['name'],
+									'parent_code' 	=> $get_real_module_name,
+									'icon'			=> $value1['icon'],
+									'roles'			=> $value1['roles']
+								];
+
+								$this->db->sql_insert($data_0, 'ml_menu_parent');
+
+								$parent_id = $this->db->insert_id();
+
+								$res_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent where id = :id order by parent_name asc");
+								$bindParam_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_parent);
+								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+							}
+							else
+							{
+								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
+							}
+						}
+						
+						if ($value1['type'] == 'child')
+						{				
+							$res_check_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
+							$bindParam_check_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_check_menu);
+
+							if ( ! $this->db->sql_counts($bindParam_check_menu))
+							{	
+								$data_1 = 
+								[
+									'module'			=> $value1['module'],
+									'menu_parent_id'	=> $row_parent['id'],
+									'menu_parent_name' 	=> $row_parent['parent_name'],
+									'menu_parent_code' 	=> $row_parent['parent_code'],
+									'menu_name'			=> $value1['name'],
+									'url'				=> $value1['path'],
+									'icon'				=> $value1['icon'],
+									'roles'				=> $value1['roles']
+								];
+
+								$output[] = $data_1;
+
+								$this->db->sql_insert($data_1, 'ml_menu');
+							}			
+						}
+						
+						if ($value1['type'] == 'single')
+						{				
+							$res_new_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
+							$bindParam_new_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
+
+							if ( ! $this->db->sql_counts($bindParam_new_menu))
+							{	
+								$this->db->sql_delete('ml_menu', ['module' => $value1['module']]);
+
+								$data_1 = 
+								[
+									'module'			=> $value1['module'],
+									'menu_parent_id'	=> $row_parent['id'],
+									'menu_parent_name' 	=> '',
+									'menu_parent_code' 	=> 'uncategorized_'.$row_parent['parent_code'],
+									'menu_name'			=> $value1['name'],
+									'url'				=> $value1['path'],
+									'icon'				=> $value1['icon'],
+									'roles'				=> $value1['roles']
+								];
+
+								$this->db->sql_insert($data_1, 'ml_menu');
+							}	
+						}
+						
+					}
+				}
+			}
+
+			/*
 			$menus 	= $this->check_menu();
 			$list_menu 	= array();
 
@@ -713,6 +828,7 @@ class awesome_admin extends Aruna_Controller
 					}
 				}
 			}
+			*/
 
 			/*
 			foreach ($this_modules as $key => $module) 
@@ -2002,7 +2118,6 @@ class awesome_admin extends Aruna_Controller
 					
 				}
 			}
-			
 		}
 
 		$this->output

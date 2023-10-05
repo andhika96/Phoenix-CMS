@@ -50,7 +50,7 @@ function manage_aboutus_menu()
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'About Us 2 asdasd',
+		'name' 	=> 'About Us 2',
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-address-card fa-fw me-2"></i>',
 		'roles' => '99',

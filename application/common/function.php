@@ -1034,12 +1034,12 @@
 	 * @return string
 	 */
 
-	function add_coverimage($page)
+	function add_coverimage($main_page, $sub_page = '', $rendered_with_vuejs = FALSE)
 	{
 		$Aruna =& get_instance();
 
 		$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and type = :type");
-		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $page, 'type' => 'page'], $res_module);
+		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $main_page, 'type' => 'page'], $res_module);
 		$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
 
 		if ($row_module['is_coverimage'] == 1)
@@ -1054,8 +1054,22 @@
 				{
 					$load_widget = new widget_content;
 
-					// Access function content() from $path
-					return $load_widget->index($page);
+					// $res_subpage = $Aruna->db->sql_prepare("select * from ml_layout where page = :page and section = :section");
+					// $bindParam_subpage = $Aruna->db->sql_bindParam(['page' => $sub_page, 'section' => 'coverimage'], $res_subpage);
+					// $row_subpage = $Aruna->db->sql_fetch_single($bindParam_subpage);
+
+					if ($sub_page !== '')
+					{
+						$get_uri_subpage = str_replace("/", "_", uri_string());
+
+						// Access function content() from $path
+						return $load_widget->index($get_uri_subpage, $rendered_with_vuejs);
+					}
+					else
+					{
+						// Access function content() from $path
+						return $load_widget->index($main_page, $rendered_with_vuejs);
+					}
 				}
 				else
 				{
@@ -1502,7 +1516,7 @@
 		$res_parent = $Aruna->db->sql_select("select pm.id, pm.roles as pm_roles, pm.parent_name as pm_name, pm.parent_code as pm_code, pm.icon as pm_icon, m.* from ml_menu_parent as pm right join ml_menu as m on m.menu_parent_id = pm.id where m.status = 0 group by m.menu_parent_code order by m.id asc");
 		while ($row_parent = $Aruna->db->sql_fetch_single($res_parent))
 		{
-			$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name");
+			$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name order by name asc");
 			$bindParam_module = $Aruna->db->sql_bindParam(['name' => $row_parent['pm_code']], $res_module);
 			$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
 
@@ -1533,7 +1547,7 @@
 						<div class="collapse multi-collapse list-group-sub" id="Collapse'.$row_parent['pm_code'].'">
 							<div class="list-group list-group-flush">';
 					
-								$res_menu = $Aruna->db->sql_prepare("select * from ml_menu where menu_parent_id = :menu_parent_id and status = 0 order by id");
+								$res_menu = $Aruna->db->sql_prepare("select * from ml_menu where menu_parent_id = :menu_parent_id and status = 0");
 								$bindParam_menu = $Aruna->db->sql_bindParam(['menu_parent_id' => $row_parent['menu_parent_id']], $res_menu);
 								while ($row_menu = $Aruna->db->sql_fetch_single($bindParam_menu))
 								{

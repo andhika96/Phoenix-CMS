@@ -89,15 +89,29 @@
 								<div class="col-md-6">
 									<div class="row">
 										<div class="col-12 mb-3">
-											<label class="form-label">Select Size Cover Image</label>
+											<div class="row">
+												<div class="col-md-6 mb-3">
+													<label class="form-label">Display Cover Image</label>
 
-											<select name="size_type" class="form-select font-size-inherit" aria-label="Select Size Cover Image">
-												<option value="">Select Size</option>
-												<option value="small" '.$size_type[0].'>Small (412px X 240px)</option>
-												<option value="medium" '.$size_type[1].'>Medium (412px X 440px)</option>
-												<option value="large" '.$size_type[2].'>Large (412px X 640px)</option>
-												<option value="full" '.$size_type[3].'>Full Screen (412px X 840px)</option>
-											</select>
+													<select name="display_coverimage" class="form-select font-size-inherit" v-on:change="selectCoverImageType($event.target.value)"  aria-label="Select Display Type">
+														<option value="">Select Display Type</option>
+														<option value="only_image" '.$selected_display_coverimage[0].'>Only With Image</option>
+														<option value="background_image" '.$selected_display_coverimage[1].'>With Background Image</option>
+													</select>
+												</div>
+
+												<div class="col-md-6 mb-3">
+													<label class="form-label">Select Size Cover Image</label>
+
+													<select name="size_type" class="form-select ph-form-select-size font-size-inherit" aria-label="Select Size Cover Image">
+														<option value="">Select Size</option>
+														<option value="small" '.$size_type[0].'>Small (412px X 240px)</option>
+														<option value="medium" '.$size_type[1].'>Medium (412px X 440px)</option>
+														<option value="large" '.$size_type[2].'>Large (412px X 640px)</option>
+														<option value="full" '.$size_type[3].'>Full Screen (412px X 840px)</option>
+													</select>
+												</div>
+											</div>
 										</div>
 
 										<div class="col-12 mb-3">

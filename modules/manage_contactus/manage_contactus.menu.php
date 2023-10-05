@@ -41,7 +41,7 @@ function manage_contactus_menu()
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'Contact Us',
+		'name' 	=> 'Manage Contact Us',
 		'type' 	=> 'single',
 		'icon' 	=> '<i class="fad fa-phone fa-fw me-2"></i>',
 		'roles' => '99',

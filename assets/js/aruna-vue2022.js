@@ -1900,6 +1900,21 @@ const Vue2ListData = new Vue(
 				.finally(() => this.loading = false);
 			}
 		},
+		selectCoverImageType: function(getType)
+		{
+			if (getType == 'only_image')
+			{
+				const SelectSize = document.querySelector(".ph-form-select-size");
+
+				SelectSize.setAttribute("disabled", "");
+			}
+			else
+			{
+				const SelectSize = document.querySelector(".ph-form-select-size");
+
+				SelectSize.removeAttribute("disabled", "");
+			}
+		},
 		clickPaginate: async function(page) 
 		{
 			if (document.querySelector(".ar-fetch-listdata") !== null && 

@@ -41,7 +41,7 @@ function manage_gallery_menu()
 
 	$list_menu[] = 
 	[
-		'name' 	=> 'Gallery',
+		'name' 	=> 'Manage Gallery',
 		'type' 	=> 'single',
 		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
 		'roles' => '99',

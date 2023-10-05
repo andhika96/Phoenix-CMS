@@ -848,6 +848,9 @@ class manage_appearance extends Aruna_Controller
 		$size_type[2] = (isset($row_layout['size_type']) && $row_layout['size_type'] == 'large') ? 'selected' : FALSE;
 		$size_type[3] = (isset($row_layout['size_type']) && $row_layout['size_type'] == 'full') ? 'selected' : FALSE;
 
+		$selected_display_coverimage[0] = (isset($row_layout['display_coverimage']) && $row_layout['display_coverimage'] == 'only_image') ? 'selected' : FALSE;
+		$selected_display_coverimage[1] = (isset($row_layout['display_coverimage']) && $row_layout['display_coverimage'] == 'background_image') ? 'selected' : FALSE;
+
 		$is_parallax[0] = (isset($row_layout['is_parallax']) && $row_layout['is_parallax'] == 0) ? 'selected' : FALSE;
 		$is_parallax[1] = (isset($row_layout['is_parallax']) && $row_layout['is_parallax'] == 1) ? 'selected' : FALSE;
 
@@ -859,12 +862,15 @@ class manage_appearance extends Aruna_Controller
 			error_page();
 		}
 
-		$this->form_validation->set_rules('size_type', 'Size Type', 'required');
-		$this->form_validation->set_rules('is_parallax', 'Parallax', 'required');
+		if ($this->input->post('display_coverimage') == 'background_image')
+		{
+			$this->form_validation->set_rules('size_type', 'Size Type', 'required');
+			$this->form_validation->set_rules('is_parallax', 'Parallax', 'required');
+		}
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
-			if ($this->form_validation->run($this) == FALSE)
+			if ($this->form_validation->run($this) == FALSE && $this->input->post('display_coverimage') == 'background_image')
 			{
 				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
@@ -898,7 +904,7 @@ class manage_appearance extends Aruna_Controller
 								}
 
 								$configs['upload_path']		= $s_folder;
-								$configs['allowed_types']	= 'jpg|jpeg|png';
+								$configs['allowed_types']	= 'jpg|jpeg|png|mp4';
 								$configs['overwrite']		= TRUE;
 								$configs['remove_spaces']	= TRUE;
 								$configs['encrypt_name']	= TRUE;
@@ -1096,6 +1102,7 @@ class manage_appearance extends Aruna_Controller
 						'is_parallax'			=> $this->input->post('is_parallax'),
 						'content_title'			=> $this->input->post('content_title'),
 						'content_description'	=> $this->input->post('content_description'),
+						'display_coverimage'	=> $this->input->post('display_coverimage'),
 						'background_overlay'	=> $this->input->post('background_overlay'),
 						'sidebar_position'		=> '',
 						'created'				=> time()
