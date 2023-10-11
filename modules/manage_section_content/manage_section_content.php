@@ -68,6 +68,67 @@ class manage_section_content extends Aruna_Controller
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
+		// Get Vars 2
+		$get_vars = json_decode($row['vars_1'], true);
+
+		$menu_position[0] = (isset($get_vars['navbar']['menu']['position']) && $get_vars['navbar']['menu']['position'] == 'left') ? 'selected' : FALSE;
+		$menu_position[1] = (isset($get_vars['navbar']['menu']['position']) && $get_vars['navbar']['menu']['position'] == 'center') ? 'selected' : FALSE;
+		$menu_position[2] = (isset($get_vars['navbar']['menu']['position']) && $get_vars['navbar']['menu']['position'] == 'right') ? 'selected' : FALSE;
+
+		$section_type[0] = (isset($get_vars['navbar']['menu']['placement']) && $get_vars['navbar']['menu']['placement'] == 'default') ? 'selected' : FALSE;
+		$section_type[1] = (isset($get_vars['navbar']['menu']['placement']) && $get_vars['navbar']['menu']['placement'] == 'fixed-top') ? 'selected' : FALSE;
+		$section_type[2] = (isset($get_vars['navbar']['menu']['placement']) && $get_vars['navbar']['menu']['placement'] == 'sticky-top') ? 'selected' : FALSE;
+
+		$background_shadow[0] = (isset($get_vars['navbar']['background']['shadow']) && $get_vars['navbar']['background']['shadow'] == 'shadow-none') ? 'selected' : FALSE;
+		$background_shadow[1] = (isset($get_vars['navbar']['background']['shadow']) && $get_vars['navbar']['background']['shadow'] == 'shadow-sm') ? 'selected' : FALSE;
+		$background_shadow[2] = (isset($get_vars['navbar']['background']['shadow']) && $get_vars['navbar']['background']['shadow'] == 'shadow') ? 'selected' : FALSE;
+		$background_shadow[3] = (isset($get_vars['navbar']['background']['shadow']) && $get_vars['navbar']['background']['shadow'] == 'shadow-lg') ? 'selected' : FALSE;
+
+		$this->form_validation->set_rules('vars_1[navbar]', 'Style', 'required');
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			if ($this->form_validation->run() == FALSE)
+			{
+				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				exit;
+			}
+			else
+			{
+				$get_vars['navbar'] = $this->input->post('vars_1')['navbar'];
+
+				$this->db->sql_update(['vars_1' => json_encode($get_vars)], 'ml_section', ['id' => $row['id']]);
+
+				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				exit;
+			}
+		}
+
+		$data['vars'] = json_decode($row['vars_1'], true);
+
+		$data['section_type'] = $section_type;
+		$data['menu_position'] = $menu_position;
+		$data['background_shadow'] = $background_shadow;
+
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('header', $data);
+	}
+
+	public function header_old()
+	{
+		set_title('Section Header');
+
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		$res = $this->db->sql_prepare("select * from ml_section_old where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => 'header'], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
 		$menu_position[0] = (isset($row['menu_position']) && $row['menu_position'] == 'left') ? 'selected' : FALSE;
 		$menu_position[1] = (isset($row['menu_position']) && $row['menu_position'] == 'center') ? 'selected' : FALSE;
 		$menu_position[2] = (isset($row['menu_position']) && $row['menu_position'] == 'right') ? 'selected' : FALSE;
@@ -136,7 +197,7 @@ class manage_section_content extends Aruna_Controller
 					'section_type'						=> $this->input->post('section_type')
 				];
 
-				$this->db->sql_update($data, 'ml_section', ['uri' => 'header']);
+				$this->db->sql_update($data, 'ml_section_old', ['uri' => 'header']);
 
 				echo json_encode(['status' => 'success', 'msg' => 'Success']);
 				exit;
@@ -149,7 +210,58 @@ class manage_section_content extends Aruna_Controller
 		$data['csrf_name'] = $this->csrf['name'];
 		$data['csrf_hash'] = $this->csrf['hash'];
 
-		return view('header', $data);
+		return view('header_old', $data);
+	}
+
+	public function header_menu($section)
+	{
+		set_title('Section Header Menu - '.$section);
+
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		$res = $this->db->sql_prepare("select * from ml_section where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => 'header'], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		// Get Vars 2
+		$get_vars = json_decode($row['vars_2'], true);
+
+		// Section Name
+		$section_name = str_replace("_", " ", $section);
+		$section_name = ucwords($section_name);
+
+		$this->form_validation->set_rules('vars_2['.$section.']', 'Style', 'required');
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			if ($this->form_validation->run() == FALSE)
+			{
+				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				exit;
+			}
+			else
+			{
+				$get_vars[$section] = $this->input->post('vars_2')[$section];
+
+				$this->db->sql_update(['vars_2' => json_encode($get_vars)], 'ml_section', ['id' => $row['id']]);
+
+				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				exit;
+			}
+		}
+
+		$data['section'] = $section;
+		$data['vars'] = json_decode($row['vars_2'], true);
+
+		$data['section_name'] = $section_name;
+
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
+
+		return view('header_menu', $data);
 	}
 
 	public function footer()
@@ -162,7 +274,7 @@ class manage_section_content extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
 
-		$get_vars = json_decode($row['vars'], true);
+		$get_vars_1 = json_decode($row['vars_1'], true);
 
 		if ($this->input->post('step') && $this->input->post('step') == 'post')
 		{
@@ -200,9 +312,9 @@ class manage_section_content extends Aruna_Controller
 								exit;
 							}
 
-							if (file_exists($get_vars['footer_left']['site_logo']['content']))
+							if (file_exists($get_vars_1['footer_left']['site_logo']['content']))
 							{
-								$image_web = $get_vars['footer_left']['site_logo']['content'];
+								$image_web = $get_vars_1['footer_left']['site_logo']['content'];
 							}
 							else
 							{
@@ -211,9 +323,9 @@ class manage_section_content extends Aruna_Controller
 						}
 						else 
 						{
-							if (file_exists($get_vars['footer_left']['site_logo']['content']))
+							if (file_exists($get_vars_1['footer_left']['site_logo']['content']))
 							{
-								unlink($get_vars['footer_left']['site_logo']['content']);
+								unlink($get_vars_1['footer_left']['site_logo']['content']);
 							}
 
 							$image_web = $x_folder.$upload->data('file_name');
@@ -221,9 +333,9 @@ class manage_section_content extends Aruna_Controller
 					}
 					else
 					{
-						if (file_exists($get_vars['footer_left']['site_logo']['content']))
+						if (file_exists($get_vars_1['footer_left']['site_logo']['content']))
 						{
-							$image_web = $get_vars['footer_left']['site_logo']['content'];
+							$image_web = $get_vars_1['footer_left']['site_logo']['content'];
 						}
 						else
 						{
@@ -232,31 +344,31 @@ class manage_section_content extends Aruna_Controller
 					}
 				}
 				
-				$get_vars['footer_left'] = $this->input->post('footer_left');
-				$get_vars['footer_left']['site_logo']['content'] = $image_web;
+				$get_vars_1['footer_left'] = $this->input->post('footer_left');
+				$get_vars_1['footer_left']['site_logo']['content'] = $image_web;
 
-				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+				$this->db->sql_update(['vars_1' => json_encode($get_vars_1)], 'ml_section', ['uri' => 'footer']);
 			}
 
 			if ($this->input->post('footer_right_link1') !== null)
 			{
-				$get_vars['footer_right_link1'] = $this->input->post('footer_right_link1');
+				$get_vars_1['footer_right_link1'] = $this->input->post('footer_right_link1');
 
-				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+				$this->db->sql_update(['vars_1' => json_encode($get_vars_1)], 'ml_section', ['uri' => 'footer']);
 			}
 
 			if ($this->input->post('footer_right_link2') !== null)
 			{
-				$get_vars['footer_right_link2'] = $this->input->post('footer_right_link2');
+				$get_vars_1['footer_right_link2'] = $this->input->post('footer_right_link2');
 
-				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+				$this->db->sql_update(['vars_1' => json_encode($get_vars_1)], 'ml_section', ['uri' => 'footer']);
 			}
 
 			if ($this->input->post('footer_right_link3') !== null)
 			{
-				$get_vars['footer_right_link3'] = $this->input->post('footer_right_link3');
+				$get_vars_1['footer_right_link3'] = $this->input->post('footer_right_link3');
 
-				$this->db->sql_update(['vars' => json_encode($get_vars)], 'ml_section', ['uri' => 'footer']);
+				$this->db->sql_update(['vars_1' => json_encode($get_vars_1)], 'ml_section', ['uri' => 'footer']);
 			}
 
 			$this->output->set_content_type('application/json', 'utf-8')
@@ -283,11 +395,11 @@ class manage_section_content extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
 
-		$get_vars = json_decode($row['vars'], true);
+		$get_vars_1 = json_decode($row['vars_1'], true);
 
 		$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode($get_vars, JSON_PRETTY_PRINT))
+					 ->set_output(json_encode($get_vars_1, JSON_PRETTY_PRINT))
 					 ->_display();
 		exit;
 	}
@@ -331,7 +443,7 @@ class manage_section_content extends Aruna_Controller
 		$bindParam = $this->db->sql_bindParam(['uri' => 'footer'], $res);
 		$row = $this->db->sql_fetch_single($bindParam);
 
-		$get_vars = json_decode($row['vars'], true);
+		$get_vars = json_decode($row['vars_1'], true);
 
 		$data['get_vars'] = $get_vars;
 

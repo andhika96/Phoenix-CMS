@@ -39,6 +39,10 @@
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo-tab-pane" type="button" role="tab" aria-controls="profile-tab" aria-selected="false">SEO</button>
 			</li>
+
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="custom-field-tab" data-bs-toggle="tab" data-bs-target="#custom-field-tab-pane" type="button" role="tab" aria-controls="custom-field-tab" aria-selected="false">Custom Field</button>
+			</li>
 		</ul>
 
 		<div class="tab-content" id="myTabContent">
@@ -194,6 +198,140 @@
 												
 												<div class="position-relative text-center d-flex align-items-center justify-content-center" style="width: auto;height: 250px;background-image: linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7),linear-gradient(45deg,#c3c4c7 25%,transparent 25%,transparent 75%,#c3c4c7 75%,#c3c4c7);background-position: 0 0,10px 10px;background-size: 20px 20px;">
 													<img :src="\'\'+metaImageEncode+\'\'" id="meta-image-preview" class="img-fluid">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="custom-field-tab-pane" role="tabpanel" aria-labelledby="custom-field-tab" tabindex="2">
+				<div class="ar-fetch-listdata-vars" id="ar-form-submit-custom-field" data-url="'.site_url('manage_news/get_vars/'.$row['uri']).'">
+					<form action="'.site_url('manage_news/setcustomfield/'.$row['id']).'" method="post" enctype="multipart/form-data" @submit="submitCustomField" ref="formHTMLCustomField" button-block="false" button-rounded-pill="false" font-size-large="false">
+						<div class="toast ar-notice-toast-custom-field position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
+
+						<ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+							<li class="nav-item" role="presentation">
+								<button class="nav-link active" id="custom-field-text-tab" data-bs-toggle="tab" data-bs-target="#custom-field-text-tab-pane" type="button" role="tab" aria-controls="custom-field-text-tab" aria-selected="true">Text Field</button>
+							</li>
+
+							<li class="nav-item" role="presentation">
+								<button class="nav-link" id="custom-field-image-tab" data-bs-toggle="tab" data-bs-target="#custom-field-image-tab-pane" type="button" role="tab" aria-controls="custom-field-image-tab" aria-selected="false">Image Field</button>
+							</li>
+						</ul>
+
+						<div class="row">
+							<div class="col-md-4 mb-4 mb-lg-0 order-lg-2">
+								<div class="arv6-box bg-white rounded shadow-sm p-4">
+									<div class="row">
+										<div class="col-12 d-flex justify-content-end">
+											<input type="hidden" name="step" value="post">
+											<input type="hidden" class="btn-token-submit-custom-field" name="'.$csrf_name.'" value="'.$csrf_hash.'">
+											<input type="submit" class="btn btn-malika-submit btn-malika-submit-custom-field font-size-inherit" value="'.t('Save & Publish').'">
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-8">
+								<div class="tab-content" id="myTabContent2">
+									<div class="tab-pane fade show active" id="custom-field-text-tab-pane" role="tabpanel" aria-labelledby="custom-field-text-tab" tabindex="0">
+										<div class="arv6-box bg-white rounded shadow-sm">
+											<div class="p-4">
+												<div class="h6 fw-bold pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center">
+													<div>
+														<i class="fad fa-receipt fa-fw me-1"></i> Custom Field
+													</div> 
+
+													<div>
+														<span class="float-md-right font-size-normal"><a href="javascript:void(0)" v-on:click="addNewField(\'custom_field_text\')">New Field</a></span>
+													</div>
+												</div>
+
+												<div class="row">
+													<div v-for="(item, index) in getDataVarText" :key="item" class="col-12 mb-3">
+														<div class="row">
+															<div class="col-md-6">
+																<div class="row g-1 mb-2">
+																	<div class="col-md-6 d-flex align-items-center">
+																		<label class="form-label m-0">'.t('Key or Name').'</label>
+																	</div>
+																</div>
+
+																<input type="text" :name="\'text[\'+index+\'][key]\'" placeholder="Enter field or key" class="form-control font-size-inherit" :value="\'\'+item.key+\'\'" v-model="item.key">
+															</div>
+
+															<div class="col-md-6">
+																<div class="row g-1 mb-2">
+																	<div class="col-md-6 d-flex align-items-center">
+																		<label class="form-label m-0">'.t('Value').'</label>
+																	</div>
+
+																	<div class="col-md-6 d-flex align-items-center justify-content-md-end">
+																		<a href="javascript:void(0)" class="btn btn-link p-0 ar-alert-bootbox font-size-inherit" v-on:click="removeField(getDataVarText, index, \''.$row['id'].'\', \'text\')" v-bind:data-url="\''.site_url('manage_news/deletefield/').'\'">'.t('Remove').'</a>
+																	</div>
+																</div>
+																
+																<input type="text" :name="\'text[\'+index+\'][value]\'" placeholder="Enter value" class="form-control font-size-inherit" :value="\'\'+item.value+\'\'" v-model="item.value">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="tab-pane fade" id="custom-field-image-tab-pane" role="tabpanel" aria-labelledby="custom-field-image-tab" tabindex="1">
+										<div class="arv6-box bg-white rounded shadow-sm">
+											<div class="p-4">
+												<div class="h6 fw-bold pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center">
+													<div>
+														<i class="fad fa-receipt fa-fw me-1"></i> Custom Field
+													</div> 
+
+													<div>
+														<span class="float-md-right font-size-normal"><a href="javascript:void(0)" v-on:click="addNewField(\'custom_field_image\')">New Field</a></span>
+													</div>
+												</div>
+
+												<div class="row">
+													<div v-for="(item, index) in getDataVarImage" :key="item" class="col-12 mb-3">
+														<div class="row">
+															<div class="col-md-6">
+																<div class="row g-1 mb-2">
+																	<div class="col-md-6 d-flex align-items-center">
+																		<label class="form-label m-0">'.t('Key or Name').'</label>
+																	</div>
+																</div>
+
+																<input type="text" :name="\'image[\'+index+\'][key]\'" placeholder="Enter field or key" class="form-control font-size-inherit" :value="\'\'+item.key+\'\'" v-model="item.key">
+															</div>
+
+															<div class="col-md-6">
+																<div class="row g-1 mb-2">
+																	<div class="col-md-6 d-flex align-items-center">
+																		<label class="form-label m-0">'.t('Value').'</label>
+																	</div>
+
+																	<div class="col-md-6 d-flex align-items-center justify-content-md-end">
+																		<a href="javascript:void(0)" class="btn btn-link p-0 ar-alert-bootbox font-size-inherit" v-on:click="removeField(getDataVarText, index, \''.$row['id'].'\', \'image\')" v-bind:data-url="\''.site_url('manage_news/deletefield/').'\'">'.t('Remove').'</a>
+																	</div>
+																</div>
+																
+																<div class="input-group mb-3">
+																	<input class="form-control" type="file" :name="\'image[\'+index+\'][value]\'" id="formFile">
+																
+																	<span v-if="item.value">
+																		<a :href="\''.base_url('\'+item.value+\'').'\'" class="input-group-text font-size-inherit" target="_blank">Preview</a>
+																	</span>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>

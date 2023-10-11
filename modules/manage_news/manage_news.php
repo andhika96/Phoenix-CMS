@@ -788,6 +788,167 @@ class manage_news extends Aruna_Controller
 		}
 	}
 
+	public function setcustomfield($id)
+	{
+		$res = $this->db->sql_prepare("select * from ml_news_article where id = :id");
+		$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		// Prevent from Automatic conversion of false to array is deprecated
+		$row = ($row !== FALSE) ? $row : [];
+
+		$row['id'] = isset($row['id']) ? $row['id'] : NULL;
+
+		$get_vars = json_decode($row['vars'], true);
+
+		if ( ! $row['id'] || ! is_numeric($id))
+		{
+			echo json_encode(['status' => 'failed', 'msg' => 'Invalid ID Article']);
+			exit;
+		}
+
+		if ($this->input->post('step') && $this->input->post('step') == 'post')
+		{
+			if ($this->input->post('text') !== null)
+			{
+				$get_total1 = count(json_decode(json_encode($this->input->post('text')), true));
+
+				if ( ! empty($get_vars['custom_field']['text']))
+				{
+					$get_total2 = count($get_vars['custom_field']['text']);
+				}
+				else
+				{
+					$get_total2 = 0;
+				}
+
+				$get_vars['custom_field']['text'] = $this->input->post('text');
+
+				$data_vars = [
+					'vars' => json_encode($get_vars)
+				];
+
+				$this->db->sql_update($data_vars, 'ml_news_article', ['id' => $row['id']]);
+				
+			}
+
+			if ($this->input->post('image') !== null)
+			{
+				$is_upload = 0;
+
+				$reDecodeEncodeVars = json_decode(json_encode($this->input->post('image')), true);
+
+				if (is_array($this->input->post('image')))
+				{
+					foreach ($this->input->post('image') as $key => $value) 
+					{
+						if ( ! empty($_FILES['image']['name'][$key]['value']))
+						{							
+							$_FILES['file_image']['name'] 		= $_FILES['image']['name'][$key]['value'];
+							$_FILES['file_image']['type'] 		= $_FILES['image']['type'][$key]['value'];
+							$_FILES['file_image']['tmp_name'] 	= $_FILES['image']['tmp_name'][$key]['value'];
+							$_FILES['file_image']['error'] 		= $_FILES['image']['error'][$key]['value'];
+							$_FILES['file_image']['size'] 		= $_FILES['image']['size'][$key]['value'];
+
+							$dir = date("Ym", time());
+							$s_folder = './contents/userfiles/customfield/'.$dir.'/';
+
+							// For database only without dot and slash at the front folder
+							$x_folder = 'contents/userfiles/customfield/'.$dir.'/';
+
+							if ( ! is_dir($s_folder)) 
+							{
+								mkdir($s_folder, 0777);
+							}
+
+							$configs['upload_path']		= $s_folder;
+							$configs['allowed_types']	= 'jpg|jpeg|png|gif';
+							$configs['overwrite']		= TRUE;
+							$configs['remove_spaces']	= TRUE;
+							$configs['encrypt_name']	= TRUE;
+							$configs['max_size']		= 8000;
+
+							$upload = load_lib('upload', $configs);
+
+							if ( ! $upload->do_upload('file_image'))
+							{
+								if ($_FILES['file_image']['error'] != 4)
+								{
+									echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+									exit;
+								}
+
+								$reDecodeEncodeVars[$key]['value'] = false;
+							}
+							else 
+							{
+								if (isset($get_vars['custom_field']['image'][$key]['value']) && 
+									file_exists($get_vars['custom_field']['image'][$key]['value']))
+								{
+									unlink($get_vars['custom_field']['image'][$key]['value']);
+								}
+
+								$reDecodeEncodeVars[$key]['value'] = $x_folder.$upload->data('file_name');
+							}
+
+							$is_upload = 1;
+						}
+						else
+						{
+							if (isset($get_vars['custom_field']['image'][$key]['value']) && 
+								file_exists($get_vars['custom_field']['image'][$key]['value']))
+							{
+								$reDecodeEncodeVars[$key]['value'] = $get_vars['custom_field']['image'][$key]['value'];
+							}
+							else
+							{
+								$reDecodeEncodeVars[$key]['value'] = '';
+							}
+
+							$is_upload = 1;
+						}
+					}
+				}
+
+				if ($is_upload == 0)
+				{
+					$get_vars['custom_field']['image'] = $this->input->post('image');
+				}
+				elseif ($is_upload == 1)
+				{
+					$get_vars['custom_field']['image'] = $reDecodeEncodeVars;
+				}
+
+				$data_vars = [
+					'vars' => json_encode($get_vars)
+				];
+
+				$this->db->sql_update($data_vars, 'ml_news_article', ['id' => $row['id']]);
+			}
+
+			if ($this->input->post('image') == null)
+			{
+				$data_vars = [
+					'vars' => json_encode($this->input->post('image'))
+				];
+
+				$this->db->sql_update($data_vars, 'ml_news_article', ['id' => $row['id']]);
+			}
+
+			if ($this->input->post('text') == null)
+			{
+				$data_vars = [
+					'vars' => json_encode($this->input->post('text'))
+				];
+
+				$this->db->sql_update($data_vars, 'ml_news_article', ['id' => $row['id']]);
+			}
+
+			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			exit;
+		}
+	}
+
 	public function layout()
 	{
 		set_title('Layout News Settings');
@@ -1043,6 +1204,62 @@ class manage_news extends Aruna_Controller
 		if ($check)
 		{
 			$this->db->sql_delete("ml_news_category", ['id' => $id]);
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
+		}
+		else
+		{
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'failed'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
+		}
+	}
+
+	public function get_vars($uri = '')
+	{
+		$res = $this->db->sql_prepare("select * from ml_news_article where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => $uri], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$get_vars = json_decode($row['vars'], true);
+
+		$this->output->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($get_vars, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
+	}
+
+	public function deletefield($type, $index, $id)
+	{
+		$check = $this->db->num_rows("ml_news_article", "", ['id' => $id]);
+
+		if ($check)
+		{
+			$res = $this->db->sql_prepare("select * from ml_news_article where id = :id");
+			$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+			$row = $this->db->sql_fetch_single($bindParam);
+
+			$get_vars = json_decode($row['vars'], true);
+
+			if ($type == 'image')
+			{
+				if (isset($get_vars['custom_field']['image'][$index]['value']) && 
+					file_exists($get_vars['custom_field']['image'][$index]['value']))
+				{
+					unlink($get_vars['custom_field']['image'][$index]['value']);
+				}		
+			}
+			else
+			{
+				unset($get_vars['custom_field']['text'][$index]);
+			}
+
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
 					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))

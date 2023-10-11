@@ -464,11 +464,14 @@ class manage_dropdown extends Aruna_Controller
 
 			$get_vars = json_decode($row_menu['menu_vars'], true);
 
-			if (file_exists($get_vars[$index]['menu_icon']))
+			if (isset($get_vars[$index]))
 			{
-				unlink($get_vars[$index]['menu_icon']);
-			}			
-
+				if (file_exists($get_vars[$index]['menu_icon']))
+				{
+					unlink($get_vars[$index]['menu_icon']);
+				}			
+			}
+			
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
 					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))

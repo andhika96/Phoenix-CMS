@@ -20,154 +20,104 @@
 			<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
 
 			<form action="'.site_url('manage_section_content/header').'" method="post" @submit="submit" button-block="false" font-size-large="false" button-rounded-pill="false" with-list-wopage="true" with-list-slideshow-page="false" with-list-coverimage-page="false" ref="formHTML">
-				<div class="row g-2 mb-4">
-					<label for="LabelforMenuPosition" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Menu Position').'</label>
-					
-					<div class="col-md-4">
-						<select name="menu_position" class="form-select font-size-inherit" aria-label="Form Select Menu Position">
-							<option value="">Select</option>
-							<option value="left" '.$menu_position[0].'>Left Side</option>
-							<option value="center" '.$menu_position[1].'>Center</option>
-							<option value="right" '.$menu_position[2].'>Right Side</option>
-						</select>
+				<!-- Link Section -->
+				<div class="mb-5">
+					<div class="row g-2 mb-4">
+						<div class="col-12 col-sm-8 mx-auto">
+							<h5 class="ps-3 mb-0" style="border-left: 5px solid #0095c8;">'.t('Menu Settings').'</h5>
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforHeaderPlacement" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Header Placement').'</label>
+						
+						<div class="col-md-4">
+							<select name="vars_1[navbar][menu][placement]" class="form-select font-size-inherit" aria-label="Form Select Header Type">
+								<option value="">Select</option>
+								<option value="default" '.$section_type[0].'>Default</option>
+								<option value="fixed-top" '.$section_type[1].'>Fixed Top</option>
+								<option value="sticky-top" '.$section_type[2].'>Sticky Top</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforMenuPosition" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Menu Position').'</label>
+						
+						<div class="col-md-4">
+							<select name="vars_1[navbar][menu][position]" class="form-select font-size-inherit" aria-label="Form Select Menu Position">
+								<option value="">Select</option>
+								<option value="left" '.$menu_position[0].'>Left Side</option>
+								<option value="center" '.$menu_position[1].'>Center</option>
+								<option value="right" '.$menu_position[2].'>Right Side</option>
+							</select>
+						</div>
 					</div>
 				</div>
 
-				<div class="row g-2 mb-4">
-					<label for="LabelforHeaderType" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Header Type').'</label>
-					
-					<div class="col-md-4">
-						<select name="section_type" class="form-select font-size-inherit" aria-label="Form Select Header Type">
-							<option value="">Select</option>
-							<option value="default" '.$section_type[0].'>Default</option>
-							<option value="fixed-top" '.$section_type[1].'>Fixed Top</option>
-							<option value="sticky-top" '.$section_type[2].'>Sticky Top</option>
-						</select>
+				<!-- Margin Section -->
+				<div class="mb-5">
+					<div class="row g-2 mb-4">
+						<div class="col-12 col-sm-8 mx-auto">
+							<h5 class="ps-3 mb-0" style="border-left: 5px solid #0095c8;">'.t('Background Style').'</h5>
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforBackgroundColorDefault" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Color Default').'</label>
+						
+						<div class="col-md-4">
+							<input type="text" name="vars_1[navbar][background][color_default]" class="form-control font-size-inherit color-picker-for-jquery" placeholder="#fff" value="'.$vars['navbar']['background']['color_default'].'">
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforBackgroundColorActive" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Color Active').'</label>
+						
+						<div class="col-md-4">
+							<input type="text" name="vars_1[navbar][background][color_active]" class="form-control font-size-inherit color-picker-for-jquery" placeholder="#fff" value="'.$vars['navbar']['background']['color_active'].'">
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforBorderBottom" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Border Bottom Color').'</label>
+						
+						<div class="col-md-4">
+							<input type="text" name="vars_1[navbar][background][border-bottom]" class="form-control font-size-inherit color-picker-for-jquery" placeholder="#fff" value="'.$vars['navbar']['background']['border-bottom'].'">
+						</div>
+					</div>
+
+					<div class="row g-2 mb-4">
+						<label for="LabelforBackgroundShadow" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Shadow').'</label>
+						
+						<div class="col-md-4">
+							<select name="vars_1[navbar][background][shadow]" class="form-select font-size-inherit" aria-label="Form Select Header Type">
+								<option value="">Select</option>
+								<option value="shadow-none" '.$background_shadow[0].'>No Shadow</option>
+								<option value="shadow-sm" '.$background_shadow[1].'>Small Shadow</option>
+								<option value="shadow" '.$background_shadow[2].'>Normal Shadow</option>
+								<option value="shadow-lg" '.$background_shadow[2].'>Large Shadow</option>
+							</select>
+						</div>
 					</div>
 				</div>
 
-				<div class="row g-2 mb-4">
-					<label for="LabelforBackgroundColor" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Color').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="background_color" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['background_color'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforBackgroundColorActive" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Color Active').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="background_color_active" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['background_color_active'].'" disabled>
-						<div class="badge rounded-pill text-bg-info text-small mt-2">Coming soon</div>
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforLinkColor" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Link Color').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="link_color" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['link_color'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforBackgroundLinkColor" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Link Color').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="background_link_color" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['background_link_color'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforLinkColorHover" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Link Color Hover').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="link_color_hover" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['link_color_hover'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforBackgroundLinkColorHover" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Link Color Hover').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="background_link_color_hover" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['background_link_color_hover'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforLinkColorActive" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Link Color Active').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="link_color_active" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['link_color_active'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforBackgroundLinkColorActive" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Background Link Color Active').'</label>
-					
-					<div class="col-md-4">
-						<input type="text" name="background_link_color_active" class="form-control font-size-inherit color-picker-for-jquery" value="'.$row['background_link_color_active'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforMarginLink" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Margin Link').'</label>
-					
-					<div class="col-md-1">
-						<input type="text" name="margin_top_link" class="form-control font-size-inherit" placeholder="Top" value="'.$row['margin_top_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="margin_right_link" class="form-control font-size-inherit" placeholder="Right" value="'.$row['margin_right_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="margin_bottom_link" class="form-control font-size-inherit" placeholder="Bottom" value="'.$row['margin_bottom_link'].'">
+				<!-- Other Settings -->
+				<div class="mb-5">
+					<div class="row g-2 mb-4">
+						<div class="col-12 col-sm-8 mx-auto">
+							<h5 class="ps-3 mb-0" style="border-left: 5px solid #0095c8;">'.t('Other Settings').'</h5>
+						</div>
 					</div>
 
-					<div class="col-md-1">
-						<input type="text" name="margin_left_link" class="form-control font-size-inherit" placeholder="Left" value="'.$row['margin_left_link'].'">
-					</div>
-				</div>
+					<div class="row g-3 mx-auto">
+						<div class="col-md-2 offset-md-4 text-md-end">
+							<a href="'.site_url('manage_section_content/header_menu/main_menu').'" class="btn btn-primary font-size-inherit">Main Menu Settings</a>
+						</div>
 
-				<div class="row g-2 mb-4">
-					<label for="LabelforPaddingLink" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Padding Link').'</label>
-					
-					<div class="col-md-1">
-						<input type="text" name="padding_top_link" class="form-control font-size-inherit" placeholder="Top" value="'.$row['padding_top_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="padding_right_link" class="form-control font-size-inherit" placeholder="Right" value="'.$row['padding_right_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="padding_bottom_link" class="form-control font-size-inherit" placeholder="Bottom" value="'.$row['padding_bottom_link'].'">
-					</div>
-
-					<div class="col-md-1">
-						<input type="text" name="padding_left_link" class="form-control font-size-inherit" placeholder="Left" value="'.$row['padding_left_link'].'">
-					</div>
-				</div>
-
-				<div class="row g-2 mb-4">
-					<label for="LabelforBorderRadiusLink" class="col-md-3 col-form-label offset-md-1 pr-md-0 text-md-end">'.t('Border Radius Link').'</label>
-					
-					<div class="col-md-1">
-						<input type="text" name="border_top_left_radius_link" class="form-control font-size-inherit" placeholder="Top Left" value="'.$row['border_top_left_radius_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="border_top_right_radius_link" class="form-control font-size-inherit" placeholder="Top Right" value="'.$row['border_top_right_radius_link'].'">
-					</div>
-					
-					<div class="col-md-1">
-						<input type="text" name="border_bottom_left_radius_link" class="form-control font-size-inherit" placeholder="Bottom Left" value="'.$row['border_bottom_left_radius_link'].'">
-					</div>
-
-					<div class="col-md-1">
-						<input type="text" name="border_bottom_right_radius_link" class="form-control font-size-inherit" placeholder="Bottom Right" value="'.$row['border_bottom_right_radius_link'].'">
+						<div class="col-md-2 text-md-end">
+							<a href="'.site_url('manage_section_content/header_menu/aside_menu').'" class="btn btn-primary font-size-inherit">Aside Menu Settings</a>
+						</div>
 					</div>
 				</div>
 

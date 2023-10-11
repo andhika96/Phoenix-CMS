@@ -56,28 +56,28 @@
 			.ph-navbar
 			{
 				transition: all 300ms ease 0s;
-				background-color: '.get_section_header('background_color').' !important;
+				background-color: '.get_section_header('section_background', 'color_default').' !important;
 			}
 
 			.ph-navbar .nav-link
 			{
-				color: '.get_section_header('link_color').';
+				color: '.get_section_header('link_color', 'color_default').';
 				'.get_section_header('border_radius_link').'
-				background-color: '.get_section_header('background_link_color').';
+				background-color: '.get_section_header('link_color', 'background_color_default').';
 			}
 
 			.ph-navbar .nav-link:hover
 			{
-				color: '.get_section_header('link_color_hover').';
-				background-color: '.get_section_header('background_link_color_hover').';
+				color: '.get_section_header('link_color', 'color_hover').';
+				background-color: '.get_section_header('link_color', 'background_color_hover').';
 			}
 
 			.ph-navbar .nav-link.active, 
 			.ph-navbar .nav-link.show,
 			.ph-navbar .show > .nav-link
 			{
-				color: '.get_section_header('link_color_active').';
-				background-color: '.get_section_header('background_link_color_active').';
+				color: '.get_section_header('link_color', 'color_active').';
+				background-color: '.get_section_header('link_color', 'background_color_active').';
 			}
 
 			.ph-navbar-transparent .navbar-brand
@@ -87,7 +87,7 @@
 
 			.ph-navbar-white
 			{
-				background-color: '.get_section_header('background_color_active').' !important;
+				background-color: '.get_section_header('section_background', 'color_active').' !important;
 			}
 
 			.ph-navbar-white .navbar-brand
@@ -170,7 +170,7 @@
 		</head>
 
 		<body class="ph-custom-css">
-			<header class="ph-navbar '.is_fixed_navbar().' navbar navbar-expand-lg bg-light" style="border-bottom: 1px '.get_section_header('background_border_bottom').' solid">
+			<header class="ph-navbar '.is_fixed_navbar().' navbar navbar-expand-lg bg-light" style="border-bottom: 1px '.get_section_header('section_background', 'border-bottom').' solid">
 				<div class="container">
 					<a class="navbar-brand me-lg-4" href="#">
 						<img src="'.base_url(get_logo(1, 'image')).'" class="d-none d-md-block" style="width: '.get_logo(1, 'size').'">

@@ -1204,6 +1204,47 @@ class manage_promotion extends Aruna_Controller
 				 ->_display();
 		exit;
 	}
+
+	public function deletefield($type, $index, $id)
+	{
+		$check = $this->db->num_rows("ml_promotion_article", "", ['id' => $id]);
+
+		if ($check)
+		{
+			$res = $this->db->sql_prepare("select * from ml_promotion_article where id = :id");
+			$bindParam = $this->db->sql_bindParam(['id' => $id], $res);
+			$row = $this->db->sql_fetch_single($bindParam);
+
+			$get_vars = json_decode($row['vars'], true);
+
+			if ($type == 'image')
+			{
+				if (isset($get_vars['custom_field']['image'][$index]['value']) && 
+					file_exists($get_vars['custom_field']['image'][$index]['value']))
+				{
+					unlink($get_vars['custom_field']['image'][$index]['value']);
+				}		
+			}
+			else
+			{
+				unset($get_vars['custom_field']['text'][$index]);
+			}
+
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
+		}
+		else
+		{
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'failed'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;
+		}
+	}
 }
 
 ?>

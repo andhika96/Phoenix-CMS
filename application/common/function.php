@@ -658,7 +658,7 @@
 
 	// ------------------------------------------------------------------------
 
-	function get_section_header($column = '')
+	function get_section_header($column = '', $key = NULL)
 	{
 		$Aruna =& get_instance();
 
@@ -669,19 +669,25 @@
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
-		$row[$column] = isset($row[$column]) ? $row[$column] : NULL;
+		// Get variable 1
+		$get_vars1 = json_decode($row['vars_1'], true);
+
+		// Get variable 1
+		$get_vars2 = json_decode($row['vars_2'], true);
+
+		// $row[$column] = isset($row[$column]) ? $row[$column] : NULL;
 
 		if ($column == 'menu_position')
 		{
-			if ($row['menu_position'] == 'left')
+			if ($get_vars1['navbar']['menu']['position'] == 'left')
 			{
 				$menu_position = 'd-lg-flex justify-content-lg-start';
 			}
-			elseif ($row['menu_position'] == 'center')
+			elseif ($get_vars1['navbar']['menu']['position'] == 'center')
 			{
 				$menu_position = 'd-lg-flex justify-content-lg-center';
 			}
-			elseif ($row['menu_position'] == 'right')
+			elseif ($get_vars1['navbar']['menu']['position'] == 'right')
 			{
 				$menu_position = 'd-lg-flex justify-content-lg-end';
 			}
@@ -691,25 +697,42 @@
 
 		if ($column == 'section_type')
 		{
-			if ($row['section_type'] == 'default')
-			{
-				return '';
-			}
+			// if ($get_vars1['navbar']['menu']['placement'] == 'default')
+			// {
+			// 	return '';
+			// }
+
+			return $get_vars1['navbar']['menu']['placement'];
+		}
+
+		if ($column == 'section_background')
+		{
+			return $get_vars1['navbar']['background'][$key];
+		}
+
+		if ($column == 'link_color')
+		{
+			return $get_vars2['main_menu']['link'][$key];
+		}
+
+		if ($column == 'link_border')
+		{
+			return $get_vars2['main_menu']['border'][$key];
 		}
 
 		if ($column == 'margin_link')
 		{
-			return 'margin: '.$row['margin_top_link'].' '.$row['margin_right_link'].' '.$row['margin_bottom_link'].' '.$row['margin_left_link'];
+			return 'margin: '.$get_vars2['main_menu']['margin']['top'].' '.$get_vars2['main_menu']['margin']['right'].' '.$get_vars2['main_menu']['margin']['bottom'].' '.$get_vars2['main_menu']['margin']['left'];
 		}
 
 		if ($column == 'padding_link')
 		{
 			$padding = '';
 
-			$padding .= ( ! empty($row['padding_top_link'])) ? 'padding-top: '.$row['padding_top_link'].';' : '';
-			$padding .= ( ! empty($row['padding_right_link'])) ? 'padding-right: '.$row['padding_right_link'].';' : '';
-			$padding .= ( ! empty($row['padding_bottom_link'])) ? 'padding-bottom: '.$row['padding_bottom_link'].';' : '';
-			$padding .= ( ! empty($row['padding_left_link'])) ? 'padding-left: '.$row['padding_left_link'].';' : '';
+			$padding .= ( ! empty($get_vars2['main_menu']['padding']['top'])) ? 'padding-top: '.$get_vars2['main_menu']['padding']['top'].';' : '';
+			$padding .= ( ! empty($get_vars2['main_menu']['padding']['right'])) ? 'padding-right: '.$get_vars2['main_menu']['padding']['right'].';' : '';
+			$padding .= ( ! empty($get_vars2['main_menu']['padding']['bottom'])) ? 'padding-bottom: '.$get_vars2['main_menu']['padding']['bottom'].';' : '';
+			$padding .= ( ! empty($get_vars2['main_menu']['padding']['left'])) ? 'padding-left: '.$get_vars2['main_menu']['padding']['left'].';' : '';
 
 			return $padding;
 		}
@@ -718,15 +741,15 @@
 		{
 			$border = '';
 
-			$border .= ( ! empty($row['border_top_left_radius_link'])) ? 'border-top-left-radius: '.$row['border_top_left_radius_link'].';' : '';
-			$border .= ( ! empty($row['border_top_right_radius_link'])) ? 'border-top-right-radius: '.$row['border_top_right_radius_link'].';' : '';
-			$border .= ( ! empty($row['border_bottom_left_radius_link'])) ? 'border-bottom-left-radius: '.$row['border_bottom_left_radius_link'].';' : '';			
-			$border .= ( ! empty($row['border_bottom_right_radius_link'])) ? 'border-bottom-right-radius: '.$row['border_bottom_right_radius_link'].';' : '';
+			$border .= ( ! empty($get_vars2['main_menu']['border']['radius']['top-left'])) ? 'border-top-left-radius: '.$get_vars2['main_menu']['border']['radius']['top-left'].';' : '';
+			$border .= ( ! empty($get_vars2['main_menu']['border']['radius']['top-right'])) ? 'border-top-right-radius: '.$get_vars2['main_menu']['border']['radius']['top-right'].';' : '';
+			$border .= ( ! empty($get_vars2['main_menu']['border']['radius']['bottom-left'])) ? 'border-bottom-left-radius: '.$get_vars2['main_menu']['border']['radius']['bottom-left'].';' : '';			
+			$border .= ( ! empty($get_vars2['main_menu']['border']['radius']['bottom-right'])) ? 'border-bottom-right-radius: '.$get_vars2['main_menu']['border']['radius']['bottom-right'].';' : '';
 			
 			return $border;
 		}
 
-		return $row[$column];
+		// return $row[$column];
 	}
 
 	// ------------------------------------------------------------------------
@@ -742,17 +765,20 @@
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
-		$row['menu_position'] = isset($row['menu_position']) ? $row['menu_position'] : NULL;
+		// Get variable
+		$get_vars = json_decode($row['vars_1'], true);
+
+		$menu_position = isset($get_vars['navbar']['menu']['position']) ? $get_vars['navbar']['menu']['position'] : NULL;
 		
-		if ($row['menu_position'] == 'left')
+		if ($menu_position == 'left')
 		{
 			$menu_position = 'flex-row flex-wrap ms-lg-auto';
 		}
-		elseif ($row['menu_position'] == 'center')
+		elseif ($menu_position == 'center')
 		{
 			$menu_position = 'flex-row flex-wrap';
 		}
-		elseif ($row['menu_position'] == 'right')
+		elseif ($menu_position == 'right')
 		{
 			$menu_position = 'flex-row flex-wrap ms-3';
 		}
@@ -773,9 +799,12 @@
 		// Prevent from Automatic conversion of false to array is deprecated
 		$row = ($row !== FALSE) ? $row : [];
 
-		$row['section_type'] = isset($row['section_type']) ? $row['section_type'] : NULL;
+		// Get variable
+		$get_vars = json_decode($row['vars_1'], true);
 
-		$get_class_name = ($row['section_type'] == 'fixed-top') ? 'ph-navbar-transparent' : '';
+		$section_type = isset($get_vars['navbar']['menu']['placement']) ? $get_vars['navbar']['menu']['placement'] : NULL;
+
+		$get_class_name = ($section_type == 'fixed-top') ? 'ph-navbar-transparent' : '';
 
 		return $get_class_name;
 	}
@@ -2270,7 +2299,7 @@
 
 				if (file_exists($row_coverimage['image_web']) && file_exists($row_coverimage['image_mobile']))
 				{
-					$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+					$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('section_background', 'shadow');
 				}
 				else
 				{
@@ -2283,12 +2312,12 @@
 			}
 			else
 			{
-				$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+				$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('section_background', 'shadow');
 			}
 		}
 		else
 		{
-			$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('background_shadow');
+			$get_deactive_fixed_navbar = get_header_type().' '.get_section_header('section_type').' '.get_section_header('section_background', 'shadow');
 		}
 
 		return $get_deactive_fixed_navbar;

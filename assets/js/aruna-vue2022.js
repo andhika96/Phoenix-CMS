@@ -682,8 +682,16 @@ const Vue2FormArticle = new Vue(
 				axios.get(url)
 				.then(response => 
 				{
-					this.getDataVarText = (response.data.custom_field.text !== undefined) ? response.data.custom_field.text : [];
-					this.getDataVarImage = (response.data.custom_field.image !== undefined) ? response.data.custom_field.image : [];
+					if (response.data !== null)
+					{
+						this.getDataVarText = (response.data.custom_field.text !== undefined) ? response.data.custom_field.text : [];
+						this.getDataVarImage = (response.data.custom_field.image !== undefined) ? response.data.custom_field.image : [];
+					}
+					else
+					{
+						this.getDataVarText.text = [];
+						this.getDataVarImage.image = [];
+					}
 				})
 				.catch(function(error) 
 				{

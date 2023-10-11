@@ -404,10 +404,13 @@ class manage_header extends Aruna_Controller
 
 			$get_vars = json_decode($row_menu['hmenu_vars'], true);
 
-			if (file_exists($get_vars[$index]['menu_icon']))
+			if (isset($get_vars[$index]))
 			{
-				unlink($get_vars[$index]['menu_icon']);
-			}			
+				if (file_exists($get_vars[$index]['menu_icon']))
+				{
+					unlink($get_vars[$index]['menu_icon']);
+				}			
+			}
 
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
@@ -423,6 +426,163 @@ class manage_header extends Aruna_Controller
 					 ->_display();
 			exit;
 		}
+	}
+
+	public function get_style_section($section, $key)
+	{
+		$res = $this->db->sql_prepare("select * from ml_section_2 where uri = :section");
+		$bindParam = $this->db->sql_bindParam(['section' => $section], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$vars1 = json_decode($row['vars_1'], true);
+
+		$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode($vars1[$key], JSON_PRETTY_PRINT))
+					 ->_display();
+		exit;
+	}
+
+	public function get_style_section_menu($section, $key)
+	{
+		$res = $this->db->sql_prepare("select * from ml_section_2 where uri = :section");
+		$bindParam = $this->db->sql_bindParam(['section' => $section], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		$vars2 = json_decode($row['vars_2'], true);
+
+		return $vars2[$key];
+
+		// $this->output->set_content_type('application/json', 'utf-8')
+		// 			 ->set_header('Access-Control-Allow-Origin: '.site_url())
+		// 			 ->set_output(json_encode($vars2[$key], JSON_PRETTY_PRINT))
+		// 			 ->_display();
+		// exit;
+	}
+
+	public function test()
+	{
+		echo $this->get_style_section_menu('header', 'main_menu')['link']['color_default'];
+		exit;
+	}
+
+	public function __style_header_navbar()
+	{
+		$output = 
+		[
+			'navbar' =>
+			[
+				'menu'	=>
+				[
+					'position' 		=> 'center',
+					'placemenet'	=> 'sticky-top'
+				],
+				'background' 	=>
+				[
+					'color_default' 	=> '#fff',
+					'color_active' 		=> '#ccc',
+					'border-bottom' 	=> '#dcdcdc',
+					'shadow'			=> 'sm-shadow'
+				]
+			]
+		];
+
+		$this->output->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
+	}
+
+	public function __style_header_navbar_menu()
+	{
+		$output = 
+		[
+			'main_menu' =>
+			[
+				'link' =>
+				[
+					'color_default' 			=> '#fff',
+					'background_color_default' 	=> '#fff',
+					'color_hover' 				=> '#ccc',
+					'background_color_hover' 	=> '#fff',
+					'color_active' 				=> '#ccc',
+					'background_color_active' 	=> '#fff',
+				],
+				'margin' =>
+				[
+					'top' 		=> '0px',
+					'right' 	=> '0px',
+					'bottom' 	=> '0px',
+					'left' 		=> '0px',
+				],
+				'padding' =>
+				[
+					'top' 		=> '0px',
+					'right' 	=> '0px',
+					'bottom' 	=> '0px',
+					'left' 		=> '0px',
+				],
+				'border' =>
+				[
+					'color' 	=> '#eee',
+					'width' 	=> '1px',
+					'style'		=> 'solid',
+					'radius' 	=>
+					[
+						'top-left' 		=> '5px',
+						'top-right' 	=> '5px',
+						'bottom-left' 	=> '5px',
+						'bottom-right' 	=> '5px'
+					]
+				]
+			],
+			'aside_menu' =>
+			[
+				'link' =>
+				[
+					'color_default' 			=> '#fff',
+					'background_color_default' 	=> '#fff',
+					'color_hover' 				=> '#ccc',
+					'background_color_hover' 	=> '#fff',
+					'color_active' 				=> '#ccc',
+					'background_color_active' 	=> '#fff',
+				],
+				'margin' =>
+				[
+					'top' 		=> '0px',
+					'right' 	=> '0px',
+					'bottom' 	=> '0px',
+					'left' 		=> '0px',
+				],
+				'padding' =>
+				[
+					'top' 		=> '0px',
+					'right' 	=> '0px',
+					'bottom' 	=> '0px',
+					'left' 		=> '0px',
+				],
+				'border' =>
+				[
+					'color' 	=> '#eee',
+					'width' 	=> '1px',
+					'style'		=> 'solid',
+					'radius' 	=>
+					[
+						'top-left' 		=> '5px',
+						'top-right' 	=> '5px',
+						'bottom-left' 	=> '5px',
+						'bottom-right' 	=> '5px'
+					]
+				]
+			]
+		];
+
+		$this->output->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
 	}
 }
 
