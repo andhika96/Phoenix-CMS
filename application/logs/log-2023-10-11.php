@@ -545,3 +545,7 @@ ERROR - 2023-10-11 15:53:07 --> Severity: Notice --> Undefined variable: row_met
 ERROR - 2023-10-11 15:53:07 --> Severity: Notice --> Trying to access array offset on value of type null D:\Laragon\www\cms\modules\manage_event\views\editpost.php 202
 ERROR - 2023-10-11 15:53:07 --> Severity: Notice --> Undefined variable: row_metatag D:\Laragon\www\cms\modules\manage_event\views\editpost.php 207
 ERROR - 2023-10-11 15:53:07 --> Severity: Notice --> Trying to access array offset on value of type null D:\Laragon\www\cms\modules\manage_event\views\editpost.php 207
+ERROR - 2023-10-11 15:55:46 --> Severity: Notice --> Undefined variable: row_metatag D:\Laragon\www\cms\modules\manage_event\views\editpost.php 202
+ERROR - 2023-10-11 15:55:46 --> Severity: Notice --> Trying to access array offset on value of type null D:\Laragon\www\cms\modules\manage_event\views\editpost.php 202
+ERROR - 2023-10-11 15:55:46 --> Severity: Notice --> Undefined variable: row_metatag D:\Laragon\www\cms\modules\manage_event\views\editpost.php 207
+ERROR - 2023-10-11 15:55:46 --> Severity: Notice --> Trying to access array offset on value of type null D:\Laragon\www\cms\modules\manage_event\views\editpost.php 207

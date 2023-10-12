@@ -629,11 +629,11 @@
 	{
 		$Aruna =& get_instance();
 
-		$res = $Aruna->db->sql_prepare("select vars from ml_section where uri = :uri");
+		$res = $Aruna->db->sql_prepare("select vars_1 from ml_section where uri = :uri");
 		$bindParam = $Aruna->db->sql_bindParam(['uri' => $uri], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
-		$json_decode = json_decode($row['vars'], true);
+		$json_decode = json_decode($row['vars_1'], true);
 
 		if ( empty($json_decode[$section]) || empty($json_decode[$section][$column]))
 		{
