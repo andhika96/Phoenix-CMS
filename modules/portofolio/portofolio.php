@@ -159,7 +159,7 @@ class portofolio extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No article'];
+			$output[] = ['status' => 'failed', 'message' => 'No article'];
 		}
 
 		$output[]['getDataPage'] = ['current_page' => $currentpage, 'total' => $totalpage, 'num_per_page' => $this->num_per_page];
@@ -207,7 +207,7 @@ class portofolio extends Aruna_Controller
 		}
 		else
 		{
-			$data[] = ['status' => 'failed', 'msg' => 'Article not found'];
+			$data[] = ['status' => 'failed', 'message' => 'Article not found'];
 		}
 
 		$this->output

@@ -56,7 +56,7 @@ class manage_gallery extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -72,7 +72,7 @@ class manage_gallery extends Aruna_Controller
 				
 				$this->db->sql_insert($data, 'ml_image_category');
 
-				echo json_encode(['status' => 'success', 'msg' => 'New category added!']);
+				echo json_encode(['status' => 'success', 'message' => 'New category added!']);
 				exit;
 			}
 		}
@@ -109,7 +109,7 @@ class manage_gallery extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -220,7 +220,7 @@ class manage_gallery extends Aruna_Controller
 			$this->output->set_content_type('application/json', 'utf-8')
 						 ->set_header('Access-Control-Allow-Origin: '.site_url())
 						 ->set_header('HTTP/1.0 400 Bad Request')
-						 ->set_output(json_encode(['status' => 'failed', 'msg' => 'Could not upload because it has reached the upload limit of 50'], JSON_PRETTY_PRINT))
+						 ->set_output(json_encode(['status' => 'failed', 'message' => 'Could not upload because it has reached the upload limit of 50'], JSON_PRETTY_PRINT))
 						 ->_display();
 			exit;
 		}
@@ -272,7 +272,7 @@ class manage_gallery extends Aruna_Controller
 							$this->output->set_content_type('application/json', 'utf-8')
 										 ->set_header('Access-Control-Allow-Origin: '.site_url())
 										 ->set_header('HTTP/1.0 400 Bad Request')
-										 ->set_output(json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')], JSON_PRETTY_PRINT))
+										 ->set_output(json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')], JSON_PRETTY_PRINT))
 										 ->_display();
 							exit;
 						}
@@ -349,7 +349,7 @@ class manage_gallery extends Aruna_Controller
 			
 				$this->output->set_content_type('application/json', 'utf-8')
 							 ->set_header('Access-Control-Allow-Origin: '.site_url())
-							 ->set_output(json_encode(['status' => 'success', 'msg' => 'Success'], JSON_PRETTY_PRINT))
+							 ->set_output(json_encode(['status' => 'success', 'message' => 'Success'], JSON_PRETTY_PRINT))
 							 ->_display();
 				exit;
 			}
@@ -358,7 +358,7 @@ class manage_gallery extends Aruna_Controller
 				$this->output->set_content_type('application/json', 'utf-8')
 							 ->set_header('Access-Control-Allow-Origin: '.site_url())
 							 ->set_header('HTTP/1.0 400 Bad Request')
-							 ->set_output(json_encode(['status' => 'failed', 'msg' => 'Upload failed'], JSON_PRETTY_PRINT))
+							 ->set_output(json_encode(['status' => 'failed', 'message' => 'Upload failed'], JSON_PRETTY_PRINT))
 							 ->_display();
 				exit;
 			}
@@ -386,7 +386,7 @@ class manage_gallery extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No image'];
+			$output[] = ['status' => 'failed', 'message' => 'No image'];
 		}
 
 		$output[]['getDataPage'] = ['current_page' => $currentpage, 'total' => $totalpage, 'num_per_page' => $this->num_per_page];
@@ -408,7 +408,7 @@ class manage_gallery extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+			$output[] = ['status' => 'failed', 'message' => 'No data'];
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')

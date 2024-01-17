@@ -45,7 +45,7 @@
 			<!-- Custom CSS -->
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v=0.0.4').'">
-			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v=0.0.4').'">
+			<link rel="stylesheet" href="'.base_url('assets/css/phoenix-cms.css?v='.time()).'">
 
 			<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
 
@@ -166,6 +166,61 @@
 				transform: rotate(-135deg);
 				vertical-align: .0rem 
 			}
+
+			.ph-dropdown-menu
+			{
+				width: 210px;
+				padding: .25rem;
+				border: 1px #ececec solid;
+				border-radius: 0.5rem 0.75rem;
+				background: #fff;
+				box-shadow: var(--bs-box-shadow) !important;
+			}
+
+			.ph-dropdown-menu li a:hover
+			{
+				color: #fff;
+				border-radius: 7.5px;
+				background: #cc1f1f;
+			}
+
+			.ph-dropdown-menu li a.dropdown-item
+			{
+				padding: .7rem .9rem;
+			}
+
+			.ph-dropdown-menu2
+			{
+				width: 200px;
+				padding: 0;
+				border: 0;
+				border-radius: .5rem;
+				background: #fff;
+				box-shadow: var(--bs-box-shadow) !important;
+			}
+
+			.ph-dropdown-menu2 li a:hover
+			{
+				color: #fff;
+				background: #cc1f1f;
+			}
+
+			.ph-dropdown-menu2 li:first-child a:hover
+			{
+				border-top-left-radius: 7.5px;
+				border-top-right-radius: 7.5px;
+			}
+
+			.ph-dropdown-menu2 li:last-child a:hover
+			{
+				border-bottom-left-radius: 7.5px;
+				border-bottom-right-radius: 7.5px;
+			}
+
+			.ph-dropdown-menu2 li a.dropdown-item
+			{
+				padding: .75rem 1rem;
+			}
 			</style>
 		</head>
 
@@ -184,6 +239,10 @@
 					<div class="collapse navbar-collapse '.get_section_header('menu_position').'" id="navbarNavDropdown">
 						<ul class="navbar-nav">
 							'.get_list_menu_header().'
+						</ul>
+
+						<ul class="navbar-nav d-flex d-md-none">
+							'.get_list_aside_menu_header().'
 						</ul>
 					</div>
 
@@ -205,7 +264,7 @@
 						</div>
 					</div>
 
-					<ul class="navbar-nav '.get_aside_position_header().'">
+					<ul class="navbar-nav d-none d-md-flex '.get_aside_position_header().'">
 						'.get_list_aside_menu_header().'
 					</ul>
 				</div>

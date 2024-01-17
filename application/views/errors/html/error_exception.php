@@ -43,8 +43,18 @@
 		}
 
 		$source = str_replace(["\r\n", "\r"], "\n", $source);
-		$source = explode("\n", highlight_string($source, true));
-		$source = str_replace('<br />', "\n", $source[1]);
+			
+		// Fix end of line string in under PHP 8.3 and above PHP 8.2
+		if ( ! is_php('8.3'))
+		{
+			$source = explode("\n", highlight_string($source, true));
+			$source = str_replace('<br />', "\n", $source[1]);
+		}
+		else
+		{
+			$source = explode(PHP_EOL, highlight_string($source, true));
+			$source = str_replace('<br />', "\n", $source[0]);
+		}
 
 		$source = explode("\n", str_replace("\r\n", "\n", $source));
 
@@ -73,8 +83,8 @@
 			if (($n + $start + 1) === $lineNumber)
 			{
 				preg_match_all('#<[^>]+>#', $row, $tags);
-				$out .= sprintf("<span class='line highlight'><span class='number'>{$format}</span> %s\n</span>%s", $n + $start + 1, strip_tags($row), implode('', $tags[0])
-				);
+
+				$out .= sprintf("<span class='line highlight'><span class='number'>{$format}</span> %s\n</span>%s", $n + $start + 1, strip_tags($row), implode('', $tags[0]));
 			}
 			else
 			{
@@ -87,7 +97,7 @@
 			$out .= str_repeat('</span>', $spans);
 		}
 
-		return '<pre><code>' . $out . '</code></pre>';
+		return '<pre><code>'.$out.'</code></pre>';
 	}
 
 	echo '
@@ -99,7 +109,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
 		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/4.6.0/css/bootstrap.min.css').'">
+		<link rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/5.3.2/css/bootstrap.min.css').'">
 
 		<!-- Font Lato CSS -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
@@ -163,11 +173,11 @@
 				</div>
 
 				<div class="row text-white">
-					<div class="col-lg-6 col-md-6 text-center text-md-left mb-3 mb-md-0">
+					<div class="col-lg-6 col-md-6 text-center text-md-start mb-3 mb-md-0">
 						Made with <i class="fas fa-heart mx-1"></i> & <i class="fas fa-coffee mx-1"></i> in Jakarta, Indonesian.
 					</div>
 
-					<div class="col-lg-6 col-md-6 text-center text-md-right">
+					<div class="col-lg-6 col-md-6 text-center text-md-end">
 						Created & Developed by <a href="https://www.instagram.com/andhika_adhitia" target="_blank" class="text-white font-weight-bold"><u>Andhika Adhitia N</u></a>
 					</div>
 				</div>

@@ -49,7 +49,24 @@ class home extends Aruna_Controller
 
 	public function zxc()
 	{
-		echo $this->uuid->v4();
+		$res = $this->db->sql_select("select * from ml_blog_article");
+		$row = $this->db->sql_fetch($res);
+
+		$this->db->sql_chunk($row, 10, function ($response) 
+		{
+			$i = 1;
+			foreach ($response as $output)
+			{
+				echo $i.' - '.$output['title'].'<br/>';
+
+				$i++;
+			}
+
+			echo '<br/><br/>';
+		});
+
+		// print_r($output);
+		exit;
 	}
 }
 

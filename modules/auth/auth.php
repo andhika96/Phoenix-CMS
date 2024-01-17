@@ -47,7 +47,7 @@ class auth extends Aruna_Controller
 		{				
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -71,7 +71,7 @@ class auth extends Aruna_Controller
 				}
 				else
 				{
-					echo json_encode(['status' => 'failed', 'msg' => 'The email address or password you entered is incorrect, please try again']);
+					echo json_encode(['status' => 'failed', 'message' => 'The email address or password you entered is incorrect, please try again']);
 					exit;
 				}
 			}
@@ -116,7 +116,7 @@ class auth extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -127,7 +127,7 @@ class auth extends Aruna_Controller
 
 				if ( ! $this->db->sql_counts($bindParam_email))
 				{
-					echo json_encode(['status' => 'failed', 'msg' => 'Email not found in any account']);
+					echo json_encode(['status' => 'failed', 'message' => 'Email not found in any account']);
 					exit;
 				}
 				else
@@ -165,8 +165,8 @@ class auth extends Aruna_Controller
 					$this->email->message('Click the link below to reset your password, and your password will expire in 5 minutes, after 5 minutes you will not be able to access the link <br/><br/> '.site_url('auth/recoveryaccount?code='.$get_random_code));
 					$this->email->send();
 
-					// echo json_encode(['status' => 'fail', 'msg' => 'You cannot use this feature, because this feature is still in development mode']);
-					echo json_encode(['status' => 'success', 'msg' => 'The password reset link has been sent to your email, please check your inbox or email spam folder']);
+					// echo json_encode(['status' => 'fail', 'message' => 'You cannot use this feature, because this feature is still in development mode']);
+					echo json_encode(['status' => 'success', 'message' => 'The password reset link has been sent to your email, please check your inbox or email spam folder']);
 					exit;
 				}
 			}
@@ -200,7 +200,7 @@ class auth extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -236,7 +236,7 @@ class auth extends Aruna_Controller
 				}
 				else
 				{
-					echo json_encode(['status' => 'failed', 'msg' => $error]);
+					echo json_encode(['status' => 'failed', 'message' => $error]);
 					exit;
 				}
 			}
@@ -291,7 +291,7 @@ class auth extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->error_array()]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->error_array()]);
 				exit;
 			}
 			else

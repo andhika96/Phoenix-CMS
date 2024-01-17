@@ -57,7 +57,7 @@ class manage_header extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -87,11 +87,11 @@ class manage_header extends Aruna_Controller
 				}
 				else
 				{
-					echo json_encode(['status' => 'failed', 'msg' => $this->_getDetailPage($this->input->post('page_id'), 'name').' already added']);
+					echo json_encode(['status' => 'failed', 'message' => $this->_getDetailPage($this->input->post('page_id'), 'name').' already added']);
 					exit;
 				}
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -118,7 +118,7 @@ class manage_header extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -148,7 +148,7 @@ class manage_header extends Aruna_Controller
 				}
 				else
 				{
-					echo json_encode(['status' => 'failed', 'msg' => $this->_getDetailPage($this->input->post('page_id'), 'name').' already added']);
+					echo json_encode(['status' => 'failed', 'message' => $this->_getDetailPage($this->input->post('page_id'), 'name').' already added']);
 					exit;
 				}
 
@@ -185,7 +185,7 @@ class manage_header extends Aruna_Controller
 
 			$this->db->sql_update($data_header_menu, 'ml_header_menu', ['id' => $row['id']]);
 
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 		*/
@@ -199,7 +199,7 @@ class manage_header extends Aruna_Controller
 
 			if ($row['hmenu_type'] == 'aside' && $get_total_aside_menu2 > 3)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => 'You can set menu aside only 3 menu']);
+				echo json_encode(['status' => 'failed', 'message' => 'You can set menu aside only 3 menu']);
 				exit;
 			}	
 			else
@@ -264,7 +264,7 @@ class manage_header extends Aruna_Controller
 						{
 							if ($_FILES['menu_icon_file']['error'] != 4)
 							{
-								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 								exit;
 							}
 
@@ -299,7 +299,7 @@ class manage_header extends Aruna_Controller
 
 				$this->db->sql_update($data_header_menu, 'ml_header_menu', ['id' => $row['id']]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -352,7 +352,7 @@ class manage_header extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+			$output[] = ['status' => 'failed', 'message' => 'No data'];
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')

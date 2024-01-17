@@ -67,7 +67,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -83,7 +83,7 @@ class manage_event extends Aruna_Controller
 				
 				$this->db->sql_insert($data, 'ml_event_category');
 
-				echo json_encode(['status' => 'success', 'msg' => 'New category added!']);
+				echo json_encode(['status' => 'success', 'message' => 'New category added!']);
 				exit;
 			}
 		}
@@ -120,7 +120,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -177,7 +177,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -217,7 +217,7 @@ class manage_event extends Aruna_Controller
 					{
 						if ($_FILES['thumbnail']['error'] != 4)
 						{	
-							echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+							echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 							exit;
 						}
 
@@ -419,7 +419,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -459,7 +459,7 @@ class manage_event extends Aruna_Controller
 					{
 						if ($_FILES['thumbnail']['error'] != 4)
 						{	
-							echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+							echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 							exit;
 						}
 
@@ -575,7 +575,7 @@ class manage_event extends Aruna_Controller
 				{
 					$this->db->sql_update($data, 'ml_event_article', ['id' => $row['id']]);
 
-					echo json_encode(['status' => 'success', 'msg' => 'Post Edited', 'url' => site_url('manage_event')]);
+					echo json_encode(['status' => 'success', 'message' => 'Post Edited', 'url' => site_url('manage_event')]);
 					exit;
 				}
 			}
@@ -646,7 +646,7 @@ class manage_event extends Aruna_Controller
 						{
 							if ($_FILES['meta_image']['error'] != 4)
 							{	
-								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 								exit;
 							}
 
@@ -706,7 +706,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -746,7 +746,7 @@ class manage_event extends Aruna_Controller
 					{
 						if ($_FILES['meta_image']['error'] != 4)
 						{	
-							echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+							echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 							exit;
 						}
 
@@ -799,7 +799,7 @@ class manage_event extends Aruna_Controller
 
 		if ( ! $row['id'] || ! is_numeric($id))
 		{
-			echo json_encode(['status' => 'failed', 'msg' => 'Invalid ID Article']);
+			echo json_encode(['status' => 'failed', 'message' => 'Invalid ID Article']);
 			exit;
 		}
 
@@ -870,7 +870,7 @@ class manage_event extends Aruna_Controller
 							{
 								if ($_FILES['file_image']['error'] != 4)
 								{
-									echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+									echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 									exit;
 								}
 
@@ -940,7 +940,7 @@ class manage_event extends Aruna_Controller
 				$this->db->sql_update($data_vars, 'ml_event_article', ['id' => $row['id']]);
 			}
 
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 	}
@@ -983,7 +983,7 @@ class manage_event extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -1010,7 +1010,7 @@ class manage_event extends Aruna_Controller
 					$this->db->sql_update($layout_data, 'ml_layout', ['id' => $row_layout['id']]);
 				}
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -1058,7 +1058,7 @@ class manage_event extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No article'];
+			$output[] = ['status' => 'failed', 'message' => 'No article'];
 		}
 
 		$output[]['getDataPage'] = ['current_page' => $currentpage, 'total' => $totalpage, 'num_per_page' => $this->num_per_page];
@@ -1083,7 +1083,7 @@ class manage_event extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+			$output[] = ['status' => 'failed', 'message' => 'No data'];
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')
@@ -1106,7 +1106,7 @@ class manage_event extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+			$output[] = ['status' => 'failed', 'message' => 'No data'];
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')
@@ -1186,7 +1186,7 @@ class manage_event extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No data'];
+			$output[] = ['status' => 'failed', 'message' => 'No data'];
 		}
 
 		$this->output->set_content_type('application/json', 'utf-8')

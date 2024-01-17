@@ -69,7 +69,7 @@ const Vue2Form = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -77,7 +77,7 @@ const Vue2Form = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -125,7 +125,7 @@ const Vue2Form = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -193,7 +193,7 @@ const Vue2Form = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -228,7 +228,7 @@ const Vue2Form = new Vue(
 				else if (response.data.status == 'failed')
 				{
 					// Get data from response data
-					this.responseMessageSignup = response.data.msg;
+					this.responseMessageSignup = response.data.message;
 
 					// Check variable if form have notice error and set to true
 					this.initFormSignup['email'] 		= (this.responseMessageSignup['email'] != undefined) ? true : false;
@@ -325,7 +325,7 @@ const Vue2FormArticle = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -333,7 +333,7 @@ const Vue2FormArticle = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -381,7 +381,7 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -453,7 +453,7 @@ const Vue2FormArticle = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -461,7 +461,7 @@ const Vue2FormArticle = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
@@ -509,7 +509,7 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
@@ -581,7 +581,7 @@ const Vue2FormArticle = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -589,7 +589,7 @@ const Vue2FormArticle = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
@@ -639,7 +639,7 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
@@ -1133,7 +1133,7 @@ const Vue2Croppie = new Vue(
 					{
 						if ( ! response.data.url)
 						{
-							this.responseMessageSubmit = response.data.msg;
+							this.responseMessageSubmit = response.data.message;
 
 							// We use toast from Bootstrap 5
 							let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -1185,7 +1185,7 @@ const Vue2Croppie = new Vue(
 					}
 					else if (response.data.status == 'failed')
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 						
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -1306,7 +1306,7 @@ const Vue2ListData = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -1314,7 +1314,7 @@ const Vue2ListData = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -1380,7 +1380,7 @@ const Vue2ListData = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -1397,7 +1397,30 @@ const Vue2ListData = new Vue(
 			})
 			.catch(response =>
 			{
-				console.log(response);
+				this.responseMessageSubmit = response.response.data.message;
+
+				let display_error = "";
+
+				if (response.response.data.type == 'exception_error')
+				{
+					display_error = "<div> <p class=\"mb-2\">Type: "+response.response.data.title+"</p> <p class=\"mb-2\">Message: "+response.response.data.message+"</p> <p class=\"mb-2\">File Name: "+response.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+response.response.data.linenumber+"</p> </div>";
+				}
+				else
+				{
+					display_error = "<div> <p class=\"mb-2\">Type: "+response.response.data.title+"</p> <p class=\"mb-2\">Message: "+response.response.data.message+"</p> </div>";
+				}
+
+				// We use toast from Bootstrap 5
+				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
+
+				let toast = new bootstrap.Toast(toastBox);
+				toast.show();
+
+				document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+				document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 			});
 		},
 		listData: function()
@@ -1522,7 +1545,30 @@ const Vue2ListData = new Vue(
 					this.statusData 			= getRes.status;
 					this.msgData 				= getRes.msg;
 
-					console.log(this.getListFormSlideshow);
+					if (document.querySelector(".color-picker") !== undefined)
+					{
+						$(function() 
+						{
+							$(".color-picker").spectrum(
+							{
+								type: "component",
+								showInput: true,
+								showInitial: true
+							});
+						
+							$(".color-picker").on('change.spectrum', function(e, tinycolor) 
+							{ 
+								// Re-assign variable getListFormSlideshow to get data from response
+								this.getListFormSlideshow	= response.data;
+
+								// Get index data from list data
+								let getThisIndex = $(this)[0].getAttribute("index-list");
+
+								// Change value background overlay from user input
+								this.getListFormSlideshow[getThisIndex].get_vars.style.background_overlay = tinycolor;
+							});
+						});
+					}
 				})
 				.catch(function(error) 
 				{
@@ -1530,6 +1576,7 @@ const Vue2ListData = new Vue(
 				})
 				.finally(() => 
 				{ 
+					/*
 					if (document.querySelector(".color-picker") !== undefined)
 					{
 						$(document).ready(function() 
@@ -1541,6 +1588,7 @@ const Vue2ListData = new Vue(
 							});
 						});
 					}
+					*/
 
 					this.loadingSlideshowPage = false;
 				});
@@ -1582,28 +1630,38 @@ const Vue2ListData = new Vue(
 				{
 					const getRes = response.data.slice(0)[0];
 
-					this.getListFormCoverimage 	= response.data;
-					this.statusData 			= getRes.status;
-					this.msgData 				= getRes.msg;
+					this.getListFormCoverimage	= response.data;
+					this.statusData				= getRes.status;
+					this.msgData				= getRes.msg;
+
+					if (document.querySelector("#color-picker") !== undefined)
+					{
+						$(function() 
+						{
+							$("#color-picker").spectrum(
+							{
+								type: "component",
+								showInput: true,
+								showInitial: true
+							});
+						
+							$("#color-picker").on('change.spectrum', function(e, tinycolor) 
+							{ 
+								// Re-assign variable getListFormCoverimage to get data from response
+								this.getListFormCoverimage	= response.data;
+
+								// Change value background overlay from user input
+								this.getListFormCoverimage[0].get_var_style_background_overlay = tinycolor;
+							});
+						});
+					}
 				})
 				.catch(function(error) 
 				{
 					console.log(error);
 				})
 				.finally(() => 
-				{ 
-					if (document.querySelector("#color-picker") !== undefined)
-					{
-						$(document).ready(function() 
-						{
-							$("#color-picker").spectrum({
-								type: "component",
-								showInput: true,
-								showInitial: true
-							});
-						});
-					}
-
+				{
 					this.loadingCoverimagePage = false;
 				});
 			}
@@ -1673,11 +1731,11 @@ const Vue2ListData = new Vue(
 									centerVertical: true,
 								});
 							}
-							else if (response.data.status == 'failed' && response.data.msg !== '')
+							else if (response.data.status == 'failed' && response.data.message !== '')
 							{
 								bootbox.alert({
 									search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
-									message: "<div class=\"text-center\">"+response.data.msg+"</div>",
+									message: "<div class=\"text-center\">"+response.data.message+"</div>",
 									centerVertical: true,
 								});
 							}
@@ -1747,16 +1805,16 @@ const Vue2ListData = new Vue(
 										closeButton: false
 									});
 								}
-								else if (response.data.status == 'failed' && response.data.msg !== '' && response.data.msg !== undefined)
+								else if (response.data.status == 'failed' && response.data.message !== '' && response.data.message !== undefined)
 								{
 									bootbox.alert({
 										search: "<i class=\"fas fa-exclamation-triangle text-danger fa-fw mr-1\"></i> Error",
-										message: "<div class=\"text-center h6 m-0\">"+response.data.msg+"</div>",
+										message: "<div class=\"text-center h6 m-0\">"+response.data.message+"</div>",
 										centerVertical: true,
 										closeButton: false
 									});
 								}
-								else if (response.data.status == 'failed' && response.data.msg == undefined)
+								else if (response.data.status == 'failed' && response.data.message == undefined)
 								{
 									getDataInfo.splice(index, 1);
 								}
@@ -1912,15 +1970,23 @@ const Vue2ListData = new Vue(
 		{
 			if (getType == 'only_image')
 			{
-				const SelectSize = document.querySelector(".ph-form-select-size");
+				const SelectSizeDesktop = document.querySelector(".ph-form-select-size-desktop");
+				const SelectSizeMobile = document.querySelector(".ph-form-select-size-mobile");
+				const SelectParallax = document.querySelector(".ph-form-select-is-parallax");
 
-				SelectSize.setAttribute("disabled", "");
+				SelectSizeDesktop.setAttribute("disabled", "");
+				SelectSizeMobile.setAttribute("disabled", "");
+				SelectParallax.setAttribute("disabled", "");
 			}
 			else
 			{
-				const SelectSize = document.querySelector(".ph-form-select-size");
+				const SelectSizeDesktop = document.querySelector(".ph-form-select-size-desktop");
+				const SelectSizeMobile = document.querySelector(".ph-form-select-size-mobile");
+				const SelectParallax = document.querySelector(".ph-form-select-is-parallax");
 
-				SelectSize.removeAttribute("disabled", "");
+				SelectSizeDesktop.removeAttribute("disabled", "");
+				SelectSizeMobile.removeAttribute("disabled", "");
+				SelectParallax.removeAttribute("disabled", "");
 			}
 		},
 		clickPaginate: async function(page) 
@@ -2231,7 +2297,7 @@ const Vue2FooterContent = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -2239,7 +2305,7 @@ const Vue2FooterContent = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
@@ -2289,7 +2355,7 @@ const Vue2FooterContent = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
@@ -3256,7 +3322,7 @@ const Vue2ListUsers = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.msgData = response.data.msg;
+						this.msgData = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -3293,7 +3359,7 @@ const Vue2ListUsers = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.msgData = response.data.msg;
+					this.msgData = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -3604,7 +3670,7 @@ const Vue2Translate = new Vue(
 					dialog.init(function() 
 					{
 						dialog.find('.modal-body').prepend('<button type="button" class="bootbox-close-button close" aria-hidden="true">×</button>');
-						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-check text-success fa-2x mb-1"></i> <p class="font-weight-normal m-0">'+response.data.msg+'</p></div></div>');
+						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-check text-success fa-2x mb-1"></i> <p class="font-weight-normal m-0">'+response.data.message+'</p></div></div>');
 
 						setTimeout(function()
 						{
@@ -3617,7 +3683,7 @@ const Vue2Translate = new Vue(
 					dialog.init(function() 
 					{
 						dialog.find('.modal-body').prepend('<button type="button" class="bootbox-close-button close" aria-hidden="true">×</button>');
-						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-exclamation-triangle text-danger fa-2x mb-2"></i> <p class="font-weight-normal m-0">'+response.data.msg+'</p></div></div>');
+						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-exclamation-triangle text-danger fa-2x mb-2"></i> <p class="font-weight-normal m-0">'+response.data.message+'</p></div></div>');
 
 						setTimeout(function()
 						{
@@ -3706,7 +3772,7 @@ const Vue2ListDataForDropdown = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -3714,7 +3780,7 @@ const Vue2ListDataForDropdown = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -3764,7 +3830,7 @@ const Vue2ListDataForDropdown = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -4231,7 +4297,7 @@ const Vue2ListDataForHeader = new Vue(
 				url: formActionURL,
 				method: formMethod,
 				data: formData,
-				headers: {"Content-Type": "multipart/form-data"}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
 			{
@@ -4239,7 +4305,7 @@ const Vue2ListDataForHeader = new Vue(
 				{
 					if ( ! response.data.url)
 					{
-						this.responseMessageSubmit = response.data.msg;
+						this.responseMessageSubmit = response.data.message;
 
 						// We use toast from Bootstrap 5
 						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
@@ -4289,7 +4355,7 @@ const Vue2ListDataForHeader = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.msg;
+					this.responseMessageSubmit = response.data.message;
 					
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];

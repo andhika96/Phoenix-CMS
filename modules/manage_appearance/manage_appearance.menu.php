@@ -68,6 +68,15 @@ function manage_appearance_menu()
 
 	$list_menu[] = 
 	[
+		'name' 	=> 'Page Style',
+		'type' 	=> 'child',
+		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',
+		'roles' => '99',
+		'path' 	=> 'manage_appearance/pagestyle'
+	];
+
+	$list_menu[] = 
+	[
 		'name' 	=> 'Layout',
 		'type' 	=> 'child',
 		'icon' 	=> '<i class="fad fa-images fa-fw me-2"></i>',

@@ -132,71 +132,97 @@ class ARUNA_Exceptions {
 
 	public function show_error($heading, $message, $template = 'error_general', $status_code = 500)
 	{
-		$templates_path = config_item('error_views_path');
-		if (empty($templates_path))
+		if ( ! $this->is_ajax_request())
 		{
-			$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
-		}
+			$templates_path = config_item('error_views_path');
 
-		if (is_cli())
-		{
-			$message = "\t".(is_array($message) ? implode("\n\t", $message) : $message);
-			$template = 'cli'.DIRECTORY_SEPARATOR.$template;
+			if (empty($templates_path))
+			{
+				$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
+			}
+
+			if (is_cli())
+			{
+				$message = "\t".(is_array($message) ? implode("\n\t", $message) : $message);
+				$template = 'cli'.DIRECTORY_SEPARATOR.$template;
+			}
+			else
+			{
+				set_status_header($status_code);
+				$message = '<p>'.(is_array($message) ? implode('</p><p>', $message) : $message).'</p>';
+				$template = 'html'.DIRECTORY_SEPARATOR.$template;
+			}
+
+			if (ob_get_level() > $this->ob_level + 1)
+			{
+				ob_end_flush();
+			}
+			
+			ob_start();
+			include($templates_path.$template.'.php');
+			$buffer = ob_get_contents();
+			ob_end_clean();
+			return $buffer;
 		}
 		else
 		{
 			set_status_header($status_code);
-			$message = '<p>'.(is_array($message) ? implode('</p><p>', $message) : $message).'</p>';
-			$template = 'html'.DIRECTORY_SEPARATOR.$template;
-		}
 
-		if (ob_get_level() > $this->ob_level + 1)
-		{
-			ob_end_flush();
+			return json_encode(['status' => 'failed', 'type' => 'general_error', 'title' => $heading, 'message' => $message]);
 		}
-		
-		ob_start();
-		include($templates_path.$template.'.php');
-		$buffer = ob_get_contents();
-		ob_end_clean();
-		return $buffer;
 	}
 
 	// --------------------------------------------------------------------
 
 	public function show_exception($exception)
 	{
-		$templates_path = config_item('error_views_path');
-		if (empty($templates_path))
+		if ( ! $this->is_ajax_request())
 		{
-			$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
-		}
+			$templates_path = config_item('error_views_path');
 
-		$message = $exception->getMessage();
-		if (empty($message))
-		{
-			$message = '(null)';
-		}
+			if (empty($templates_path))
+			{
+				$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
+			}
 
-		if (is_cli())
-		{
-			$templates_path .= 'cli'.DIRECTORY_SEPARATOR;
+			$message = $exception->getMessage();
+
+			if (empty($message))
+			{
+				$message = '(null)';
+			}
+
+			if (is_cli())
+			{
+				$templates_path .= 'cli'.DIRECTORY_SEPARATOR;
+			}
+			else
+			{
+				$templates_path .= 'html'.DIRECTORY_SEPARATOR;
+			}
+
+			if (ob_get_level() > $this->ob_level + 1)
+			{
+				ob_end_flush();
+			}
+
+			ob_start();
+			include($templates_path.'error_exception.php');
+			$buffer = ob_get_contents();
+			ob_end_clean();
+			echo $buffer;
 		}
 		else
 		{
-			$templates_path .= 'html'.DIRECTORY_SEPARATOR;
-		}
+			$message = $exception->getMessage();
+			
+			if (empty($message))
+			{
+				$message = '(null)';
+			}
 
-		if (ob_get_level() > $this->ob_level + 1)
-		{
-			ob_end_flush();
+			echo json_encode(['status' => 'failed', 'type' => 'exception_error', 'title' => get_class($exception), 'message' => $message, 'filename' => $exception->getFile(), 'linenumber' => $exception->getLine()]);
 		}
-
-		ob_start();
-		include($templates_path.'error_exception.php');
-		$buffer = ob_get_contents();
-		ob_end_clean();
-		echo $buffer;
 	}
 
 	// --------------------------------------------------------------------
@@ -213,43 +239,66 @@ class ARUNA_Exceptions {
 
 	public function show_php_error($severity, $message, $filepath, $line)
 	{
-		$templates_path = config_item('error_views_path');
-		if (empty($templates_path))
+		if ( ! $this->is_ajax_request())
 		{
-			$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
-		}
+			$templates_path = config_item('error_views_path');
 
-		$severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
-
-		// For safety reasons we don't show the full file path in non-CLI requests
-		if ( ! is_cli())
-		{
-			$filepath = str_replace('\\', '/', $filepath);
-			if (FALSE !== strpos($filepath, '/'))
+			if (empty($templates_path))
 			{
-				$x = explode('/', $filepath);
-				$filepath = $x[count($x)-2].'/'.end($x);
+				$templates_path = APPPATH.'/views/errors'.DIRECTORY_SEPARATOR;
 			}
 
-			$template = 'html'.DIRECTORY_SEPARATOR.'error_php';
+			$severity = isset($this->levels[$severity]) ? $this->levels[$severity] : $severity;
+
+			// For safety reasons we don't show the full file path in non-CLI requests
+			if ( ! is_cli())
+			{
+				$filepath = str_replace('\\', '/', $filepath);
+
+				if (FALSE !== strpos($filepath, '/'))
+				{
+					$x = explode('/', $filepath);
+					$filepath = $x[count($x)-2].'/'.end($x);
+				}
+
+				$template = 'html'.DIRECTORY_SEPARATOR.'error_php';
+			}
+			else
+			{
+				$template = 'cli'.DIRECTORY_SEPARATOR.'error_php';
+			}
+
+			if (ob_get_level() > $this->ob_level + 1)
+			{
+				ob_end_flush();
+			}
+
+			ob_start();
+			include($templates_path.$template.'.php');
+			$buffer = ob_get_contents();
+			ob_end_clean();
+			echo $buffer;
 		}
 		else
 		{
-			$template = 'cli'.DIRECTORY_SEPARATOR.'error_php';
+			echo json_encode(['status' => 'failed', 'type' => 'php_error', 'title' => $severity, 'message' => $message, 'filename' => $filepath, 'linenumber' => $line]);
 		}
-
-		if (ob_get_level() > $this->ob_level + 1)
-		{
-			ob_end_flush();
-		}
-
-		ob_start();
-		include($templates_path.$template.'.php');
-		$buffer = ob_get_contents();
-		ob_end_clean();
-		echo $buffer;
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Is AJAX request?
+	 *
+	 * Test to see if a request contains the HTTP_X_REQUESTED_WITH header.
+	 *
+	 * @return 	bool
+	 */
+
+	public function is_ajax_request()
+	{
+		return ( ! empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+	}
 }
 
 ?>

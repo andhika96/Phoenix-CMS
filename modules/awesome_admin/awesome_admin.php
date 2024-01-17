@@ -19,6 +19,16 @@ class awesome_admin extends Aruna_Controller
 	protected $offset;
 
 	protected $num_per_page;
+
+	protected $module_config_file_whitelist = 
+	[
+		'awesome_admin',
+		'auth',
+		'account',
+		'dashboard',
+		'api',
+		'jwt'
+	];
 	
 	public function __construct() 
 	{
@@ -73,7 +83,7 @@ class awesome_admin extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -104,7 +114,7 @@ class awesome_admin extends Aruna_Controller
 					{
 						if ($_FILES['thumbnail']['error'] != 4)
 						{	
-							echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+							echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 							exit;
 						}
 
@@ -143,7 +153,7 @@ class awesome_admin extends Aruna_Controller
 					$this->db->sql_insert($update_data, 'ml_site_config');
 				}
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -243,7 +253,6 @@ class awesome_admin extends Aruna_Controller
 					$module_slideshow 		= $key.'_slideshow';
 					$module_coverimage 		= $key.'_coverimage';
 					$module_widget 			= $key.'_widget';
-					$module_position 		= $key.'_position';
 
 					$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
 					$slideshow_actived 		= ( ! empty($this->input->post($module_slideshow))) ? 1 : 0;
@@ -256,20 +265,20 @@ class awesome_admin extends Aruna_Controller
 					{
 						if ($slideshow_actived == 1 && $coverimage_actived == 1)
 						{
-							echo json_encode(['status' => 'failed', 'msg' => 'Cannot activate Cover Image and Slideshow at the same time']);
+							echo json_encode(['status' => 'failed', 'message' => 'Cannot activate Cover Image and Slideshow at the same time']);
 							exit;
 						}
 
-						$this->db->sql_update(['actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived, 'position' => $this->input->post($module_position), 'type' => 'page'], 'ml_modules', ['name' => $key]);
+						$this->db->sql_update(['actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived, 'type' => 'page'], 'ml_modules', ['name' => $key]);
 					}
 					else
 					{
-						$this->db->sql_insert(['name' => $key, 'type' => 'page', 'actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived, 'position' => $this->input->post($module_position)], 'ml_modules');
+						$this->db->sql_insert(['name' => $key, 'type' => 'page', 'actived' => $actived, 'is_slideshow' => $slideshow_actived, 'is_coverimage' => $coverimage_actived, 'is_widget' => $widget_actived], 'ml_modules');
 					}
 				}
 			}
 
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 
@@ -386,7 +395,7 @@ class awesome_admin extends Aruna_Controller
 				}
 			}
 
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 
@@ -403,6 +412,8 @@ class awesome_admin extends Aruna_Controller
 		set_title('Modules');
 
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		$bypass_config_file = FALSE;
 
 		$current_modules = array();
 
@@ -423,35 +434,32 @@ class awesome_admin extends Aruna_Controller
 				{
 					$module['name'] = $file;
 
-					if (file_exists('modules/'.$file.'/'.$file.'.hook.php')) 
+					if (file_exists('modules/'.$file.'/'.$file.'.config.php')) 
 					{
-						$module['hooking'] = 1;
+						$module['config_file'] = 1;
 					}
 					else 
 					{
-						$module['hooking'] = 0;
+						$module['config_file'] = 0;
 					}
 
 					if (file_exists('modules/'.$file.'/'.$file.'.info')) 
 					{
-						$filename = 'modules/'.$file.'/'.$file.'.info';
-						$handle2 = fopen($filename, "r");
-						$info = fread($handle2, filesize($filename));
+						$filename 	= 'modules/'.$file.'/'.$file.'.info';
+						$handle2 	= fopen($filename, "r");
+						$info 		= fread($handle2, filesize($filename));
+						
 						fclose($handle2);
+						
 						$arr = explode(PHP_EOL, $info);
 
 						foreach ($arr as $item) 
 						{
-							$info = explode('=',$item);
-							$key = trim($info[0]);
-							
-							// if ($key == 'name') 
-							// {
-							// 	$key = 'flag';
-							// }
+							$info 	= explode('=', $item);
+							$key 	= trim($info[0]);
 
-							$value = trim($info[1]);
-							$module[$key] = $value;
+							$value 			= trim($info[1]);
+							$module[$key] 	= $value;
 							$module['flag'] = $file;
 						}
 					}
@@ -475,50 +483,74 @@ class awesome_admin extends Aruna_Controller
 		{
 			foreach ($this_modules as $key => $module) 
 			{
-				$module_key 			= $key.'_actived';
-				$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
-				$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
+				if ( ! in_array($key, $this->module_config_file_whitelist))
+				{
+					if ($module['config_file'] == 1 || $bypass_config_file == TRUE)
+					{
+						if ($this->__check_module_installation($key, $bypass_config_file) == 1)
+						{
+							$module_key 			= $key.'_actived';
+							$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
+							$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
 
-				if (is_array($current_modules[$key]))
-				{
-					$this->db->sql_update(['actived' => $actived, 'type' => $module['type'], 'hooking' => $module['hooking']], 'ml_modules', ['name' => $key]);
-				}
-				else
-				{
-					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'hooking' => $module['hooking'], 'actived' => $actived], 'ml_modules');
+							if (is_array($current_modules[$key]))
+							{
+								$this->db->sql_update(['actived' => $actived, 'type' => $module['type']], 'ml_modules', ['name' => $key]);
+							}
+							else
+							{
+								$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'actived' => $actived], 'ml_modules');
+							}
+						}
+						else
+						{
+							echo json_encode(['status' => 'failed', 'message' => '<div class="mb-1">Failed to activate module '.$key.':</div> <i>('.$this->__check_module_installation($key).')</i>']);
+							exit;
+						}
+					}
+					elseif ($module['config_file'] == 0 || $bypass_config_file == FALSE)
+					{
+						$module_key 			= $key.'_actived';
+						$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
+
+						if (is_array($current_modules[$key]))
+						{
+							$this->db->sql_update(['actived' => 0, 'type' => $module['type']], 'ml_modules', ['name' => $key]);
+						
+							echo json_encode(['status' => 'failed', 'message' => '<div class="mb-1">Disabling the module '.$key.':</div> <i>(Config file not found in the module '.$key.' please create config file first.</i>)']);
+							exit;
+						}
+						else
+						{
+							$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'actived' => 0], 'ml_modules');
+						
+							echo json_encode(['status' => 'failed', 'message' => '<div class="mb-1">Failed to activate module '.$key.':</div> <i>(Config file not found in the module '.$key.' please create config file first.</i>)']);
+							exit;
+						}
+					}
 				}
 			}
-			
-			$init_install 	= $this->check_install();
-			$list_config 	= array();
 
-			if ($init_install)
+			$__init_module_config 	 = $this->__init_module_config();
+			$__list_module_config 	 = array();
+
+			$__list_activation_field = ['active_slideshow', 'active_coverimage', 'active_widget'];
+
+			if ($__init_module_config)
 			{
-				$list_install = ['active_slideshow', 'active_coverimage', 'active_widget'];
-
-				foreach ($init_install as $module) 
+				foreach ($__init_module_config as $module_config_key => $module_config_value) 
 				{
-					$install_function = $module.'_install';
-					$array_install = $install_function();
-
-					foreach ($array_install as $key => $item) 
+					foreach ($module_config_value['activation'] as $key => $value)
 					{
-						$list_config[$install_function][$key] = $item;
-					}
-
-				}
-
-				foreach ($list_config as $key0 => $value0)
-				{
-					$get_real_module_name = str_replace("_install", "", $key0);
-
-					foreach ($value0 as $key1 => $value1)
-					{
-						if (in_array($key1, $list_install))
+						if (in_array('active_'.$key, $__list_activation_field))
 						{
-							$update_module = [$key1 => $value1];
+							$get_value_activation = ($value == TRUE) ? 1 : 0;
 
-							$this->db->sql_update([$key1 => $value1], 'ml_modules', ['name' => $get_real_module_name]);
+							$this->db->sql_update(['active_'.$key => $get_value_activation], 'ml_modules', ['name' => $module_config_key]);
+
+							$this->__init_module_layout($module_config_key);
+
+							$this->__init_auto_create_ssciwg($module_config_key);
 						}
 					}
 				}
@@ -530,325 +562,101 @@ class awesome_admin extends Aruna_Controller
 			// Truncate table ml_menu_parent before insert new data
 			$this->db->sql_select("TRUNCATE TABLE ml_menu_parent");
 
-			$menus 	= $this->check_menu();
-			$list_menu 	= array();
-
-			if ($menus)
+			if ($__init_module_config)
 			{
-				foreach ($menus as $menu) 
+				foreach ($__init_module_config as $module_config_key => $module_config_value) 
 				{
-					$menu_function = $menu.'_menu';
-					$array_menu = $menu_function();
-
-					foreach ($array_menu as $key => $item) 
+					if (is_array($this->__check_module_list_menu($module_config_key)))
 					{
-						$item['module'] = $menu;
-
-						$list_menu[$menu_function][$key] = $item;
-					}
-				}
-
-				foreach ($list_menu as $key0 => $value0)
-				{
-					$get_real_module_name = str_replace("_menu", "", $key0);
-
-					foreach ($value0 as $key1 => $value1)
-					{
-						if ($value1['type'] == 'parent')
+						foreach ($this->__check_module_list_menu($module_config_key) as $key0 => $value0) 
 						{
-							$res_parent = $this->db->sql_prepare("select * from ml_menu_parent where module = :module and parent_name = :parent_name order by parent_name asc");
-							$bindParam_parent = $this->db->sql_bindParam(['module' => $value1['module'], 'parent_name' => $value1['name']], $res_parent);
+							$value0['module'] = $module_config_key;
 
-							if ( ! $this->db->sql_counts($bindParam_parent))
+							if ($value0['type'] == 'parent')
 							{
-								$data_0 = 
-								[
-									'module'		=> $value1['module'],
-									'parent_name' 	=> $value1['name'],
-									'parent_code' 	=> $get_real_module_name,
-									'icon'			=> $value1['icon'],
-									'roles'			=> $value1['roles']
-								];
+								$res_parent = $this->db->sql_prepare("select * from ml_menu_parent where module = :module and parent_name = :parent_name order by parent_name asc");
+								$bindParam_parent = $this->db->sql_bindParam(['module' => $value0['module'], 'parent_name' => $value0['name']], $res_parent);
 
-								$this->db->sql_insert($data_0, 'ml_menu_parent');
-
-								$parent_id = $this->db->insert_id();
-
-								$res_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent where id = :id order by parent_name asc");
-								$bindParam_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_parent);
-								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
-							}
-							else
-							{
-								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
-							}
-						}
-						
-						if ($value1['type'] == 'child')
-						{				
-							$res_check_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
-							$bindParam_check_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_check_menu);
-
-							if ( ! $this->db->sql_counts($bindParam_check_menu))
-							{	
-								$data_1 = 
-								[
-									'module'			=> $value1['module'],
-									'menu_parent_id'	=> $row_parent['id'],
-									'menu_parent_name' 	=> $row_parent['parent_name'],
-									'menu_parent_code' 	=> $row_parent['parent_code'],
-									'menu_name'			=> $value1['name'],
-									'url'				=> $value1['path'],
-									'icon'				=> $value1['icon'],
-									'roles'				=> $value1['roles']
-								];
-
-								$output[] = $data_1;
-
-								$this->db->sql_insert($data_1, 'ml_menu');
-							}			
-						}
-						
-						if ($value1['type'] == 'single')
-						{				
-							$res_new_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
-							$bindParam_new_menu = $this->db->sql_bindParam(['module' => $value1['module'], 'menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
-
-							if ( ! $this->db->sql_counts($bindParam_new_menu))
-							{	
-								$this->db->sql_delete('ml_menu', ['module' => $value1['module']]);
-
-								$data_1 = 
-								[
-									'module'			=> $value1['module'],
-									'menu_parent_id'	=> $row_parent['id'],
-									'menu_parent_name' 	=> '',
-									'menu_parent_code' 	=> 'uncategorized_'.$row_parent['parent_code'],
-									'menu_name'			=> $value1['name'],
-									'url'				=> $value1['path'],
-									'icon'				=> $value1['icon'],
-									'roles'				=> $value1['roles']
-								];
-
-								$this->db->sql_insert($data_1, 'ml_menu');
-							}	
-						}
-						
-					}
-				}
-			}
-
-			/*
-			$menus 	= $this->check_menu();
-			$list_menu 	= array();
-
-			if ($menus)
-			{
-				foreach ($menus as $menu) 
-				{
-					$menu_function = $menu.'_menu';
-					$array_menu = $menu_function();
-
-					foreach ($array_menu as $key => $item) 
-					{
-						$list_menu[$menu_function][$key] = $item;
-					}
-				}
-
-				foreach ($list_menu as $key0 => $value0)
-				{
-					$get_real_module_name = str_replace("_menu", "", $key0);
-
-					foreach ($value0 as $key1 => $value1)
-					{
-						if ($value1['type'] == 'parent')
-						{
-							$res_parent = $this->db->sql_prepare("select * from ml_menu_parent where parent_name = :parent_name");
-							$bindParam_parent = $this->db->sql_bindParam(['parent_name' => $value1['name']], $res_parent);
-
-							if ($this->db->sql_counts($bindParam_parent))
-							{
-								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
-
-								// $value1['converted_name'] = strtolower($value1['name']);
-								// $value1['converted_name'] = preg_replace("/\s+/", "_", $value1['converted_name']);
-
-								if (isset($value1['new_name']) && ! empty($value1['new_name']))
+								if ( ! $this->db->sql_counts($bindParam_parent))
 								{
 									$data_0 = 
 									[
-										'parent_name'	=> $value1['new_name']
+										'module'		=> $value0['module'],
+										'parent_name' 	=> $value0['name'],
+										'parent_code' 	=> $module_config_key,
+										'icon'			=> $value0['icon'],
+										'roles'			=> $value0['roles']
 									];
 
-									$this->db->sql_update($data_0, 'ml_menu_parent', ['id' => $row_parent['id']]);
+									$this->db->sql_insert($data_0, 'ml_menu_parent');
+
+									$parent_id = $this->db->insert_id();
+
+									$res_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent where id = :id order by parent_name asc");
+									$bindParam_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_parent);
+									$row_parent = $this->db->sql_fetch_single($bindParam_parent);
 								}
 								else
 								{
-									$data_0 = 
-									[
-										'parent_name' 	=> $value1['name'],
-										'parent_code' 	=> $get_real_module_name,
-										'icon'			=> $value1['icon'],
-										'roles'			=> $value1['roles']
-									];
-
-									$this->db->sql_update($data_0, 'ml_menu_parent', ['id' => $row_parent['id']]);
+									$row_parent = $this->db->sql_fetch_single($bindParam_parent);
 								}
 							}
-							else
-							{
-								// $value1['converted_name'] = strtolower($value1['name']);
-								// $value1['converted_name'] = preg_replace("/\s+/", "_", $value1['converted_name']);
 
-								$data_0 = 
-								[
-									'parent_name' 	=> $value1['name'],
-									'parent_code' 	=> $get_real_module_name,
-									'icon'			=> $value1['icon'],
-									'roles'			=> $value1['roles']
-								];
+							if ($value0['type'] == 'child')
+							{				
+								$res_check_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
+								$bindParam_check_menu = $this->db->sql_bindParam(['module' => $value0['module'], 'menu_name' => $value0['name'], 'menu_parent_id' => $row_parent['id']], $res_check_menu);
 
-								$this->db->sql_insert($data_0, 'ml_menu_parent');
-
-								$parent_id = $this->db->insert_id();
-
-								$res_parent = $this->db->sql_prepare("select id, parent_code, parent_name from ml_menu_parent where id = :id");
-								$bindParam_parent = $this->db->sql_bindParam(['id' => $parent_id], $res_parent);
-								$row_parent = $this->db->sql_fetch_single($bindParam_parent);
-							}
-						}
-						
-						if ($value1['type'] == 'child')
-						{				
-							$res_new_menu = $this->db->sql_prepare("select * from ml_menu where menu_name = :menu_name and menu_parent_id = :menu_parent_id");
-							$bindParam_new_menu = $this->db->sql_bindParam(['menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
-
-							if ($this->db->sql_counts($bindParam_new_menu))
-							{	
-								$row_new_menu = $this->db->sql_fetch_single($bindParam_new_menu);
-
-								if (isset($value1['new_name']) && ! empty($value1['new_name']))
-								{
+								if ( ! $this->db->sql_counts($bindParam_check_menu))
+								{	
 									$data_1 = 
 									[
-										'menu_name'			=> $value1['new_name']
-									];
-
-									$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
-								}
-								else
-								{
-									$data_1 = 
-									[
+										'module'			=> $value0['module'],
 										'menu_parent_id'	=> $row_parent['id'],
 										'menu_parent_name' 	=> $row_parent['parent_name'],
 										'menu_parent_code' 	=> $row_parent['parent_code'],
-										'menu_name'			=> $value1['name'],
-										'url'				=> $value1['path'],
-										'icon'				=> $value1['icon'],
-										'roles'				=> $value1['roles']
+										'menu_name'			=> $value0['name'],
+										'url'				=> $value0['path'],
+										'icon'				=> $value0['icon'],
+										'roles'				=> $value0['roles']
 									];
 
-									$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
-								}
-							}	
-							else
-							{
-								if ( ! isset($value1['new_name']))
-								{
-									$data_1 = 
-									[
-										'menu_parent_id'	=> $row_parent['id'],
-										'menu_parent_name' 	=> $row_parent['parent_name'],
-										'menu_parent_code' 	=> $row_parent['parent_code'],
-										'menu_name'			=> $value1['name'],
-										'url'				=> $value1['path'],
-										'icon'				=> $value1['icon'],
-										'roles'				=> $value1['roles']
-									];
+									$output[] = $data_1;
 
 									$this->db->sql_insert($data_1, 'ml_menu');
-								}
-							}		
-						}
+								}			
+							}
 
-						if ($value1['type'] == 'single')
-						{				
-							$res_new_menu = $this->db->sql_prepare("select * from ml_menu where menu_name = :menu_name and menu_parent_id = :menu_parent_id");
-							$bindParam_new_menu = $this->db->sql_bindParam(['menu_name' => $value1['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
+							if ($value0['type'] == 'single')
+							{				
+								$res_new_menu = $this->db->sql_prepare("select * from ml_menu where module = :module and menu_name = :menu_name and menu_parent_id = :menu_parent_id order by menu_name asc");
+								$bindParam_new_menu = $this->db->sql_bindParam(['module' => $value0['module'], 'menu_name' => $value0['name'], 'menu_parent_id' => $row_parent['id']], $res_new_menu);
 
-							if ($this->db->sql_counts($bindParam_new_menu))
-							{	
-								$row_new_menu = $this->db->sql_fetch_single($bindParam_new_menu);
+								if ( ! $this->db->sql_counts($bindParam_new_menu))
+								{	
+									$this->db->sql_delete('ml_menu', ['module' => $value0['module']]);
 
-								if (isset($value1['new_name']) && ! empty($value1['new_name']))
-								{
 									$data_1 = 
 									[
-										'menu_name'			=> $value1['new_name']
-									];
-
-									$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
-								}
-								else
-								{
-									$data_1 = 
-									[
+										'module'			=> $value0['module'],
 										'menu_parent_id'	=> $row_parent['id'],
 										'menu_parent_name' 	=> '',
 										'menu_parent_code' 	=> 'uncategorized_'.$row_parent['parent_code'],
-										'menu_name'			=> $value1['name'],
-										'url'				=> $value1['path'],
-										'icon'				=> $value1['icon'],
-										'roles'				=> $value1['roles']
-									];
-
-									$this->db->sql_update($data_1, 'ml_menu', ['id' => $row_new_menu['id']]);
-								}
-							}	
-							else
-							{
-								if ( ! isset($value1['new_name']))
-								{
-									$data_1 = 
-									[
-										'menu_parent_id'	=> $row_parent['id'],
-										'menu_parent_name' 	=> '',
-										'menu_parent_code' 	=> 'uncategorized_'.$row_parent['parent_code'],
-										'menu_name'			=> $value1['name'],
-										'url'				=> $value1['path'],
-										'icon'				=> $value1['icon'],
-										'roles'				=> $value1['roles']
+										'menu_name'			=> $value0['name'],
+										'url'				=> $value0['path'],
+										'icon'				=> $value0['icon'],
+										'roles'				=> $value0['roles']
 									];
 
 									$this->db->sql_insert($data_1, 'ml_menu');
-								}
-							}		
+								}	
+							}
 						}
 					}
 				}
 			}
-			*/
 
-			/*
-			foreach ($this_modules as $key => $module) 
-			{
-				$module_key 			= $key.'_actived';
-				$actived 				= ( ! empty($this->input->post($module_key))) ? 1 : 0;
-				$current_modules[$key] 	= isset($current_modules[$key]) ? $current_modules[$key] : '';
-
-				if (is_array($current_modules[$key]))
-				{
-					$this->db->sql_update(['actived' => $actived, 'type' => $module['type'], 'hooking' => $module['hooking']], 'ml_modules', ['name' => $key]);
-				}
-				else
-				{
-					$this->db->sql_insert(['name' => $key, 'type' => $module['type'], 'hooking' => $module['hooking'], 'actived' => $actived], 'ml_modules');
-				}
-			}
-			*/
-
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 
@@ -878,14 +686,14 @@ class awesome_admin extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
 			{
 				if ($this->input->post('changestatus') == '' && $this->input->post('changerole') == '')
 				{
-					echo json_encode(['status' => 'failed', 'msg' => 'You haven\'t selected the options yet']);
+					echo json_encode(['status' => 'failed', 'message' => 'You haven\'t selected the options yet']);
 					exit;
 				}
 				else
@@ -910,7 +718,7 @@ class awesome_admin extends Aruna_Controller
 						}
 					}
 
-					echo json_encode(['status' => 'success', 'msg' => 'Success']);
+					echo json_encode(['status' => 'success', 'message' => 'Success']);
 					exit;
 				}
 			}
@@ -937,7 +745,7 @@ class awesome_admin extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -955,7 +763,7 @@ class awesome_admin extends Aruna_Controller
 				$new_data = ['id' => $id, 'name' => $this->input->post('role_name'), 'code_name' => $role_code];
 				$this->db->sql_insert($new_data, 'ml_roles');
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -989,7 +797,7 @@ class awesome_admin extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -1001,7 +809,7 @@ class awesome_admin extends Aruna_Controller
 				
 				$this->db->sql_update($new_data, 'ml_roles', ['id' => $id]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Role updated!', 'url' => site_url('awesome_admin/roles')]);
+				echo json_encode(['status' => 'success', 'message' => 'Role updated!', 'url' => site_url('awesome_admin/roles')]);
 				exit;
 			}
 		}
@@ -1045,7 +853,7 @@ class awesome_admin extends Aruna_Controller
 				$this->db->sql_insert($update_data, 'ml_smtp');
 			}
 
-			echo json_encode(['status' => 'success', 'msg' => 'Success']);
+			echo json_encode(['status' => 'success', 'message' => 'Success']);
 			exit;
 		}
 
@@ -1084,12 +892,12 @@ class awesome_admin extends Aruna_Controller
 					$this->db->sql_update(['lang_to' => $key['to']], 'ml_language', ['id' => $key['id']]);
 				}
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 			else
 			{
-				echo json_encode(['status' => 'failed', 'msg' => 'Failed']);
+				echo json_encode(['status' => 'failed', 'message' => 'Failed']);
 				exit;
 			}
 		}
@@ -1120,12 +928,12 @@ class awesome_admin extends Aruna_Controller
 					$this->db->sql_update(['lang_to' => $key['to']], 'ml_language', ['id' => $key['id']]);
 				}
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 			else
 			{
-				echo json_encode(['status' => 'failed', 'msg' => 'Failed']);
+				echo json_encode(['status' => 'failed', 'message' => 'Failed']);
 				exit;
 			}
 		}
@@ -1166,7 +974,7 @@ class awesome_admin extends Aruna_Controller
 
 		if ( ! $this->db->sql_counts($res))
 		{
-			$output[] = ['status' => 'failed', 'msg' => 'No user'];
+			$output[] = ['status' => 'failed', 'message' => 'No user'];
 		}
 
 		$output[]['getDataPage'] = ['current_page' => $currentpage, 'total' => $totalpage, 'num_per_page' => $this->num_per_page];
@@ -2127,6 +1935,424 @@ class awesome_admin extends Aruna_Controller
 				 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
 				 ->_display();
 		exit;
+	}
+
+	protected function check_style_module()
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.style.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.style.php');
+			}
+
+			$function = $module['name'].'_style';
+
+			if (function_exists($function))
+			{
+				$hooks[$module['name']] = $function();
+			}
+		}
+
+		if (isset($hooks) && is_array($hooks))
+		{
+			foreach ($hooks as $key => $value) 
+			{
+				$output[] = $value;
+
+				$res_check = $this->db->sql_prepare("select * from ml_page_style where uri = :uri");
+				$bindParam_check = $this->db->sql_bindParam(['uri' => $key], $res_check);
+
+				$get_module_name = str_replace("_", " ", $key);
+				$get_module_name = str_replace("-", " ", $get_module_name);
+				$get_real_module_name = ucwords($get_module_name);
+
+				$data = 
+				[
+					'uri' => $key,
+					'page_name' => $get_real_module_name,
+					'page_config' => json_encode($output)
+				];
+
+				if ($this->db->sql_counts($bindParam_check))
+				{
+					$row_check = $this->db->sql_fetch_single($bindParam_check);
+
+					$this->db->sql_update($data, 'ml_page_style', ['id' => $row_check['id']]);
+				}
+				else
+				{
+					$this->db->sql_insert($data, 'ml_page_style');
+				}
+			}
+		}
+	}
+
+	public function check_style()
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.style.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.style.php');
+			}
+
+			$function = $module['name'].'_style';
+
+			if (function_exists($function))
+			{
+				$hooks[$module['name']] = $function();
+			}
+		}
+
+		if (isset($hooks) && is_array($hooks))
+		{
+			foreach ($hooks as $key => $value) 
+			{
+				$res_check = $this->db->sql_prepare("select * from ml_page_style where uri = :uri");
+				$bindParam_check = $this->db->sql_bindParam(['uri' => $key], $res_check);
+
+				$get_module_name = str_replace("_", " ", $key);
+				$get_module_name = str_replace("-", " ", $get_module_name);
+				$get_real_module_name = ucwords($get_module_name);
+
+				if ($this->db->sql_counts($bindParam_check))
+				{
+					$row_check = $this->db->sql_fetch_single($bindParam_check);
+
+					$data = 
+					[
+						'uri' => $key,
+						'page_name' => $get_real_module_name,
+						'page_config' => json_encode($value)
+					];
+
+					$this->db->sql_update($data, 'ml_page_style', ['id' => $row_check['id']]);
+				}
+				else
+				{
+					$data = 
+					[
+						'uri' => $key,
+						'page_name' => $get_real_module_name,
+						'page_config' => json_encode($value)
+					];
+
+					$this->db->sql_insert($data, 'ml_page_style');
+				}
+			}
+		}
+
+		$this->output
+				 ->set_status_header(200)
+				 ->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($hooks, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
+	}
+
+	public function get_page_config($uri)
+	{
+		$res_check = $this->db->sql_prepare("select * from ml_page_style where uri = :uri");
+		$bindParam_check = $this->db->sql_bindParam(['uri' => $uri], $res_check);
+		$row_check = $this->db->sql_fetch_single($bindParam_check);
+
+		$output = json_decode($row_check['page_config'], true);
+
+		$this->output
+				 ->set_status_header(200)
+				 ->set_content_type('application/json', 'utf-8')
+				 ->set_header('Access-Control-Allow-Origin: '.site_url())
+				 ->set_output(json_encode($output, JSON_PRETTY_PRINT))
+				 ->_display();
+		exit;
+	}
+
+	public function get_page_style($uri, $column)
+	{
+		$res = $this->db->sql_prepare("select * from ml_page_style where uri = :uri");
+		$bindParam = $this->db->sql_bindParam(['uri' => $uri], $res);
+		$row = $this->db->sql_fetch_single($bindParam);
+
+		if ($column == 'logo')
+		{
+			if (file_exists($row['page_logo']))
+			{
+				return base_url($row['page_logo']);
+			}
+			else
+			{
+				return '<span class="text-bg-danger py-2 px-3 rounded">Logo not found</span>';
+			}
+		}
+		elseif ($column == 'background_image')
+		{
+			if (file_exists($row['page_background_image']))
+			{
+				return base_url($row['page_background_image']);
+			}
+			else
+			{
+				return '<span class="text-bg-danger p-2 px-3 rounded">Background image not found</span>';
+			}
+		}
+		else
+		{
+			return '<span class="text-bg-danger p-2 px-3 rounded">Coloum not found</span>';
+		}
+	}
+
+	public function testing()
+	{
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		section_content('<img src="'.get_page_style('auth', 'background_image').'" class="img-fluid">');
+	}
+
+	protected function __init_module_layout($uri)
+	{
+		//  Slideshow
+		$res_layout_slideshow = $this->db->sql_prepare("select * from ml_layout_slideshow where uri = :uri");
+		$bindParam_layout_slideshow = $this->db->sql_bindParam(['uri' => $uri], $res_layout_slideshow);
+
+		if ( ! $this->db->sql_counts($bindParam_layout_slideshow))
+		{
+			$this->db->sql_insert(['uri' => $uri], 'ml_layout_slideshow');
+		}
+
+		// Cover Image
+		$res_layout_coverimage = $this->db->sql_prepare("select * from ml_layout_coverimage where uri = :uri");
+		$bindParam_layout_coverimage = $this->db->sql_bindParam(['uri' => $uri], $res_layout_coverimage);
+
+		if ( ! $this->db->sql_counts($bindParam_layout_coverimage))
+		{
+			$this->db->sql_insert(['uri' => $uri], 'ml_layout_coverimage');
+		}
+
+		// Widget
+		$res_layout_widget = $this->db->sql_prepare("select * from ml_layout_widget where uri = :uri");
+		$bindParam_layout_widget = $this->db->sql_bindParam(['uri' => $uri], $res_layout_widget);
+
+		if ( ! $this->db->sql_counts($bindParam_layout_widget))
+		{
+			$this->db->sql_insert(['uri' => $uri], 'ml_layout_widget');
+		}
+	}
+
+	protected function __init_auto_create_ssciwg($uri)
+	{
+		//  Slideshow
+		$res_slideshow = $this->db->sql_prepare("select uri from ml_slideshow where uri = :uri");
+		$bindParam_slideshow = $this->db->sql_bindParam(['uri' => $uri], $res_slideshow);
+
+		if ( ! $this->db->sql_counts($bindParam_slideshow))
+		{
+			$this->db->sql_insert(['uri' => $uri, 'vars' => json_encode($this->__json_ssci('slideshow'))], 'ml_slideshow');
+		}
+
+		// Cover Image
+		$res_coverimage = $this->db->sql_prepare("select uri from ml_coverimage where uri = :uri");
+		$bindParam_coverimage = $this->db->sql_bindParam(['uri' => $uri], $res_coverimage);
+
+		if ( ! $this->db->sql_counts($bindParam_coverimage))
+		{
+			$this->db->sql_insert(['uri' => $uri, 'vars' => json_encode($this->__json_ssci('coverimage'))], 'ml_coverimage');
+		}
+	}
+
+	protected function __json_ssci($key)
+	{
+		if ($key == 'slideshow')
+		{
+			$json = 
+			[
+				"button" =>
+				[
+					[
+						"title" 	=> "Link 1",
+						"content" 	=> ""
+					],
+					[
+						"title" 	=> "Link 2",
+						"content" 	=> ""
+					]
+				],
+				"style" =>
+				[
+					"position_desktop" 		=> "left",
+					"position_mobile" 		=> "left",
+					"background_overlay" 	=> "rgba(0, 0, 0, 0.1)"
+				]
+			];
+		}
+		elseif ($key == 'coverimage')
+		{
+			$json = 
+			[
+				"button" =>
+				[
+					[
+						"title" 	=> "Link 1",
+						"content" 	=> ""
+					],
+					[
+						"title" 	=> "Link 2",
+						"content" 	=> ""
+					]
+				],
+				"style" =>
+				[
+					"position_desktop" 		=> "left",
+					"position_mobile" 		=> "left",
+					"background_overlay" 	=> "rgba(0, 0, 0, 0.1)"
+				]
+			];
+		}
+		else
+		{
+			$json = NULL;
+		}
+
+		return $json;
+	}
+
+	protected function __init_module_config()
+	{
+		$hooks = array();
+		$current_modules = array();
+
+		$res = $this->db->sql_select("select * from ml_modules");
+		while ($row = $this->db->sql_fetch_single($res))
+		{
+			$current_modules[$row['name']] = $row;
+		}
+
+		foreach ($current_modules as $module) 
+		{
+			if (file_exists('modules/'.$module['name'].'/'.$module['name'].'.config.php')) 
+			{
+				include_once('modules/'.$module['name'].'/'.$module['name'].'.config.php');
+			}
+
+			$function = $module['name'].'_config';
+
+			if (function_exists($function))
+			{
+				$configs[$module['name']] = $function();
+			}
+		}
+
+		return $configs;
+	}
+
+	protected function __check_module_installation($key = '', $bypass_config_file = FALSE)
+	{
+		if ($bypass_config_file == FALSE)
+		{
+			if ( ! isset($this->__init_module_config()[$key]))
+			{
+				$output = 'The '.$key.' configuration file was not found in the module';
+			}
+			elseif ( ! isset($this->__init_module_config()[$key]['activation']['installation']))
+			{
+				$output = 'Field installation not found in '.$key.' activation.';
+			}
+			elseif ( ! empty($key) && isset($this->__init_module_config()[$key]))
+			{
+				$output = ($this->__init_module_config()[$key]['activation']['installation'] == 1 ? 1 : 'Value installation field is false');
+			}
+			else
+			{
+				$output = 'Unknown error';
+			}
+		}
+		elseif ($bypass_config_file == TRUE)
+		{
+			$output = 1;
+		}
+
+		return $output;
+	}
+
+	protected function __check_module_activation($key, $field)
+	{
+		if ( ! isset($this->__init_module_config()[$key]))
+		{
+			return 'The '.$key.' configuration file was not found in the module';
+		}
+		elseif ( ! isset($this->__init_module_config()[$key]['activation'][$field]))
+		{
+			return 'Field '.$field.' not found in '.$key.' activation.';
+		}
+		elseif ($field == 'installation')
+		{
+			return 'For installation please use the __check_module_installation() function instead.';
+		}
+		elseif ( ! empty($key) && isset($this->__init_module_config()[$key]) && $field !== 'installation')
+		{
+			$output = ($this->__init_module_config()[$key]['activation'][$field] == 1 ? 1 : 0);
+		}
+		else
+		{
+			$output = 0;
+		}
+
+		return $output;
+	}
+
+	protected function __check_module_style($key)
+	{
+		if ( ! isset($this->__init_module_config()[$key]))
+		{
+			return 'The '.$key.' configuration file was not found in the module';
+		}
+		elseif ( ! isset($this->__init_module_config()[$key]['style']))
+		{
+			return 'Key style not found in config file.';
+		}
+		elseif ( ! empty($key) && isset($this->__init_module_config()[$key]))
+		{
+			$output = $this->__init_module_config()[$key]['style'];
+		}
+
+		return $output;
+	}
+
+	protected function __check_module_list_menu($key)
+	{
+		if ( ! isset($this->__init_module_config()[$key]))
+		{
+			$output = 'The '.$key.' configuration file was not found in the module';
+		}
+		elseif ( ! isset($this->__init_module_config()[$key]['list_menu']))
+		{
+			$output = 'Key list_menu not found in config file.';
+		}
+		elseif ( ! empty($key) && isset($this->__init_module_config()[$key]))
+		{
+			$output = $this->__init_module_config()[$key]['list_menu'];
+		}
+
+		return $output;
 	}
 }
 

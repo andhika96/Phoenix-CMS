@@ -43,7 +43,6 @@
 								<th scope="col" style="width: 12%">Slideshow</th>
 								<th scope="col" style="width: 12%">Cover Image</th>
 								<th scope="col" style="width: 12%">Widget</th>
-								<th scope="col" style="width: 12%">Position</th>
 								<th scope="col" style="width: 34%"></th>
 							</tr>
 						</thead>
@@ -59,7 +58,6 @@
 					$module_slideshow 	= $page['flag'].'_slideshow';
 					$module_coverimage 	= $page['flag'].'_coverimage';
 					$module_widget 		= $page['flag'].'_widget';
-					$module_position 	= $page['flag'].'_position';
 
 					$checked 			= (isset($current_modules[$page['flag']]['actived']) && $current_modules[$page['flag']]['actived'] == 1) ? 'checked' : '';
 					$checked_slideshow 	= (isset($current_modules[$page['flag']]['is_slideshow']) && $current_modules[$page['flag']]['is_slideshow'] == 1) ? 'checked' : '';
@@ -129,10 +127,6 @@
 						}
 
 					section_content('		
-							</td>
-							
-							<td>
-								<input type="text" name="'.$module_position.'" class="form-control font-size-inherit" value="'.$current_modules[$page['flag']]['position'].'">
 							</td>
 
 							<td></td>

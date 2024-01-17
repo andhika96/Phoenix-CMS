@@ -90,7 +90,7 @@ class manage_section_content extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -99,7 +99,7 @@ class manage_section_content extends Aruna_Controller
 
 				$this->db->sql_update(['vars_1' => json_encode($get_vars)], 'ml_section', ['id' => $row['id']]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -167,7 +167,7 @@ class manage_section_content extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -199,7 +199,7 @@ class manage_section_content extends Aruna_Controller
 
 				$this->db->sql_update($data, 'ml_section_old', ['uri' => 'header']);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -239,7 +239,7 @@ class manage_section_content extends Aruna_Controller
 		{
 			if ($this->form_validation->run() == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">', '</div>')]);
 				exit;
 			}
 			else
@@ -248,7 +248,7 @@ class manage_section_content extends Aruna_Controller
 
 				$this->db->sql_update(['vars_2' => json_encode($get_vars)], 'ml_section', ['id' => $row['id']]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -308,7 +308,7 @@ class manage_section_content extends Aruna_Controller
 						{
 							if ($_FILES['image_logo']['error'] != 4)
 							{
-								echo json_encode(['status' => 'failed', 'msg' => $upload->display_errors('<span>', '</span>')]);
+								echo json_encode(['status' => 'failed', 'message' => $upload->display_errors('<span>', '</span>')]);
 								exit;
 							}
 
@@ -373,7 +373,7 @@ class manage_section_content extends Aruna_Controller
 
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode(['status' => 'success', 'msg' => 'Success'], JSON_PRETTY_PRINT))
+					 ->set_output(json_encode(['status' => 'success', 'message' => 'Success'], JSON_PRETTY_PRINT))
 					 ->_display();
 			exit;
 		}

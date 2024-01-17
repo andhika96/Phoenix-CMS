@@ -1016,6 +1016,24 @@
 	 * @return string
 	 */
 
+	function add_slideshow($page = '', $rendered_with_vuejs = FALSE)
+	{
+		$path = APPPATH.'/views/widget/slideshow/widget_slideshow.php';
+
+		if (file_exists($path))
+		{
+			require_once $path;
+
+			if (method_exists('Aruna_Widget_SlideShow', 'show'))
+			{
+				$load_widget = new Aruna_Widget_SlideShow;
+
+				return $load_widget->show($page, $rendered_with_vuejs);
+			}
+		}
+	}
+
+	/*
 	function add_slideshow($page)
 	{
 		$Aruna =& get_instance();
@@ -1050,6 +1068,7 @@
 			}
 		}
 	}
+	*/
 
 	// ------------------------------------------------------------------------
 
@@ -1063,6 +1082,24 @@
 	 * @return string
 	 */
 
+	function add_coverimage($page = '', $rendered_with_vuejs = FALSE)
+	{
+		$path = APPPATH.'/views/widget/coverimage/widget_coverimage.php';
+
+		if (file_exists($path))
+		{
+			require_once $path;
+
+			if (method_exists('Aruna_Widget_CoverImage', 'show'))
+			{
+				$load_widget = new Aruna_Widget_CoverImage;
+
+				return $load_widget->show($page, $rendered_with_vuejs);
+			}
+		}
+	}
+
+	/*
 	function add_coverimage($main_page, $sub_page = '', $rendered_with_vuejs = FALSE)
 	{
 		$Aruna =& get_instance();
@@ -1111,6 +1148,7 @@
 			}
 		}
 	}
+	*/
 
 	// ------------------------------------------------------------------------
 
@@ -1124,6 +1162,81 @@
 	function add_caption_widget($string, $options = array('for_widget' => ''))
 	{
 		$GLOBALS['widget']['caption'][$options['for_widget']] = $string;	
+	}
+
+	// ------------------------------------------------------------------------
+
+	function get_page_config($uri)
+	{
+		$Aruna =& get_instance();
+
+		$res_check = $Aruna->db->sql_prepare("select * from ml_page_style where uri = :uri");
+		$bindParam_check = $Aruna->db->sql_bindParam(['uri' => $uri], $res_check);
+		$row_check = $Aruna->db->sql_fetch_single($bindParam_check);
+
+		$output = json_decode($row_check['page_config'], true);
+
+		return $output;
+	}
+
+	// ------------------------------------------------------------------------
+
+	function get_page_style($uri, $column)
+	{
+		$Aruna =& get_instance();
+
+		$res = $Aruna->db->sql_prepare("select * from ml_page_style where uri = :uri");
+		$bindParam = $Aruna->db->sql_bindParam(['uri' => $uri], $res);
+		
+		if ($Aruna->db->sql_counts($bindParam))
+		{
+			$row = $Aruna->db->sql_fetch_single($bindParam);
+
+			if ($column == 'logo')
+			{
+				if (get_page_config($uri)['logo'] == 1)
+				{
+					if (file_exists($row['page_logo']))
+					{
+						return base_url($row['page_logo']);
+					}
+					else
+					{
+						section_content('<span class="text-bg-danger py-2 px-3 rounded">Logo not found</span>');
+					}
+				}
+				else
+				{
+					section_content('<span class="text-bg-danger py-2 px-3 rounded">Logo cannot displayed, because logo option is disabled</span>');
+				}
+			}
+			elseif ($column == 'background_image')
+			{
+				if (get_page_config($uri)['background_image'] == 1)
+				{
+					if (file_exists($row['page_background_image']))
+					{
+						return base_url($row['page_background_image']);
+					}
+					else
+					{
+						section_content('<span class="text-bg-danger p-2 px-3 rounded">Background image not found</span>');
+					}
+				}
+				else
+				{
+					section_content('<span class="text-bg-danger py-2 px-3 rounded">Background image cannot displayed, because logo option is disabled</span>');
+				}
+			}
+			else
+			{
+				section_content('<span class="text-bg-danger p-2 px-3 rounded">Coloum not found</span>');
+			}
+		}
+		else
+		{
+			section_content('<span class="text-bg-danger p-2 px-3 rounded">Page style not found</span>');
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -1850,7 +1963,7 @@
 										<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
 											<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
 										
-											<ul class="dropdown-menu font-size-inherit">';
+											<ul class="dropdown-menu ph-dropdown-menu font-size-inherit">';
 
 										foreach ($get_dropdown_vars as $key1 => $value1) 
 										{
@@ -1869,7 +1982,7 @@
 									<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
 										<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
 									
-										<ul class="dropdown-menu font-size-inherit">';
+										<ul class="dropdown-menu ph-dropdown-menu font-size-inherit">';
 
 									foreach ($get_dropdown_vars as $key1 => $value1) 
 									{
@@ -2010,7 +2123,7 @@
 											<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
 												<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.site_url($value['menu_link']).'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
 											
-												<ul class="dropdown-menu font-size-inherit">';
+												<ul class="dropdown-menu ph-dropdown-menu font-size-inherit">';
 
 											foreach ($get_dropdown_vars as $key1 => $value1) 
 											{
@@ -2029,7 +2142,7 @@
 										<li class="nav-item dropdown" style="'.get_section_header('margin_link').'">
 											<a class="nav-link dropdown-toggle '.getNavMenu($value['menu_name']).'" style="'.get_section_header('padding_link').'" href="'.$value['menu_link'].'" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.$value['menu_name'].'</a>
 										
-											<ul class="dropdown-menu font-size-inherit">';
+											<ul class="dropdown-menu ph-dropdown-menu font-size-inherit">';
 
 										foreach ($get_dropdown_vars as $key1 => $value1) 
 										{
@@ -2490,6 +2603,8 @@
 			$message = '<h4 class="h5 font-weight-normal" style="line-height: 1.6">Sorry sweetheart, I can\'t find the page you requested <i class="far fa-frown ml-1 fa-lg"></i></h6><div class="mt-3"><a href="javascript:history.back();" class="text-white"><i class="fas fa-long-arrow-alt-left mr-2"></i> Back to Previous Page</a></div>';
 		}
 
+		$style['style_class_name'] = isset($style['style_class_name']) ? $style['style_class_name'] : '';
+
 		section_notice('<div class="bg-danger bg-opacity-50 text-center rounded p-4 '.$style['style_class_name'].'">'.$message.'</div>');
 	}
 
@@ -2551,6 +2666,77 @@
 			{
 				show_error('Invalid breadcrumb data.');
 			}
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	function func_create_directory($directory, $mode)
+	{
+		if (strstr($directory, '/')) 
+		{
+			$split_directory = preg_split("#/#", $directory);
+
+			if (count($split_directory) <= 5)
+			{
+				for ($i = 0; $i < count($split_directory); $i++) 
+				{ 
+					if ($i == 0)
+					{
+						$directory = $split_directory[$i];
+
+						func_init_create_directory($directory, $mode);
+					}
+					elseif ($i == 1)
+					{
+						$directory = $split_directory[0].'/'.$split_directory[$i];
+
+						func_init_create_directory($directory, $mode);
+					}
+					elseif ($i == 2)
+					{
+						$directory = $split_directory[0].'/'.$split_directory[1].'/'.$split_directory[$i];
+
+						func_init_create_directory($directory, $mode);
+					}
+					elseif ($i == 3)
+					{
+						$directory = $split_directory[0].'/'.$split_directory[1].'/'.$split_directory[2].'/'.$split_directory[3].'/'.$split_directory[$i];
+
+						func_init_create_directory($directory, $mode);
+					}
+					elseif ($i == 4)
+					{
+						$directory = $split_directory[0].'/'.$split_directory[1].'/'.$split_directory[2].'/'.$split_directory[3].'/'.$split_directory[4].'/'.$split_directory[$i];
+
+						func_init_create_directory($directory, $mode);
+					}
+				}
+			}
+			else
+			{
+				show_error("You only can create 5 directory.");
+			}
+		}
+		else
+		{
+			func_init_create_directory($directory, $mode);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	function func_init_create_directory($directory, $mode = 0777)
+	{
+		if ( ! is_dir($directory))
+		{
+			mkdir($directory, $mode);
+
+			log_message('info', 'Directory created successfully');
+		}
+		else
+		{
+			log_message('info', 'Cannot create a directory '.$directory.', because the directory already exists.');
 		}
 	}
 

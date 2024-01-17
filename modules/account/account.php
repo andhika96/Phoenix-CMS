@@ -65,7 +65,7 @@ class account extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -84,7 +84,7 @@ class account extends Aruna_Controller
 				$this->db->sql_update($update_account, 'ml_accounts', ['id' => $row['uid']]);
 				$this->db->sql_update($update_user_information, 'ml_user_information', ['user_id' => $row['uid']]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success']);
+				echo json_encode(['status' => 'success', 'message' => 'Success']);
 				exit;
 			}
 		}
@@ -117,7 +117,7 @@ class account extends Aruna_Controller
 		{
 			if ($this->form_validation->run($this) == FALSE)
 			{
-				echo json_encode(['status' => 'failed', 'msg' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
+				echo json_encode(['status' => 'failed', 'message' => $this->form_validation->validation_errors('<div class="mb-2">- ', '</div>')]);
 				exit;
 			}
 			else
@@ -143,12 +143,12 @@ class account extends Aruna_Controller
 
 					$this->db->sql_update($update_password, 'ml_accounts', ['id' => $row['id']]);
 
-					echo json_encode(['status' => 'success', 'msg' => 'Success']);
+					echo json_encode(['status' => 'success', 'message' => 'Success']);
 					exit;
 				}
 				else
 				{
-					echo json_encode(['status' => 'failed', 'msg' => $error]);
+					echo json_encode(['status' => 'failed', 'message' => $error]);
 					exit;
 				}
 			}
@@ -219,7 +219,7 @@ class account extends Aruna_Controller
 					$errors = $value;
 				}
 
-				echo json_encode(['status' => 'failed', 'msg' => $errors.$_FILES['userfile']['type']]);
+				echo json_encode(['status' => 'failed', 'message' => $errors.$_FILES['userfile']['type']]);
 				exit;
 			}
 			else
@@ -232,7 +232,7 @@ class account extends Aruna_Controller
 				$data = ['avatar' => $x_folder.$this->upload->data('file_name')];
 				$this->db->sql_update($data, 'ml_user_information', ['user_id' => $row['user_id']]);
 
-				echo json_encode(['status' => 'success', 'msg' => 'Success', 'getImg' => base_url($x_folder.$this->upload->data('file_name'))]);
+				echo json_encode(['status' => 'success', 'message' => 'Success', 'getImg' => base_url($x_folder.$this->upload->data('file_name'))]);
 				exit;
 			}
 		}

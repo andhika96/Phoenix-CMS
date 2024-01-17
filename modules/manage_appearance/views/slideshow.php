@@ -35,7 +35,7 @@
 					<tr>
 						<th scope="row">'.$i.'</th>
 						<td>'.ucfirst($value['name']).'</td>
-						<td><a href="'.site_url('manage_appearance/editslideshow/'.$value['name']).'" class="btn btn-light font-size-inherit"><i class="fas fa-edit"></i></a></td>
+						<td><a href="'.site_url('manage_appearance/edit_slideshow/'.$value['name']).'" class="btn btn-light font-size-inherit"><i class="fas fa-edit"></i></a></td>
 					</tr>');
 
 		$i++;
