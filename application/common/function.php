@@ -1260,27 +1260,31 @@
 
 		$res_module = $Aruna->db->sql_prepare("select * from ml_modules where name = :name and type = :type");
 		$bindParam_module = $Aruna->db->sql_bindParam(['name' => $widget, 'type' => 'page'], $res_module);
-		$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row_module = ($row_module !== FALSE) ? $row_module : [];
-
-		if ($row_module['is_widget'] == 1)
+		
+		if ($Aruna->db->sql_counts($bindParam_module))
 		{
-			$res_article = $Aruna->db->sql_select("select * from ml_".$widget."_article order by id ".$options['sortBy']." limit ".$options['limit']."");
-			$row_article = $Aruna->db->sql_fetch($res_article);
+			$row_module = $Aruna->db->sql_fetch_single($bindParam_module);
 
-			if ($view_type == 'grid')
+			// Prevent from Automatic conversion of false to array is deprecated
+			$row_module = ($row_module !== FALSE) ? $row_module : [];
+
+			if ($row_module['is_widget'] == 1)
 			{
-				include APPPATH.'views/widget/common/grid_view.php';
+				$res_article = $Aruna->db->sql_select("select * from ml_".$widget."_article order by id ".$options['sortBy']." limit ".$options['limit']."");
+				$row_article = $Aruna->db->sql_fetch($res_article);
 
-				return $output;
-			}
-			elseif ($view_type == 'grid_box')
-			{
-				include APPPATH.'views/widget/common/grid_box_view.php';
+				if ($view_type == 'grid')
+				{
+					include APPPATH.'views/widget/common/grid_view.php';
 
-				return $output;
+					return $output;
+				}
+				elseif ($view_type == 'grid_box')
+				{
+					include APPPATH.'views/widget/common/grid_box_view.php';
+
+					return $output;
+				}
 			}
 		}
 	}

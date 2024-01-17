@@ -176,7 +176,7 @@ class awesome_admin extends Aruna_Controller
 
 		$current_modules = array();
 
-		$res = $this->db->sql_select("select * from ml_modules where type = 'page'");
+		$res = $this->db->sql_select("select * from ml_modules where type in ('core', 'page')");
 		while ($row = $this->db->sql_fetch_single($res))
 		{
 			$current_modules[$row['name']] = $row;
@@ -247,7 +247,7 @@ class awesome_admin extends Aruna_Controller
 		{
 			foreach ($this_modules as $key => $module) 
 			{
-				if ($module['type'] == 'page')
+				if ($module['type'] == 'core' || $module['type'] == 'page')
 				{
 					$module_key 			= $key.'_actived';
 					$module_slideshow 		= $key.'_slideshow';

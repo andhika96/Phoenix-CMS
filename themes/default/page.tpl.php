@@ -227,7 +227,7 @@
 		<body class="ph-custom-css">
 			<header class="ph-navbar '.is_fixed_navbar().' navbar navbar-expand-lg bg-light" style="border-bottom: 1px '.get_section_header('section_background', 'border-bottom').' solid">
 				<div class="container">
-					<a class="navbar-brand me-lg-4" href="#">
+					<a class="navbar-brand me-lg-4" href="'.site_url().'">
 						<img src="'.base_url(get_logo(1, 'image')).'" class="d-none d-md-block" style="width: '.get_logo(1, 'size').'">
 						<img src="'.base_url(get_logo(2, 'image')).'" class="d-block d-md-none" style="width: '.get_logo(2, 'size').'">
 					</a>

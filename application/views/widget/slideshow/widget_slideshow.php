@@ -151,7 +151,7 @@ class Aruna_Widget_SlideShow
 									<div class="position-relative">
 										<div class="'.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-position'].' '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-top-bottom'].' '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-start-end'].' '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-translate-middle'].' w-100">
 											<div class="row">
-												<div class="col-5 '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-margin'].' '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-text'].'">
+												<div class="col-7 '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-margin'].' '.$this->__init_position_content_desktop($slideshow_vars['style']['position_desktop'])['class-text'].'">
 													<h2>'.$value['title'].'</h2>
 													<h4 class="font-weight-light mb-3">'.$value['caption'].'</h4>
 

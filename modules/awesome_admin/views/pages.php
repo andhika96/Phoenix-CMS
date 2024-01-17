@@ -52,7 +52,7 @@
 			$i = 1;
 			foreach ($pages as $page) 
 			{
-				if ($page['type'] == 'page')
+				if ($page['flag'] == 'home' && $page['type'] == 'core' || $page['type'] == 'page')
 				{
 					$module_key 		= $page['flag'].'_actived';
 					$module_slideshow 	= $page['flag'].'_slideshow';

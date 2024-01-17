@@ -26,7 +26,7 @@
 
 	<div class="container my-5">
 		<div>
-			'.add_widget('portofolio', 'grid_box').'
+			'.add_widget('portofolio', 'grid_box', array('sortBy' => 'desc', 'limit' => 5)).'
 		</div>
 
 		<div>
