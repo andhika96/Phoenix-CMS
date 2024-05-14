@@ -34,14 +34,11 @@ class manage_event extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check active page
-		check_active_page('manage_event');
+		page_function()->check_active_page();
 
-		// Only role page with role user
-		check_role_page('manage_event');
+		page_function()->check_access_page();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()
@@ -303,7 +300,7 @@ class manage_event extends Aruna_Controller
 					'event_location'	=> $this->input->post('event_location'),
 					'event_address'	 	=> $this->input->post('event_address'),
 					'status' 			=> $this->input->post('status'),
-					'userid'			=> get_user('id'),
+					'userid'			=> user_function()->get_user('id'),
 					'thumb_s'			=> $thumb_s,
 					'thumb_s2'			=> $thumb_s2,
 					'thumb_l'			=> $thumb_l,
@@ -562,7 +559,7 @@ class manage_event extends Aruna_Controller
 					'event_location'	=> $this->input->post('event_location'),
 					'event_address'	 	=> $this->input->post('event_address'),
 					'status' 			=> $this->input->post('status'),
-					'userid'			=> get_user('id'),
+					'userid'			=> user_function()->get_user('id'),
 					'thumb_s'			=> $thumb_s,
 					'thumb_s2'			=> $thumb_s2,
 					'thumb_l'			=> $thumb_l,
@@ -1048,7 +1045,7 @@ class manage_event extends Aruna_Controller
 			$row['thumb_s2'] 	 	= ( ! empty($row['thumb_s'])) ? (file_exists($row['thumb_s2']) ? base_url($row['thumb_s2']) : 'undefined') : '';
 			$row['content'] 	 	= strip_tags(ellipsize($row['content'], 50, 1, '...'));
 			$row['content'] 	 	= preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
-			$row['get_user']	 	= get_client($row['userid'], 'fullname');
+			$row['get_user']	 	= user_function()->get_other_user($row['userid'], 'fullname');
 			$row['get_created']  	= get_date($row['created']);
 			$row['get_status']	 	= get_status_article($row['status'], TRUE);
 			$row['scheduled']	 	= ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';
@@ -1275,6 +1272,20 @@ class manage_event extends Aruna_Controller
 					 ->_display();
 			exit;
 		}
+	}
+
+	public function asd()
+	{
+		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
+
+		// section_content('<i class="fas fa-user-circle"></i>');
+
+		echo user_function()->get_avatar_user_alt(1, 'extra-small');
+		echo user_function()->get_avatar_user_alt(100, 'small');
+		
+		echo $this->uri->segment(2);
+
+		exit;
 	}
 }
 

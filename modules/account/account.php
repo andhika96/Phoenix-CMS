@@ -34,8 +34,7 @@ class account extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()

@@ -26,8 +26,7 @@ class portofolio extends Aruna_Controller
 
 		$this->num_per_page = num_per_page();
 
-		// Check active page
-		check_active_page('portofolio', ['style_class_name' => 'm-5']);
+		page_function()->check_active_page(['style_class_name' => 'm-5']);
 	}
 
 	public function index()
@@ -149,8 +148,8 @@ class portofolio extends Aruna_Controller
 			$row['title']		= ellipsize($row['title'], 100);
 			$row['content'] 	= strip_tags(ellipsize($row['content'], 150));
 			$row['content'] 	= preg_replace("/&#?[a-z0-9]+;/i", '', $row['content']).'...';
-			$row['avatar'] 		= avatar($row['userid']);
-			$row['user'] 		= get_client($row['userid'], 'fullname');
+			$row['avatar'] 		= user_function()->get_avatar_user($row['userid']);
+			$row['user'] 		= user_function()->get_other_user($row['userid'], 'fullname');
 			$row['category']	= get_category($row['cid'], 'portofolio');
 			$row['get_date']	= ( ! empty($row['schedule_pub'])) ? get_date($row['schedule_pub'], 'date') : get_date($row['created'], 'date');
 

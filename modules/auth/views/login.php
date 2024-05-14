@@ -12,6 +12,9 @@
 
 	defined('MODULEPATH') OR exit('No direct script access allowed');
 
+	$auto_redirect_link = $session->userdata('redirect_to') ? $session->userdata('redirect_to') : site_url('dashboard');
+	$auto_notice_page = $session->userdata('redirect_to') ? '<div class="text-bg-warning rounded p-3 mb-3"><i class="far fa-exclamation-circle fa-fw"></i> You must login first to continue</div>' : '';
+
 	section_content('
 	<div class="page-header" id="ar-app-form">
 		<div class="page-header-image" style="background-image: url('.base_url(get_content_page('loginpage', 'background', 'image_0')).')"></div>
@@ -28,6 +31,8 @@
 							</div>
 
 							<div class="card-body">
+								'.$auto_notice_page.'
+
 								<div class="toast ar-notice-toast position-relative bg-transparent align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false"></div>
 
 								<div class="input-group form-group-no-border input-group-md mb-3">

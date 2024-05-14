@@ -44,7 +44,7 @@
 	</style>
 
 	<div class="container-fluid px-0">
-		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm" id="ar-app-listdata">
+		<div class="bg-white arv3-pc-content p-3 p-md-4 rounded shadow-sm" id="ar-app-listdata-article-cms">
 			<div class="h5 pb-3 pb-md-4 mb-3 border-bottom d-flex justify-content-between align-items-center"><div><i class="fad fa-newspaper fa-fw me-2"></i> '.t('Manage News').'</div> <div><span class="float-md-right font-size-normal"><a href="'.site_url('manage_news/addpost').'">Add New Post</a></div></div>
 			
 			<div class="row mb-2 ar-fetch-listdata" id="ar-data" data-url="'.site_url('manage_news/getListPosts').'">
@@ -102,9 +102,8 @@
 						<table class="table table-striped table-hover">
 							<thead>
 								<tr>
-									<th scope="col" style="width: 55%">Title</th>
+									<th scope="col" style="width: 35%">Title</th>
 									<th scope="col" style="width: 8%">Thumbnail</th>
-									<th scope="col" style="width: 40%">Content</th>
 									<th scope="col" style="width: 10%">Scheduled</th>
 									<th scope="col" style="width: 10%">Status</th>
 									<th scope="col" style="width: 10%">Created</th>
@@ -120,8 +119,6 @@
 									<td class="align-middle text-nowrap">
 										<img :src="\'\'+info.thumb_s2+\'\'" style="max-width: 50px;max-height: 50px">
 									</td>
-
-									<td class="align-middle text-nowrap">{{ info.content }}</td>
 									
 									<td class="align-middle text-nowrap">
 										<span v-html="info.scheduled"></span>
@@ -135,9 +132,37 @@
 										<div class="text-muted">{{ info.get_created }}</div>
 									</td>
 
-									<td class="align-middle text-nowrap">
+									<td class="align-middle text-nowrap" :id="\'ar-table-td-options-\'+index+\'-\'+info.id+\'\'">
 										<a :href="\''.site_url('manage_news/editpost/\'+info.id+\'').'\'" class="btn btn-light font-size-inherit"><i class="fas fa-edit"></i></a>
-										<a href="javascript:void(0)" v-on:click="deleteData(getData, index, info.id); show = !show" class="ar-alert-bootbox btn btn-light text-danger font-size-inherit ms-1" v-bind:data-url="\''.site_url('manage_news/deletepost/').'\'"><i class="fas fa-trash"></i></a>
+										<a href="javascript:void(0)" v-on:click="deleteDataConfirmation(getData, index, info.id)" class="ar-delete-data btn btn-light text-danger font-size-inherit ms-1" v-bind:data-url="\''.site_url('manage_news/deletepost/').'\'"><i class="fas fa-trash"></i></a>
+	
+										<!--- Modal Notice Delete Item --->
+										<div class="modal fade" :id="\'ModalPopupNoticeDeleteData_\'+index+\'\'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" :aria-labelledby="\'ModalPopupNoticeDeleteData_\'+index+\'Label\'" aria-hidden="true">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content" :id="\'ar-form-submit-cf-\'+index">
+													<form :action="\''.site_url('manage_news/deletepost/\'+info.id+\'').'\'" method="get" @submit="submitConfirmation($event, getData, index)" :ref="\'formHTML\'+index" button-block="false" button-rounded-pill="false" font-size-large="false">
+														<div class="modal-header">
+															<h1 class="modal-title fs-5" :id="\'ModalPopupNoticeDeleteData_\'+index+\'Label\'">
+															<i class="fas fa-exclamation-triangle fa-fw text-warning me-1"></i>Notice</h1>
+														</div>
+
+														<div class="modal-body text-wrap">
+															Are you sure to delete this item?
+														</div>
+
+														<div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+															
+															<input type="hidden" name="article_id" :value="\'\'+info.id+\'\'">
+															<input type="hidden" :class="\'btn-token-submit-cf-\'+index+\'\'" name="'.$csrf_name.'" value="'.$csrf_hash.'">
+															<input type="submit" :class="\'btn btn-malika-submit btn-malika-submit-cf-\'+index+\'\'" value="Yes">
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<!--- Modal Notice Delete Item --->
+
 									</td>
 								</tr>
 							</tbody>

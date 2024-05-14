@@ -44,10 +44,12 @@ class awesome_admin extends Aruna_Controller
 		];
 
 		// Only role admin is allowed
-		has_access([99]);
+		// has_access([99]);
 
 		// Check user has login or not
-		has_login();
+		// has_login();
+
+		auth_function()->do_auth();
 	}
 
 	public function index()
@@ -965,9 +967,9 @@ class awesome_admin extends Aruna_Controller
 			// Remove password for security reason
 			$row['password'] = ( ! empty($row['password'])) ? '[removed]' : '';
 
-			$row['avatar']	 = avatar($row['id']);
-			$row['role'] 	 = get_role($row['roles']);
-			$row['status']	 = get_status_user($row['status']);
+			$row['avatar']	 = user_function()->get_avatar_user($row['id']);
+			$row['role'] 	 = user_function()->get_role_user($row['roles']);
+			$row['status']	 = user_function()->get_status_user($row['status']);
 
 			$output[] = $row;
 		}
@@ -1004,9 +1006,9 @@ class awesome_admin extends Aruna_Controller
 		$row['password'] = ( ! empty($row['password'])) ? '[removed]' : '';
 
 		$row['email'] 	  	 = '<i class="fas fa-envelope fa-fw mr-2"></i> <strong>Email Address:</strong> <span class="float-right">'.$row['email'].'</span>';
-		$row['role'] 	  	 = '<i class="fas fa-project-diagram fa-fw mr-2"></i> <strong>Role Account:</strong> <span class="float-right">'.get_role($row['id']).'</span>';
-		$row['status']	  	 = '<i class="fas fa-user-check fa-fw mr-2"></i> <strong>Status Account:</strong> <span class="float-right">'.get_status_user($row['status']).'</span>';
-		$row['gender']	  	 = '<i class="fas fa-venus-mars fa-fw mr-2"></i> <strong>Gender:</strong> <span class="float-right">'.get_status_gender($row['gender']).'</span>';
+		$row['role'] 	  	 = '<i class="fas fa-project-diagram fa-fw mr-2"></i> <strong>Role Account:</strong> <span class="float-right">'.user_function()->get_avatar_user($row['id']).'</span>';
+		$row['status']	  	 = '<i class="fas fa-user-check fa-fw mr-2"></i> <strong>Status Account:</strong> <span class="float-right">'.user_function()->get_status_user($row['status']).'</span>';
+		$row['gender']	  	 = '<i class="fas fa-venus-mars fa-fw mr-2"></i> <strong>Gender:</strong> <span class="float-right">'.user_function()->get_status_gender($row['gender']).'</span>';
 		$row['birthdate'] 	 = '<i class="fas fa-birthday-cake fa-fw mr-2"></i> <strong>Birthdate:</strong> <span class="float-right">'.$row['birthdate'].'</span>';
 		$row['phone_number'] = '<i class="fas fa-venus-mars fa-fw mr-2"></i> <strong>Gender:</strong> <span class="float-right">'.$row['phone_number'].'</span>';
 		$row['about'] 	 	 = '<i class="fas fa-quote-right fa-fw mr-2"></i> <strong>About Us:</strong> <div class="mt-2">'.$row['about'].'</div>';

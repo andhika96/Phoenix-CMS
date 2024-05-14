@@ -1197,7 +1197,7 @@ dl, ol, ul
 {
 	top: .5rem;
 	right: 0;
-	width: 350px;
+	min-width: 350px;
 	z-index: 102 !important;
 }
 

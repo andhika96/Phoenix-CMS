@@ -18,8 +18,7 @@ class dashboard extends Aruna_Controller
 	{
 		parent::__construct();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()

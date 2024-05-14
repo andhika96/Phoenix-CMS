@@ -18,6 +18,10 @@ const Vue2Form = new Vue(
 		form: {},
 		responseMessageSubmit: '',
 		responseMessageSignup: '',
+		getButtonValue: '',
+		getButtonBlock: '',
+		getButtonRounded: '',
+		getButtonFontFize: '',
 		initResponse: [],
 		initFormSignup: 
 		{
@@ -38,31 +42,45 @@ const Vue2Form = new Vue(
 			let getIdFormSubmit = document.getElementById("ar-form-submit");
 
 			// Get value of attribute in HTML.
-			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
-			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+			let formActionURL 	= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod 		= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
 
 			// Reset form or input file
-			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
-			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+			let formReset 		= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset 	= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
 
 			// Get value of submit button.
-			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+			if (getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value') !== undefined)
+			{
+				this.getButtonValue = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+			}
 
 			// Get using button block or not with value true and false from button-block attribute
-			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+			if (this.$refs.formHTML.attributes['button-block'] !== undefined)
+			{
+				this.getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+			}
 
 			// Get rounded pill button or just rounded
-			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			if (this.$refs.formHTML.attributes['button-rounded-pill'] !== undefined)
+			{	
+				this.getButtonRounded = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			}
 
 			// Get using button large or not with value true and false from button-large attribute
-			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+			if (this.$refs.formHTML.attributes['font-size-large'] !== undefined)
+			{	
+				this.getButtonFontSize = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+			}
 
 			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
 			let formData = new FormData(this.$refs.formHTML);
 
 			// Get class button name to change the button to button loading state .
-			document.getElementsByClassName("btn-malika-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
 			document.getElementsByClassName("btn-malika-submit")[0].remove();
+
+			console.log(this.$refs.formHTML);
 
 			axios(
 			{
@@ -86,7 +104,7 @@ const Vue2Form = new Vue(
 						let toast = new bootstrap.Toast(toastBox);
 						toast.show();
 
-						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getFontSizeLarge+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
 						document.getElementsByClassName("btn-loading-submit")[0].remove();
 					}
 					else
@@ -101,7 +119,7 @@ const Vue2Form = new Vue(
 						let toast = new bootstrap.Toast(toastBox);
 						toast.hide();
 
-						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getFontSizeLarge+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
 						document.getElementsByClassName("btn-loading-submit")[0].remove();
 					}
 
@@ -125,17 +143,31 @@ const Vue2Form = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -144,17 +176,30 @@ const Vue2Form = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\" value=\""+thid.getButtonValue+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
 			});
 		},
@@ -166,26 +211,37 @@ const Vue2Form = new Vue(
 			let getIdFormSignup = document.getElementById("ar-form-signup");
 
 			// Get value of attribute in HTML.
-			let formActionURL = getIdFormSignup.getElementsByTagName("form")[0].getAttribute("action"); 
-			let formMethod = getIdFormSignup.getElementsByTagName("form")[0].getAttribute("method");
+			let formActionURL 	= getIdFormSignup.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod 		= getIdFormSignup.getElementsByTagName("form")[0].getAttribute("method");
 
 			// Get value of submit button.
-			let getValueButton = getIdFormSignup.querySelector('input[type="submit"]').getAttribute('value');
+			if (getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value') !== undefined)
+			{
+				this.getButtonValue = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+			}
 
 			// Get using button block or not with value true and false from button-block attribute
-			let getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
-
-			// Get using button large or not with value true and false from button-large attribute
-			let getFontSizeLarge = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+			if (this.$refs.formHTML.attributes['button-block'] !== undefined)
+			{
+				this.getButtonBlock = this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+			}
 
 			// Get rounded pill button or just rounded
-			let getRoundedPill = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			if (this.$refs.formHTML.attributes['button-rounded-pill'] !== undefined)
+			{	
+				this.getButtonRounded = this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			}
 
+			// Get using button large or not with value true and false from button-large attribute
+			if (this.$refs.formHTML.attributes['font-size-large'] !== undefined)
+			{	
+				this.getButtonFontSize = this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-normal';
+			}
 			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
 			let formData = new FormData(this.$refs.formHTML);
 
 			// Get class button name to change the button to button loading state .
-			document.getElementsByClassName("btn-malika-signup")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-signup "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-signup")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-signup "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
 			document.getElementsByClassName("btn-malika-signup")[0].remove();
 
 			axios(
@@ -204,7 +260,7 @@ const Vue2Form = new Vue(
 						alert('Key URL for redirect after response callback not found!');
 						console.log('Key URL for redirect after response callback not found!');
 
-						document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
 						document.getElementsByClassName("btn-loading-signup")[0].remove();
 					}
 					else
@@ -214,7 +270,7 @@ const Vue2Form = new Vue(
 							window.location.href = response.data.url;
 						}, 500);
 
-						document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
 						document.getElementsByClassName("btn-loading-signup")[0].remove();
 					}
 
@@ -237,7 +293,7 @@ const Vue2Form = new Vue(
 					this.initFormSignup['password'] 	= (this.responseMessageSignup['password'] != undefined) ? true : false;
 					this.initFormSignup['agreecheck'] 	= (this.responseMessageSignup['agreecheck'] != undefined) ? true : false;
 
-					document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
 					document.getElementsByClassName("btn-loading-signup")[0].remove();
 				}
 
@@ -247,17 +303,30 @@ const Vue2Form = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body\">"+error.response.statusText+"</div></div>";
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-signup")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-signup "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-signup")[0].remove();
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+this.getButtonBlock+" "+this.getButtonRounded+" "+this.getButtonFontSize+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-signup")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
 			});
 		}
@@ -381,17 +450,31 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -400,17 +483,30 @@ const Vue2FormArticle = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
 			});
 		},
@@ -509,17 +605,31 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast-seo")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit-seo")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-seo "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit-seo")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit-seo")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -528,17 +638,30 @@ const Vue2FormArticle = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
 			});
 		},
@@ -639,17 +762,31 @@ const Vue2FormArticle = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit-custom-field")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -658,17 +795,30 @@ const Vue2FormArticle = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast-custom-field")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
-					document.getElementsByClassName("btn-loading-submit-custom-field")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit-custom-field "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+"\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit-custom-field")[0].remove();
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
 
-					document.getElementsByClassName("btn-token-submit-custom-field")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
 			});
 		},
@@ -924,8 +1074,16 @@ const Vue2FormArticle = new Vue(
 							if (image.width > image.height)
 							{
 								imagePreview.classList.remove("h-100");
+								// imagePreview.classList.add("h-100");
 
 								// console.log('Its Landscape');
+							} 
+							else if (image.width >= image.height)
+							{
+								imagePreview.classList.remove("h-100");
+								imagePreview.classList.add("h-100");
+
+								console.log('Its Landscape 2');
 							} 
 							else if (image.width < image.height)
 							{
@@ -977,17 +1135,19 @@ const Vue2FormArticle = new Vue(
 
 						image.onload = function()
 						{
+							console.log(image.width+' x '+image.height);
+
 							if (image.width > image.height)
 							{
 								imagePreview.classList.remove("h-100");
 
-								// console.log('Its Landscape');
+								console.log('Its Landscape');
 							} 
 							else if (image.width < image.height)
 							{
 								imagePreview.classList.add("h-100");
 
-								// console.log('Its Portrait');
+								console.log('Its Portrait');
 							}
 							else if (image.width == 0 && image.height == 0)
 							{
@@ -997,7 +1157,7 @@ const Vue2FormArticle = new Vue(
 							{
 								imagePreview.classList.remove("h-100");
 
-								// console.log('Its Square');
+								console.log('Its Square');
 							}
 						}
 					}
@@ -1185,39 +1345,79 @@ const Vue2Croppie = new Vue(
 					}
 					else if (response.data.status == 'failed')
 					{
-						this.responseMessageSubmit = response.data.message;
-						
-						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
-
-						let toast = new bootstrap.Toast(toastBox);
-						toast.show();
-
-						if (document.getElementById("ar-app-form-croppie").getElementsByTagName("form")[0].getAttribute("datafile-reset") !== null)
+						if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
 						{
-							const formFileReset	= document.getElementById("ar-app-form-croppie").getElementsByTagName("form")[0].getAttribute("datafile-reset");
-						
-							if (formFileReset == "true")
-							{
-								const getResetFile = document.querySelectorAll('input[type="file"]');
+							document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-								for (var i = 0; i < getResetFile.length; i++) 
-								{
-									getResetFile[i].value = '';
-								}
+							if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+							{
+								const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+								ModalPopupNoticeRelogin.show();
 							}
 						}
+						else
+						{
+							this.responseMessageSubmit = response.data.message;
+							
+							// We use toast from Bootstrap 5
+							let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+							toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
 
-						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-bnight-blue btn-malika-submit "+getButtonBlock+" px-3 py-2\" value=\""+getValSubmit+"\">");
-						document.getElementsByClassName("btn-loading-submit")[0].remove();
+							let toast = new bootstrap.Toast(toastBox);
+							toast.show();
+
+							if (document.getElementById("ar-app-form-croppie").getElementsByTagName("form")[0].getAttribute("datafile-reset") !== null)
+							{
+								const formFileReset	= document.getElementById("ar-app-form-croppie").getElementsByTagName("form")[0].getAttribute("datafile-reset");
+							
+								if (formFileReset == "true")
+								{
+									const getResetFile = document.querySelectorAll('input[type="file"]');
+
+									for (var i = 0; i < getResetFile.length; i++) 
+									{
+										getResetFile[i].value = '';
+									}
+								}
+							}
+
+							document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-bnight-blue btn-malika-submit "+getButtonBlock+" px-3 py-2\" value=\""+getValSubmit+"\">");
+							document.getElementsByClassName("btn-loading-submit")[0].remove();
+						}
 					}
 
 					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 				})
-				.catch(response => 
+				.catch(error => 
 				{ 
-					console.log(response);
+					if (error.response !== undefined)
+					{
+						this.responseMessageSubmit = error.response.data.message;
+
+						let display_error = "";
+
+						if (error.response.data.type == 'exception_error')
+						{
+							display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+						}
+						else
+						{
+							display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+						}
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+						document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+					}
 				});
 			});
 		}
@@ -1261,6 +1461,8 @@ const Vue2ListData = new Vue(
 		submit: function(event)
 		{
 			event.preventDefault();
+
+			console.log(event);
 
 			// Get id form submit
 			let getIdFormSubmit = document.getElementById("ar-form-submit");
@@ -1380,47 +1582,64 @@ const Vue2ListData = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
+
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+				}
+
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
 
 					let toast = new bootstrap.Toast(toastBox);
 					toast.show();
 
 					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
 					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 				}
-
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
-			})
-			.catch(response =>
-			{
-				this.responseMessageSubmit = response.response.data.message;
-
-				let display_error = "";
-
-				if (response.response.data.type == 'exception_error')
-				{
-					display_error = "<div> <p class=\"mb-2\">Type: "+response.response.data.title+"</p> <p class=\"mb-2\">Message: "+response.response.data.message+"</p> <p class=\"mb-2\">File Name: "+response.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+response.response.data.linenumber+"</p> </div>";
-				}
-				else
-				{
-					display_error = "<div> <p class=\"mb-2\">Type: "+response.response.data.title+"</p> <p class=\"mb-2\">Message: "+response.response.data.message+"</p> </div>";
-				}
-
-				// We use toast from Bootstrap 5
-				let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-				toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
-
-				let toast = new bootstrap.Toast(toastBox);
-				toast.show();
-
-				document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-				document.getElementsByClassName("btn-loading-submit")[0].remove();
-
-				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
 			});
 		},
 		listData: function()
@@ -1442,7 +1661,9 @@ const Vue2ListData = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
+
+					console.log(this.getData);
 				})
 				.catch(function(error) 
 				{
@@ -1493,7 +1714,7 @@ const Vue2ListData = new Vue(
 
 					this.getDataWOPage 	= response.data;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -1543,7 +1764,7 @@ const Vue2ListData = new Vue(
 
 					this.getListFormSlideshow 	= response.data;
 					this.statusData 			= getRes.status;
-					this.msgData 				= getRes.msg;
+					this.msgData 				= getRes.message;
 
 					if (document.querySelector(".color-picker") !== undefined)
 					{
@@ -1632,7 +1853,7 @@ const Vue2ListData = new Vue(
 
 					this.getListFormCoverimage	= response.data;
 					this.statusData				= getRes.status;
-					this.msgData				= getRes.msg;
+					this.msgData				= getRes.message;
 
 					if (document.querySelector("#color-picker") !== undefined)
 					{
@@ -1869,7 +2090,7 @@ const Vue2ListData = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -1914,7 +2135,7 @@ const Vue2ListData = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -1957,7 +2178,7 @@ const Vue2ListData = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2149,355 +2370,6 @@ const Vue2ListData = new Vue(
 	}
 });
 
-const Vue2FooterContent = new Vue(
-{
-	el: "#ar-app-footer-content",
-	data: 
-	{
-		getData: {},
-		getDataIcon: {},
-		getListDataIcon: {},
-		getListForm: [{ name: ''}],
-		getListFooter1: [{ icon: '', link: '', content: '', type: 'text'}],
-		getListFooter2: [{ icon: '', link: '', content: '', type: 'text'}],
-		getListFooter3: [{ icon: '', link: '', content: '', type: 'text'}],
-		getSearchIcon: '',
-		showData: true,
-		loadingData: true,
-		loadingDataIcon: true,
-		statusData: '',
-		messageData: '',
-		statusDataIcon: '',
-		messageDataIcon: ''
-	},
-	methods:
-	{
-		listData: function()
-		{
-			if (document.querySelector(".ar-fetch-listdata-footer") !== null && 
-				document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url") !== null)
-			{
-				const url = document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url");
-
-				axios.get(url)
-				.then(response => 
-				{
-					// const getRes = response.data.slice(0)[0];
-
-					const initListFooter1 = response.data.footer_right_link1;
-
-					this.getListFooter1 = response.data.footer_right_link1;
-					this.getListFooter2 = response.data.footer_right_link2;
-					this.getListFooter3 = response.data.footer_right_link3;
-
-					// this.statusData 	= getRes.status;
-					// this.messageData 	= getRes.message;
-				})
-				.catch(function(error) 
-				{
-					console.log(error);
-				})
-				.finally(() => 
-				{
-					IconPicker.Init(
-					{
-						jsonUrl: baseurl+"assets/plugins/iconpicker/dist/iconpicker-1.5.0.json",
-						searchPlaceholder: "Search Icon",
-						showAllButton: "Show All",
-						cancelButton: "Cancel",
-						noResultsFound: "No results found.",
-						borderRadius: "20px",
-					});	
-
-					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
-
-					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
-					{
-						IconPicker.Run(".GetIconPickerListFooter1_"+i);
-					}
-
-					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
-
-					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
-					{
-						IconPicker.Run(".GetIconPickerListFooter2_"+i);
-					}
-
-					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
-
-					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
-					{
-						IconPicker.Run(".GetIconPickerListFooter3_"+i);
-					}
-
-					this.loadingData = false;
-				});
-			}
-
-			// if (document.querySelector(".ar-data-status") !== null)
-			// {
-			// 	if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
-			// 	{
-			// 		document.querySelector(".ar-data-status").style.display = 'block';
-			// 	}
-			// }
-
-			// if (document.querySelector(".ar-data-load") !== null)
-			// {
-			// 	if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
-			// 	{
-			// 		document.querySelector(".ar-data-load").style.display = 'block';
-			// 	}
-			// }
-
-			// if (document.querySelector(".ar-total-data-load") !== null)
-			// {
-			// 	if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
-			// 	{
-			// 		document.querySelector(".ar-total-data-load").style.display = 'block';
-			// 	}
-			// }
-		},
-		multipleSubmit: function(event, idSubmit)
-		{
-			event.preventDefault();
-
-			// Get id form submit
-			let getIdFormSubmit = document.getElementById("ar-form-submit-"+idSubmit);
-
-			// Get value of attribute in HTML.
-			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
-			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
-
-			// Reset form or input file
-			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
-			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
-
-			// Get value of submit button.
-			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
-
-			// Get using button block or not with value true and false from button-block attribute
-			let getButtonBlock = this.$refs['formHTML'+idSubmit].attributes['button-block']['value'] == 'true' ? 'w-100' : '';
-
-			// Get using button large or not with value true and false from button-large attribute
-			let getFontSizeLarge = this.$refs['formHTML'+idSubmit].attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
-
-			// Get rounded pill button or just rounded
-			let getRoundedPill = this.$refs['formHTML'+idSubmit].attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
-
-			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
-			let formData = new FormData(this.$refs['formHTML'+idSubmit]);
-
-			// Get class button name to change the button to button loading state .
-			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-"+idSubmit+" "+getButtonBlock+" "+getRoundedPill+" "+getFontSizeLarge+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
-			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].remove();
-
-			axios(
-			{
-				url: formActionURL,
-				method: formMethod,
-				data: formData,
-				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
-			})
-			.then(response => 
-			{
-				if (response.data.status == 'success')
-				{
-					if ( ! response.data.url)
-					{
-						this.responseMessageSubmit = response.data.message;
-
-						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
-						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
-
-						let toast = new bootstrap.Toast(toastBox);
-						toast.show();
-
-						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
-					}
-					else
-					{
-						window.setTimeout(function() 
-						{
-							window.location.href = response.data.url;
-						}, 500);
-
-						// We use toast from Bootstrap 5
-						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
-						let toast = new bootstrap.Toast(toastBox);
-						toast.hide();
-
-						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
-						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
-					}
-
-					if (formReset == "true")
-					{
-						getIdFormSubmit.getElementsByTagName("form")[0].reset();
-					}
-
-					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
-					{					
-						if (formFileReset == "true")
-						{
-							const getResetFile = document.querySelectorAll('input[type="file"]');
-
-							for (var i = 0; i < getResetFile.length; i++) 
-							{
-								getResetFile[i].value = '';
-							}
-						}
-					}
-
-					console.log(response.data);
-				}
-				else if (response.data.status == 'failed')
-				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
-
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
-
-					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
-				}
-
-				document.getElementsByClassName("btn-token-submit-"+idSubmit)[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
-			})
-			.catch(response =>
-			{
-				console.log(response);
-			});
-		},
-		addNewForm: function(part_section)
-		{
-			if (part_section == 'list_footer1')
-			{
-				this.getListFooter1.push({ icon: '', link: '', content: '', type: 'text'});
-
-				setTimeout(function() 
-				{
-					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
-
-					const getBeforeLatestID = GetFAIconListFooter1.length-1;
-
-					IconPicker.Run(".GetIconPickerListFooter1_"+getBeforeLatestID);
-
-				}, 100);
-			}
-			else if (part_section == 'list_footer2')
-			{
-				this.getListFooter2.push({ icon: '', link: '', content: '', type: 'text'});
-
-				setTimeout(function() 
-				{
-					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
-
-					const getBeforeLatestID = GetFAIconListFooter2.length-1;
-
-					IconPicker.Run(".GetIconPickerListFooter2_"+getBeforeLatestID);
-
-				}, 100);
-			}
-			else if (part_section == 'list_footer3')
-			{
-				this.getListFooter3.push({ icon: '', link: '', content: '', type: 'text'});
-
-				setTimeout(function() 
-				{
-					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
-
-					const getBeforeLatestID = GetFAIconListFooter3.length-1;
-
-					IconPicker.Run(".GetIconPickerListFooter3_"+getBeforeLatestID);
-
-				}, 100);
-			}
-		},
-		deleteForm: function(getDataInfo, index, getId)
-		{
-			bootbox.confirm(
-			{
-				search: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
-				message: "Are you sure, do you want to delete this item?",
-				centerVertical: true,
-				closeButton: false,
-				buttons: 
-				{
-					cancel: 
-					{
-						className: 'btn-danger',
-						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
-					},
-					confirm: 
-					{
-						className: 'btn-success',
-						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
-					}
-				},
-				callback: function(result) 
-				{
-					if (result == true)
-					{
-						getDataInfo.splice(index, 1);
-					}
-				}
-			});
-		},
-		selectFooterType: function(event)
-		{
-			console.log(event.target.value);
-
-			if (event.target.value == 'text')
-			{
-				if (document.querySelector(".ar-display-footer-text") !== null)
-				{
-					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'none')
-					{
-						document.querySelector(".ar-display-footer-text").style.display = 'block';
-					}
-				}
-
-				if (document.querySelector(".ar-display-footer-logo") !== null)
-				{
-					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'block')
-					{
-						document.querySelector(".ar-display-footer-logo").style.display = 'none';
-					}
-				}
-			}
-			else if (event.target.value == 'logo')
-			{
-				if (document.querySelector(".ar-display-footer-text") !== null)
-				{
-					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'block')
-					{
-						document.querySelector(".ar-display-footer-text").style.display = 'none';
-					}
-				}
-
-				if (document.querySelector(".ar-display-footer-logo") !== null)
-				{
-					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'none')
-					{
-						document.querySelector(".ar-display-footer-logo").style.display = 'block';
-					}
-				}
-			}
-		}
-	},
-	created: function()
-	{
-		this.listData();
-	}
-});
-
 const Vue2ListDataForArticle = new Vue(
 {
 	el: "#ar-app-listdata-article",
@@ -2548,7 +2420,7 @@ const Vue2ListDataForArticle = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2606,7 +2478,7 @@ const Vue2ListDataForArticle = new Vue(
 
 					this.getDataModal 		= response.data
 					this.statusDataModal	= getRes.status;
-					this.msgDataModal 		= getRes.msg;
+					this.msgDataModal 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2686,7 +2558,7 @@ const Vue2ListDataForArticle = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2731,7 +2603,7 @@ const Vue2ListDataForArticle = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2774,7 +2646,7 @@ const Vue2ListDataForArticle = new Vue(
 					this.pageRange 		= getval.getDataPage.num_per_page;
 					this.currentPage 	= getval.getDataPage.current_page;
 					this.statusData 	= getRes.status;
-					this.msgData 		= getRes.msg;
+					this.msgData 		= getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -2862,6 +2734,681 @@ const Vue2ListDataForArticle = new Vue(
 	}
 });
 
+const Vue2ListDataForArticleCMS = new Vue(
+{
+	el: "#ar-app-listdata-article-cms",
+	data: 
+	{
+		getData: {},
+		getDataWOPage: {},
+		getTotalData: '',
+		getCategory: '',
+		pageURL: '',
+		pageCategory: '',
+		pageCount: '',
+		pageRange: '',
+		currentPage: '',
+		getSearch: '',
+		resSearch: '',
+		responseMessageSubmit: '',
+		isAvailable: 0,
+		statusData: '',
+		msgData: '',
+		show: true,
+		showData: true,
+		loading: true,
+		loadingWOPage: true,
+		loadingnextpage: true,
+		getButtonValue: '',
+		getButtonBlock: '',
+		getButtonFontSize: '',
+		getButtonRounded: ''
+	},
+	methods: 
+	{
+		submit: function(event)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit		= document.getElementById("ar-form-submit");
+
+			// Get value of attribute in HTML.
+			let formActionURL 		= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod 			= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset 			= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset 		= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton 		= getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock 		= this.$refs.formHTML.attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge 	= this.$refs.formHTML.attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill 		= this.$refs.formHTML.attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// Get with list data without pagination system or not
+			let withListDataWOPage 	= this.$refs.formHTML.attributes['with-list-wopage']['value'] == 'true' ? true : false;
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData 			= new FormData(this.$refs.formHTML);
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit "+getButtonBlock+" "+getRoundedPill+" "+getFontSizeLarge+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit")[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.message;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+
+					if (withListDataWOPage == true)
+					{
+						// Auto load list data without pagination sistem
+						this.listDataWOPage();
+					}
+				}
+				else if (response.data.status == 'failed')
+				{
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
+
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
+				}
+
+				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+				}
+			});
+		},
+		submitConfirmation: function(event, getDataInfo, index)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit 	= document.getElementById("ar-form-submit-cf-"+index);
+
+			// Get value of attribute in HTML.
+			let formActionURL 		= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod 			= getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Get value of submit button.
+			if (getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value') !== undefined)
+			{
+				this.getButtonValue = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+			}
+
+			// Get using button block or not with value true and false from button-block attribute
+			if (this.$refs['formHTML'+index][0].attributes['button-block'] !== undefined)
+			{
+				this.getButtonBlock = this.$refs['formHTML'+index][0].attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+			}
+
+			// Get using button large or not with value true and false from button-large attribute
+			if (this.$refs['formHTML'+index][0].attributes['font-size-large'] !== undefined)
+			{	
+				this.getButtonFontSize = this.$refs['formHTML'+index][0].attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+			}
+
+			// Get rounded pill button or just rounded
+			if (this.$refs['formHTML'+index][0].attributes['button-rounded-pill'] !== undefined)
+			{
+				this.getButtonRounded = this.$refs['formHTML'+index][0].attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+			}
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs['formHTML'+index][0]);
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit-cf-"+index)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-cf-"+index+" "+this.getButtonBlock+" "+this.getButtonFontSize+" "+this.getButtonRounded+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit-cf-"+index)[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					this.responseMessageSubmit = response.data.message;
+
+					let modalBodyContent = getIdFormSubmit.getElementsByClassName("modal-body")[0];
+
+					modalBodyContent.innerHTML = this.responseMessageSubmit;
+
+					window.setTimeout(function() 
+					{
+						if (document.getElementById('ModalPopupNoticeDeleteData_'+index) !== undefined)
+						{
+							bootstrap.Modal.getInstance(document.getElementById('ModalPopupNoticeDeleteData_'+index)).hide();
+						}
+					}, 400);
+				
+					document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-success-cf-"+index+" "+this.getButtonBlock+" "+this.getButtonFontSize+" "+this.getButtonRounded+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+					document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].remove();
+				}
+				else if (response.data.status == 'failed')
+				{
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
+
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						let modalBodyContent = getIdFormSubmit.getElementsByClassName("modal-body")[0];
+
+						modalBodyContent.innerHTML = '<span class=\"text-danger\">'+this.responseMessageSubmit+'</span>';
+
+						document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-cf-"+index+" "+this.getButtonBlock+" "+this.getButtonFontSize+" "+this.getButtonRounded+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
+						document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].remove();
+					}
+				}
+
+				document.getElementsByClassName("btn-token-submit-cf-"+index)[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
+					let modalBodyContent = getIdFormSubmit.getElementsByClassName("modal-body")[0];
+
+					modalBodyContent.innerHTML = '<span class=\"text-danger\">'+this.responseMessageSubmit+'</span>';
+
+					document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-cf-"+index+" "+this.getButtonBlock+" "+this.getButtonFontSize+" "+this.getButtonRounded+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
+					document.getElementsByClassName("btn-loading-submit-cf-"+index)[0].remove();
+
+					document.getElementsByClassName("btn-token-submit-cf-"+index)[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+				}
+			});
+
+			if (document.getElementById('ModalPopupNoticeDeleteData_'+index) !== undefined)
+			{
+				// Hide Toast when modal hidden
+				const ModalPopupNoticeDeleteData = document.getElementById('ModalPopupNoticeDeleteData_'+index);
+
+				ModalPopupNoticeDeleteData.addEventListener('hidden.bs.modal', event => 
+				{
+					let modalBodyContent = getIdFormSubmit.getElementsByClassName("modal-body")[0];
+
+					modalBodyContent.innerHTML = 'Are you sure to delete this item?';
+
+					if (document.getElementsByClassName("btn-success-cf-"+index)[0] !== undefined)
+					{
+						document.getElementsByClassName("btn-success-cf-"+index)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-cf-"+index+" "+this.getButtonBlock+" "+this.getButtonFontSize+" "+this.getButtonRounded+" px-3 py-2\" value=\""+this.getButtonValue+"\">");
+						document.getElementsByClassName("btn-success-cf-"+index)[0].remove();
+					}
+
+					getDataInfo.splice(index, 1);
+				});
+			}
+		},
+		listData: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata") !== null && 
+				document.querySelector(".ar-fetch-listdata").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+					const getRes = response.data.slice(0)[0];
+
+					this.getData 		= response.data;
+					this.getTotalData 	= getval.getDataPage.total_data;
+					this.pageCount 		= getval.getDataPage.total;
+					this.pageRange 		= getval.getDataPage.num_per_page;
+					this.currentPage 	= getval.getDataPage.current_page;
+					this.statusData 	= getRes.status;
+					this.msgData 		= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loading = false;
+					this.loadingnextpage = false;
+				});
+			}
+
+			if (document.querySelector(".ar-data-status") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-status").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-load").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-total-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-total-data-load").style.display = 'block';
+				}
+			}
+		},
+		listDataWOPage: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-wopage") !== null && 
+				document.querySelector(".ar-fetch-listdata-wopage").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-wopage").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					const getRes = response.data.slice(0)[0];
+
+					this.getDataWOPage 	= response.data;
+					this.statusData 	= getRes.status;
+					this.msgData 		= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loadingWOPage = false;
+				});
+			}
+
+			if (document.querySelector(".ar-data-status") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-status").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-data-load").style.display = 'block';
+				}
+			}
+
+			if (document.querySelector(".ar-total-data-load") !== null)
+			{
+				if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+				{
+					document.querySelector(".ar-total-data-load").style.display = 'block';
+				}
+			}
+		},
+		deleteDataConfirmation: function(getDataInfo, index, getId)
+		{
+			if (document.getElementById('ModalPopupNoticeDeleteData_'+index) !== undefined)
+			{
+				const ModalPopupNoticeDeleteData = new bootstrap.Modal(document.getElementById('ModalPopupNoticeDeleteData_'+index));
+
+				ModalPopupNoticeDeleteData.show();
+			}
+			else
+			{
+				alert("HTML Element DIV with ID ModalPopupNoticeDeleteData_* not found!");
+				console.log("HTML Element DIV with ID ModalPopupNoticeDeleteData_* not found!");
+			}
+		},
+		searchData: function(event)
+		{
+			const getSearch = this.getSearch.trim();
+
+			if (document.querySelector(".ar-fetch-listdata") !== null && 
+				document.querySelector(".ar-fetch-listdata").getAttribute("data-url") !== null)
+			{
+				const getUrl = document.querySelector(".ar-fetch-listdata").getAttribute("data-url");
+
+				if (this.pageCategory != '')
+				{
+					this.resSearch = '?category='+this.pageCategory+'&search='+this.getSearch;
+				}
+				else
+				{
+					this.resSearch = '?search='+this.getSearch;
+				}
+
+				this.loadingnextpage = true;
+
+				axios.get(getUrl+this.resSearch)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+					const getRes = response.data.slice(0)[0];
+
+					this.getData 		= response.data
+					this.getTotalData 	= getval.getDataPage.total_data;
+					this.pageCount 		= getval.getDataPage.total;
+					this.pageRange 		= getval.getDataPage.num_per_page;
+					this.currentPage 	= getval.getDataPage.current_page;
+					this.statusData 	= getRes.status;
+					this.msgData 		= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loading = false;
+					this.loadingnextpage = false;
+				});
+			}
+		},
+		selectCategory: function(getCategory) 
+		{
+			if (document.querySelector(".ar-fetch-listdata") !== null && 
+				document.querySelector(".ar-fetch-listdata").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata").getAttribute("data-url");
+
+				this.pageCategory = getCategory;
+
+				if (this.getSearch != '')
+				{
+					this.getCat = '?category='+this.pageCategory+'&search='+this.getSearch;
+				}
+				else
+				{
+					this.getCat = '?category='+this.pageCategory;
+				}
+				
+				document.querySelector("#ar-data").scrollIntoView(true);
+
+				this.loading = true;
+
+				axios.get(url+this.getCat)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+					const getRes = response.data.slice(0)[0];
+
+					this.getData 		= response.data
+					this.getTotalData 	= getval.getDataPage.total_data;
+					this.pageCount 		= getval.getDataPage.total;
+					this.pageRange 		= getval.getDataPage.num_per_page;
+					this.currentPage 	= getval.getDataPage.current_page;
+					this.statusData 	= getRes.status;
+					this.msgData 		= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => this.loading = false);
+			}
+		},
+		clickCategory: function() 
+		{
+			if (document.querySelector(".ar-fetch-listdata") !== null && 
+				document.querySelector(".ar-fetch-listdata").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata").getAttribute("data-url");
+
+				if (this.getSearch != '')
+				{
+					this.getCat = '?category='+this.pageCategory+'&search='+this.getSearch;
+				}
+				else
+				{
+					this.getCat = '?category='+this.pageCategory;
+				}
+
+				document.querySelector("#ar-data").scrollIntoView(true);
+
+				this.loading = true;
+
+				axios.get(url+this.getCat)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+					const getRes = response.data.slice(0)[0];
+
+					this.getData 		= response.data
+					this.getTotalData 	= getval.getDataPage.total_data;
+					this.pageCount 		= getval.getDataPage.total;
+					this.pageRange 		= getval.getDataPage.num_per_page;
+					this.currentPage 	= getval.getDataPage.current_page;
+					this.statusData 	= getRes.status;
+					this.msgData 		= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => this.loading = false);
+			}
+		},
+		clickPaginate: async function(page) 
+		{
+			if (document.querySelector(".ar-fetch-listdata") !== null && 
+				document.querySelector(".ar-fetch-listdata").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata").getAttribute("data-url");
+
+				let params = (new URL(url)).searchParams;
+
+				if (this.pageCategory !== '')
+				{
+					params.set('category', this.pageCategory);
+				}
+				
+				if (this.getSearch !== '')
+				{
+					params.set('getSearch', this.getSearch);
+				}
+
+				if (params.toString() !== '')
+				{
+					if (page == 1)
+					{
+						this.pageUrl = '?'+params.toString();
+					}
+					else
+					{
+						this.pageUrl = '?'+params.toString()+'&page='+page;
+					}
+				}
+				else
+				{
+					if (page == 1)
+					{
+						this.pageUrl = '';
+					}
+					else
+					{
+						this.pageUrl = '?page='+page;
+					}
+				}
+
+				this.loadingnextpage = true;
+
+				await axios.get(url+this.pageUrl)
+				.then(response => 
+				{
+					const getval = response.data.slice(-1)[0];
+
+					if (this.currentPage >= this.pageCount)
+					{
+						this.currentPage = '';
+					}
+
+					this.getData 		= response.data;
+					this.getTotalData 	= getval.getDataPage.total_data;
+					this.pageCount 		= getval.getDataPage.total;
+					this.pageRange 		= getval.getDataPage.num_per_page;
+
+					document.querySelector("#ar-data").scrollIntoView(true);
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{ 
+					this.loading 			= false;
+					this.loadingnextpage 	= false;
+				});
+			}
+		}
+	},
+	created: function()
+	{
+		// Auto load list data with pagination system
+		this.listData();
+
+		// Auto load list data without pagination sistem
+		this.listDataWOPage();
+	}
+});
+
 const Vue2ListUsers = new Vue(
 {
 	el: '#ar-listuser',
@@ -2907,7 +3454,7 @@ const Vue2ListUsers = new Vue(
 					this.pageRange = getval.getDataPage.num_per_page;
 					this.currPage = getval.getDataPage.current_page;
 					this.statusData = getRes.status;
-					this.msgData = getRes.msg;
+					this.msgData = getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -3099,7 +3646,7 @@ const Vue2ListUsers = new Vue(
 					this.pageRange = getval.getDataPage.num_per_page;
 					this.currPage = getval.getDataPage.current_page;
 					this.statusData = getRes.status;
-					this.msgData = getRes.msg;
+					this.msgData = getRes.message;
 				})
 				.catch(function(error) 
 				{
@@ -3359,24 +3906,64 @@ const Vue2ListUsers = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.msgData = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.msgData+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" font-size-inherit px-3 py-2\" value=\""+getValSubmit+"\">");
-					document.getElementsByClassName("btn-loading-submit")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.msgData = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.msgData+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" font-size-inherit px-3 py-2\" value=\""+getValSubmit+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
-			.catch(response => 
+			.catch(error => 
 			{ 
-				console.log(response);
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+				}
 			});
 		}
 	},
@@ -3386,7 +3973,8 @@ const Vue2ListUsers = new Vue(
 	}
 });
 
-const VueImage = new Vue({
+const VueImage = new Vue(
+{
 	el: '#ar-listimages',
 	data:
 	{
@@ -3411,8 +3999,6 @@ const VueImage = new Vue({
 	{
 		fetchListImages: function()
 		{
-			console.log("Loaded");
-
 			if (document.querySelector(".ar-fetch-listimage") !== null && 
 				document.querySelector(".ar-fetch-listimage").getAttribute("data-url") !== null)
 			{
@@ -3427,7 +4013,7 @@ const VueImage = new Vue({
 					if (getRes.status == 'failed')
 					{
 						this.statusData = getRes.status;
-						this.msgData 	= getRes.msg;
+						this.msgData 	= getRes.message;
 					}
 					else
 					{
@@ -3531,7 +4117,7 @@ const VueImage = new Vue({
 					if (getRes.status == 'failed')
 					{
 						this.statusData = getRes.status;
-						this.msgData = getRes.msg;
+						this.msgData = getRes.message;
 					}
 					else
 					{
@@ -3639,64 +4225,107 @@ const Vue2Translate = new Vue(
 				});
 			}
 		},
-		submit: async function(e)
+		submit: function(e)
 		{
 			let formAction = document.querySelector('.ar-translate-form').getAttribute('action');
 			let formMethod = document.querySelector('.ar-translate-form').getAttribute('method');
 			let formData = new FormData(this.$refs.formHTML);
 
-			let dialog = bootbox.dialog({ 
+			let dialog = bootbox.dialog(
+			{
+				title: 'Notice', 
 				message: '<div class="text-center p-4"><div class="spinner-grow text-danger mb-1" role="status"></div> <p class="font-weight-normal mb-0">Submitting ...</p></div>', 
 				centerVertical: true,
 				onEscape: true,
 				backdrop: true,
-				closeButton: false,
+				closeButton: true,
 			});
 
-			await axios(
+			axios(
 			{
 				data: formData,
 				url: formAction,
 				method: formMethod,
-				headers:
-				{
-					'Content-Type': 'multipart/form-data'
-				}
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
 			})
 			.then(response => 
-			{
+			{			
 				if (response.data.status == 'success')
 				{
 					dialog.init(function() 
 					{
-						dialog.find('.modal-body').prepend('<button type="button" class="bootbox-close-button close" aria-hidden="true">×</button>');
+						dialog.find('.modal-title').html('<h6 class="m-0 text-success"><i class="fas fa-check me-2"></i> Status</h6>');
 						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-check text-success fa-2x mb-1"></i> <p class="font-weight-normal m-0">'+response.data.message+'</p></div></div>');
 
 						setTimeout(function()
 						{
 							bootbox.hideAll();
-						}, 850);
+						}, 1500);
 					});
 				}
 				else if (response.data.status == 'failed')
 				{
-					dialog.init(function() 
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
 					{
-						dialog.find('.modal-body').prepend('<button type="button" class="bootbox-close-button close" aria-hidden="true">×</button>');
-						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-exclamation-triangle text-danger fa-2x mb-2"></i> <p class="font-weight-normal m-0">'+response.data.message+'</p></div></div>');
-
 						setTimeout(function()
 						{
 							bootbox.hideAll();
-						}, 850);
-					});
+						}, 500);
+
+						$('.bootbox').on('hidden.bs.modal', function (e)
+						{
+							document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
+
+							if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+							{
+								const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+								ModalPopupNoticeRelogin.show();
+							}
+						});
+					}
+					else
+					{
+						dialog.init(function() 
+						{
+							dialog.find('.modal-title').html('<h6 class="m-0 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Notice</h6>');
+							dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-center"><i class="fas fa-exclamation-triangle text-danger fa-2x mb-2"></i> <p class="font-weight-normal m-0">'+response.data.message+'</p></div></div>');
+
+							setTimeout(function()
+							{
+								bootbox.hideAll();
+							}, 1500);
+						});
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
 			})
-			.catch(response =>
+			.catch(error =>
 			{
-				console.log(response);
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
+					dialog.init(function() 
+					{
+						dialog.find('.modal-title').html('<h6 class="m-0 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Notice</h6>');
+						dialog.find('.bootbox-body').html('<div class="p-2"><div class="text-start">'+display_error+'</div></div>');
+					});
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+				}
 			});
 
 			e.preventDefault();
@@ -3830,17 +4459,31 @@ const Vue2ListDataForDropdown = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -3849,6 +4492,19 @@ const Vue2ListDataForDropdown = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
 					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
@@ -4355,17 +5011,31 @@ const Vue2ListDataForHeader = new Vue(
 				}
 				else if (response.data.status == 'failed')
 				{
-					this.responseMessageSubmit = response.data.message;
-					
-					// We use toast from Bootstrap 5
-					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
-					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
 
-					let toast = new bootstrap.Toast(toastBox);
-					toast.show();
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
 
-					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
-					document.getElementsByClassName("btn-loading-submit")[0].remove();
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit")[0].remove();
+					}
 				}
 
 				document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
@@ -4374,6 +5044,19 @@ const Vue2ListDataForHeader = new Vue(
 			{
 				if (error.response !== undefined)
 				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
 					// We use toast from Bootstrap 5
 					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
 					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+error.response.statusText+"</div></div>";
@@ -4633,6 +5316,395 @@ const Vue2ListDataForHeader = new Vue(
 			string = string.toLowerCase().replace(/\s/g, "");
 
 			return string;
+		}
+	},
+	created: function()
+	{
+		this.listData();
+	}
+});
+
+const Vue2FooterContent = new Vue(
+{
+	el: "#ar-app-footer-content",
+	data: 
+	{
+		getData: {},
+		getDataIcon: {},
+		getListDataIcon: {},
+		getListForm: [{ name: ''}],
+		getListFooter1: [{ icon: '', link: '', content: '', type: 'text'}],
+		getListFooter2: [{ icon: '', link: '', content: '', type: 'text'}],
+		getListFooter3: [{ icon: '', link: '', content: '', type: 'text'}],
+		getSearchIcon: '',
+		showData: true,
+		loadingData: true,
+		loadingDataIcon: true,
+		statusData: '',
+		messageData: '',
+		statusDataIcon: '',
+		messageDataIcon: ''
+	},
+	methods:
+	{
+		listData: function()
+		{
+			if (document.querySelector(".ar-fetch-listdata-footer") !== null && 
+				document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url") !== null)
+			{
+				const url = document.querySelector(".ar-fetch-listdata-footer").getAttribute("data-url");
+
+				axios.get(url)
+				.then(response => 
+				{
+					// const getRes = response.data.slice(0)[0];
+
+					const initListFooter1 = response.data.footer_right_link1;
+
+					this.getListFooter1 = response.data.footer_right_link1;
+					this.getListFooter2 = response.data.footer_right_link2;
+					this.getListFooter3 = response.data.footer_right_link3;
+
+					// this.statusData 	= getRes.status;
+					// this.messageData 	= getRes.message;
+				})
+				.catch(function(error) 
+				{
+					console.log(error);
+				})
+				.finally(() => 
+				{
+					IconPicker.Init(
+					{
+						jsonUrl: baseurl+"assets/plugins/iconpicker/dist/iconpicker-1.5.0.json",
+						searchPlaceholder: "Search Icon",
+						showAllButton: "Show All",
+						cancelButton: "Cancel",
+						noResultsFound: "No results found.",
+						borderRadius: "20px",
+					});	
+
+					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter1_"+i);
+					}
+
+					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter2_"+i);
+					}
+
+					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
+
+					for (let i = 0; i < GetFAIconListFooter1.length; i++) 
+					{
+						IconPicker.Run(".GetIconPickerListFooter3_"+i);
+					}
+
+					this.loadingData = false;
+				});
+			}
+
+			// if (document.querySelector(".ar-data-status") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-data-status'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-data-status").style.display = 'block';
+			// 	}
+			// }
+
+			// if (document.querySelector(".ar-data-load") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-data-load'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-data-load").style.display = 'block';
+			// 	}
+			// }
+
+			// if (document.querySelector(".ar-total-data-load") !== null)
+			// {
+			// 	if (getComputedStyle(document.querySelector('.ar-total-data-load'), null).display == 'none')
+			// 	{
+			// 		document.querySelector(".ar-total-data-load").style.display = 'block';
+			// 	}
+			// }
+		},
+		multipleSubmit: function(event, idSubmit)
+		{
+			event.preventDefault();
+
+			// Get id form submit
+			let getIdFormSubmit = document.getElementById("ar-form-submit-"+idSubmit);
+
+			// Get value of attribute in HTML.
+			let formActionURL = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("action"); 
+			let formMethod = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("method");
+
+			// Reset form or input file
+			let formReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-reset");
+			let formFileReset = getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset");
+
+			// Get value of submit button.
+			let getValueButton = getIdFormSubmit.querySelector('input[type="submit"]').getAttribute('value');
+
+			// Get using button block or not with value true and false from button-block attribute
+			let getButtonBlock = this.$refs['formHTML'+idSubmit].attributes['button-block']['value'] == 'true' ? 'w-100' : '';
+
+			// Get using button large or not with value true and false from button-large attribute
+			let getFontSizeLarge = this.$refs['formHTML'+idSubmit].attributes['font-size-large']['value'] == 'true' ? 'font-size-large' : 'font-size-inherit';
+
+			// Get rounded pill button or just rounded
+			let getRoundedPill = this.$refs['formHTML'+idSubmit].attributes['button-rounded-pill']['value'] == 'true' ? 'rounded-pill' : 'rounded';
+
+			// FormData objects are used to capture HTML form and submit it using fetch or another network method.
+			let formData = new FormData(this.$refs['formHTML'+idSubmit]);
+
+			// Get class button name to change the button to button loading state .
+			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-secondary btn-loading-submit-"+idSubmit+" "+getButtonBlock+" "+getRoundedPill+" "+getFontSizeLarge+" px-3 py-2\">Submitting <div class=\"spinner-border spinner-border-sm text-light ml-1\" role=\"status\"><span class=\"sr-only\">Loading...</span></div></a>");
+			document.getElementsByClassName("btn-malika-submit-"+idSubmit)[0].remove();
+
+			axios(
+			{
+				url: formActionURL,
+				method: formMethod,
+				data: formData,
+				headers: {"Content-Type": "multipart/form-data", 'X-Requested-With': 'XMLHttpRequest'}
+			})
+			.then(response => 
+			{
+				if (response.data.status == 'success')
+				{
+					if ( ! response.data.url)
+					{
+						this.responseMessageSubmit = response.data.message;
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-success rounded m-xl-3\"><div class=\"toast-header bg-success text-white\"><h6 class=\"m-0\"><i class=\"fas fa-check me-2\"></i> Success</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";					
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+					}
+					else
+					{
+						window.setTimeout(function() 
+						{
+							window.location.href = response.data.url;
+						}, 500);
+
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
+						let toast = new bootstrap.Toast(toastBox);
+						toast.hide();
+
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<a class=\"btn btn-success btn-logged-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\">Success <i class=\"far fa-check-circle fa-fw mr-1\"></i></div></a>");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+					}
+
+					if (formReset == "true")
+					{
+						getIdFormSubmit.getElementsByTagName("form")[0].reset();
+					}
+
+					if (getIdFormSubmit.getElementsByTagName("form")[0].getAttribute("form-file-reset") !== null)
+					{					
+						if (formFileReset == "true")
+						{
+							const getResetFile = document.querySelectorAll('input[type="file"]');
+
+							for (var i = 0; i < getResetFile.length; i++) 
+							{
+								getResetFile[i].value = '';
+							}
+						}
+					}
+
+					console.log(response.data);
+				}
+				else if (response.data.status == 'failed')
+				{
+					if (response.data.popup_notice !== undefined && response.data.popup_notice == true)
+					{
+						document.body.innerHTML += '<div class=\"modal fade\" id=\"ModalPopupNoticeRelogin\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"ModalPopupNoticeReloginLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title text-danger fs-5\" id=\"ModalPopupNoticeReloginLabel\"><i class=\"fas fa-exclamation-triangle fa-fw me-1\"></i>Notice</h1></div><div class=\"modal-body text-danger\">'+response.data.message+'</div><div class=\"modal-footer\"><a href=\"'+response.data.url+'\" class=\"btn btn-malika-submit\">Login</a></div></div></div></div>';
+
+						if (document.getElementById('ModalPopupNoticeRelogin') !== null)
+						{
+							const ModalPopupNoticeRelogin = new bootstrap.Modal(document.getElementById('ModalPopupNoticeRelogin'));
+
+							ModalPopupNoticeRelogin.show();
+						}
+					}
+					else
+					{
+						this.responseMessageSubmit = response.data.message;
+						
+						// We use toast from Bootstrap 5
+						let toastBox = document.getElementsByClassName("ar-notice-toast-"+idSubmit)[0];
+						toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+this.responseMessageSubmit+"</div></div>";
+
+						let toast = new bootstrap.Toast(toastBox);
+						toast.show();
+
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit btn-malika-submit-"+idSubmit+" "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+						document.getElementsByClassName("btn-loading-submit-"+idSubmit)[0].remove();
+					}
+				}
+
+				document.getElementsByClassName("btn-token-submit-"+idSubmit)[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'));
+			})
+			.catch(error =>
+			{
+				if (error.response !== undefined)
+				{
+					this.responseMessageSubmit = error.response.data.message;
+
+					let display_error = "";
+
+					if (error.response.data.type == 'exception_error')
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> <p class=\"mb-2\">File Name: "+error.response.data.filename+"</p> <p class=\"mb-2\">Line Number: "+error.response.data.linenumber+"</p> </div>";
+					}
+					else
+					{
+						display_error = "<div> <p class=\"mb-2\">Type: "+error.response.data.title+"</p> <p class=\"mb-2\">Message: "+error.response.data.message+"</p> </div>";
+					}
+
+					// We use toast from Bootstrap 5
+					let toastBox = document.getElementsByClassName("ar-notice-toast")[0];
+					toastBox.innerHTML = "<div class=\"ar-alert position-fixed bg-danger rounded m-xl-3\"><div class=\"toast-header bg-danger text-white\"><h6 class=\"m-0\"><i class=\"fas fa-exclamation-triangle me-2\"></i> Notice</h6> <button type=\"button\" class=\"btn-close btn-close-white me-0 m-auto\" data-bs-dismiss=\"toast\" aria-label=\"Close\"></button></div> <div class=\"toast-body text-white\">"+display_error+"</div></div>";
+
+					let toast = new bootstrap.Toast(toastBox);
+					toast.show();
+
+					document.getElementsByClassName("btn-loading-submit")[0].insertAdjacentHTML("beforebegin", "<input type=\"submit\" class=\"btn btn-malika-submit "+getButtonBlock+" "+getFontSizeLarge+" "+getRoundedPill+" px-3 py-2\" value=\""+getValueButton+"\">");
+					document.getElementsByClassName("btn-loading-submit")[0].remove();
+
+					document.getElementsByClassName("btn-token-submit")[0].setAttribute("value", this.$cookies.get('csrf_phoenix_cms_2023'))
+				}
+			});
+		},
+		addNewForm: function(part_section)
+		{
+			if (part_section == 'list_footer1')
+			{
+				this.getListFooter1.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter1 = document.querySelectorAll(".GetFAIconListFooter1");
+
+					const getBeforeLatestID = GetFAIconListFooter1.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter1_"+getBeforeLatestID);
+
+				}, 100);
+			}
+			else if (part_section == 'list_footer2')
+			{
+				this.getListFooter2.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter2 = document.querySelectorAll(".GetFAIconListFooter2");
+
+					const getBeforeLatestID = GetFAIconListFooter2.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter2_"+getBeforeLatestID);
+
+				}, 100);
+			}
+			else if (part_section == 'list_footer3')
+			{
+				this.getListFooter3.push({ icon: '', link: '', content: '', type: 'text'});
+
+				setTimeout(function() 
+				{
+					const GetFAIconListFooter3 = document.querySelectorAll(".GetFAIconListFooter3");
+
+					const getBeforeLatestID = GetFAIconListFooter3.length-1;
+
+					IconPicker.Run(".GetIconPickerListFooter3_"+getBeforeLatestID);
+
+				}, 100);
+			}
+		},
+		deleteForm: function(getDataInfo, index, getId)
+		{
+			bootbox.confirm(
+			{
+				search: "<i class=\"fas fa-question-circle text-primary fa-fw mr-1\"></i> Confirmation Message",
+				message: "Are you sure, do you want to delete this item?",
+				centerVertical: true,
+				closeButton: false,
+				buttons: 
+				{
+					cancel: 
+					{
+						className: 'btn-danger',
+						label: '<i class="fas fa-times fa-fw mr-1"></i> Cancel'
+					},
+					confirm: 
+					{
+						className: 'btn-success',
+						label: '<i class="fas fa-check fa-fw mr-1"></i> Confirm'
+					}
+				},
+				callback: function(result) 
+				{
+					if (result == true)
+					{
+						getDataInfo.splice(index, 1);
+					}
+				}
+			});
+		},
+		selectFooterType: function(event)
+		{
+			console.log(event.target.value);
+
+			if (event.target.value == 'text')
+			{
+				if (document.querySelector(".ar-display-footer-text") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'none')
+					{
+						document.querySelector(".ar-display-footer-text").style.display = 'block';
+					}
+				}
+
+				if (document.querySelector(".ar-display-footer-logo") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'block')
+					{
+						document.querySelector(".ar-display-footer-logo").style.display = 'none';
+					}
+				}
+			}
+			else if (event.target.value == 'logo')
+			{
+				if (document.querySelector(".ar-display-footer-text") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-text'), null).display == 'block')
+					{
+						document.querySelector(".ar-display-footer-text").style.display = 'none';
+					}
+				}
+
+				if (document.querySelector(".ar-display-footer-logo") !== null)
+				{
+					if (getComputedStyle(document.querySelector('.ar-display-footer-logo'), null).display == 'none')
+					{
+						document.querySelector(".ar-display-footer-logo").style.display = 'block';
+					}
+				}
+			}
 		}
 	},
 	created: function()

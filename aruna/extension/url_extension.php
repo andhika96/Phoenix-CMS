@@ -561,6 +561,7 @@
 					header('Location: '.$uri, TRUE, $code);
 					break;
 			}
+			
 			exit;
 		}
 	}

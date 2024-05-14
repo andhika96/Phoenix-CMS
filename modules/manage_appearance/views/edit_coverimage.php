@@ -145,7 +145,7 @@
 										<label class="form-label">Title</label>
 
 										<div class="input-group mb-3">
-											<input type="text" :name="\'image_text[\'+index+\'][title]\'" class="form-control font-size-inherit" :value="\'\'+info.title+\'\'">
+											<input type="text" :name="\'image_text[\'+index+\'][title]\'" class="form-control font-size-inherit" v-model="info.title">
 										</div>
 
 										<label class="form-label">Caption</label>

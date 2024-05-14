@@ -635,11 +635,17 @@ class ARUNA_Database {
 		switch ($type) 
 		{
 			case "array":
-				return $row = $this->sql_result($res);
+				$row = $this->sql_result($res);
+
+				// Prevent from Automatic conversion of false to array is deprecated from PHP 8.1.x
+				return $row = ($row !== FALSE) ? $row : [];
 				break;
 
 			case "object":
-				return $row = $this->sql_result($res, PDO::FETCH_OBJ);
+				$row = $this->sql_result($res, PDO::FETCH_OBJ);
+
+				// Prevent from Automatic conversion of false to array is deprecated from PHP 8.1.x
+				return $row = ($row !== FALSE) ? $row : [];
 				break;
 
 			default;

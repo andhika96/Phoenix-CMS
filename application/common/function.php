@@ -15,180 +15,151 @@
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Do Authentication
+	 * Config Site Function
 	 * 
-	 * Berfungsi untuk otentikasi pengguna untuk mengakses halaman
-	 *
-	 * @return boolean
-	 */
-	
-	function do_auth($uid = 0, $username = '', $token = '', $whitelist_role = array())
-	{
-		$roles = array();
-
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select roles from ml_accounts where id = :id and username = :username and token = :token");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $uid, 'username' => $username, 'token' => $token], $res);
-		while ($row = $Aruna->db->sql_fetch_single($bindParam))
-		{
-			$roles[] = $row['roles'];
-		}
-
-		if (is_array($whitelist_role))
-		{
-			foreach ($whitelist_role as $key) 
-			{
-				if (in_array($key, $roles))
-				{
-					return TRUE;
-				}
-			}
-		}
-		else 
-		{
-			if (is_array($roles) && in_array($whitelist_role, $roles))
-			{
-				return TRUE;
-			}
-		}	
-
-		return FALSE;
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Has Access
+	 * Kumpulan fungsi-fungsi dari database site config
 	 * 
-	 * Berfungsi untuk otentikasi pengguna untuk mengakses halaman
-	 * 
-	 * @return string
 	 */
 
-	function has_access($whitelist_role = array())
+	if ( ! function_exists('config_site_function'))
 	{
-		$id 		= isset($_SESSION['id']) ? $_SESSION['id'] : NULL;
-		$token		= isset($_SESSION['token']) ? $_SESSION['token'] : NULL;
-		$username	= isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
-
-		if ( ! do_auth($id, $username, $token, $whitelist_role))
+		function config_site_function()
 		{
-			section_notice('<div class="card card-full-color card-full-warning" role="alert"><div class="card-body"><i class="fas fa-exclamation-triangle mr-1"></i> The page you requested cannot be displayed right now. It may be temporarily unavailable, the link you clicked on may be broken or expired, or you may not have permission to view this page.</div></div>');
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/config_site_function.php'))
+			{
+				require_once(APPPATH.'common/config_site_function.php');
+			}
+
+			$config_site_function = new Aruna_Config_Site_Function;
+
+			return $config_site_function;
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Has Allow Access
+	 * Authentication Function
 	 * 
-	 * Berfungsi untuk membatasi siapa saja pengguna yang dapat melihat fitur atau modul
-	 *
-	 * @return boolean
+	 * Kumpulan fungsi-fungsi untuk proses otentikasi pengguna dan halaman
+	 * 
 	 */
 
-	function has_allow_access($whitelist_role = array())
+	if ( ! function_exists('auth_function'))
 	{
-		$id 		= isset($_SESSION['id']) ? $_SESSION['id'] : NULL;
-		$token		= isset($_SESSION['token']) ? $_SESSION['token'] : NULL;
-		$username	= isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
+		function auth_function()
+		{
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/auth_function.php'))
+			{
+				require_once(APPPATH.'common/auth_function.php');
+			}
 
-		if ( ! do_auth($id, $username, $token, $whitelist_role))
-		{
-			return FALSE;
-		}
-		else
-		{
-			return TRUE;
+			$auth_function = new Aruna_Auth_Function;
+
+			return $auth_function;
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Has Login
+	 * Role Function
 	 * 
-	 * Berfungsi untuk memeriksa pengguna sudah login atau tidak
+	 * Kumpulan fungsi-fungsi untuk proses validasi hak pengguna dan halaman
 	 * 
-	 * @return boolean
 	 */
 
-	function has_login()
+	if ( ! function_exists('role_function'))
 	{
-		$url = load_ext('url');
-
-		if (empty($_SESSION['id']) && empty($_SESSION['username']) && empty($_SESSION['token']))
+		function role_function()
 		{
-			redirect('auth/login');
-		}
-		else
-		{
-			$Aruna =& get_instance();
-
-			$res_token = $Aruna->db->sql_prepare("select token from ml_accounts where id = :id and username = :username");
-			$bindParam_token = $Aruna->db->sql_bindParam(['id' => $_SESSION['id'], 'username' => $_SESSION['username']], $res_token);
-			$row_token = $Aruna->db->sql_fetch_single($bindParam_token);
-
-			if ($row_token['token'] != $_SESSION['token'])
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/role_function.php'))
 			{
-				$_SESSION['id'] = '';
-				$_SESSION['username'] = '';
-				$_SESSION['token'] = '';
-
-				redirect('auth/login');
+				require_once(APPPATH.'common/role_function.php');
 			}
-			else
-			{
-				$res = $Aruna->db->sql_prepare("select status from ml_accounts where id = :id and username = :username and token = :token");
-				$bindParam = $Aruna->db->sql_bindParam(['id' => $_SESSION['id'], 'username' => $_SESSION['username'], 'token' => $_SESSION['token']], $res);
-				$row = $Aruna->db->sql_fetch_single($bindParam);
 
-				if ($row['status'] == 1 && uri_string() != 'dashboard/checkpoint')
-				{
-					redirect('dashboard/checkpoint');
-				}
-			}
+			$role_function = new Aruna_Role_Function;
+
+			return $role_function;
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Avatar
+	 * User Function
 	 * 
-	 * Berfungsi untuk menampilkan foto avatar pengguna
-	 *
-	 * @return string
+	 * Kumpulan fungsi-fungsi untuk mendapatkan informasi data pengguna
+	 * 
 	 */
 
-	function avatar($userid)
+	if ( ! function_exists('user_function'))
 	{
-		// Load URL Extension
-		$url = load_ext('url');
-
-
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select avatar from ml_user_information where user_id = :user_id");
-		$bindParam = $Aruna->db->sql_bindParam(['user_id' => $userid], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row['avatar'] = isset($row['avatar']) ? $row['avatar'] : '';
-
-		if ( ! $row['avatar'])
+		function user_function()
 		{
-			$avatar = '';
-		}
-		else 
-		{
-			$avatar = base_url($row['avatar']);
-		}
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/user_function.php'))
+			{
+				require_once(APPPATH.'common/user_function.php');
+			}
 
-		return $avatar;
+			$user_function = new Aruna_User_Function;
+
+			return $user_function;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Post Function
+	 * 
+	 * Kumpulan fungsi-fungsi untuk mendapatkan informasi data pengguna
+	 * 
+	 */
+
+	if ( ! function_exists('post_function'))
+	{
+		function post_function()
+		{
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/post_function.php'))
+			{
+				require_once(APPPATH.'common/post_function.php');
+			}
+
+			$post_function = new Aruna_Post_Function;
+
+			return $post_function;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Page Function
+	 * 
+	 * Kumpulan fungsi-fungsi untuk kebutuhan halaman pengguna dan pengelola
+	 * 
+	 */
+
+	if ( ! function_exists('page_function'))
+	{
+		function page_function()
+		{
+			// Load file _config_site_function.php
+			if (file_exists(APPPATH.'common/page_function.php'))
+			{
+				require_once(APPPATH.'common/page_function.php');
+			}
+
+			$page_function = new Aruna_Page_Function;
+
+			return $page_function;
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -205,7 +176,6 @@
 	{
 		// Load URL Extension
 		$url = load_ext('url');
-
 
 		$Aruna =& get_instance();
 
@@ -271,46 +241,6 @@
 
 	// ------------------------------------------------------------------------
 	
-	function get_status_gender($key = '')
-	{
-		if ($key == 1)
-		{
-			$output = 'Male';
-		}
-		elseif ($key == 2) 
-		{
-			$output = 'Female';	
-		}
-		else
-		{
-			$output = 'Unknown';
-		}
-
-		return $output;
-	}
-
-	// ------------------------------------------------------------------------
-
-	function get_status_user($key = '')
-	{
-		if ($key == 0)
-		{
-			$output = '<span class="text-success">Active</span>';
-		}
-		elseif ($key == 1)
-		{
-			$output = '<span class="text-danger">Not active</span>';
-		}
-		else
-		{
-			$output = '<span class="text-muted">Unknown status</span>';
-		}
-
-		return $output;
-	}
-
-	// ------------------------------------------------------------------------
-	
 	function get_status_article($key = '', $with_style = FALSE)
 	{
 		if ($key == 0)
@@ -335,57 +265,6 @@
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Get Role
-	 * 
-	 * Berfungsi untuk mendapatkan atau menampilkan status atau peran akun pengguna.
-	 *
-	 * @return string
-	 */
-
-	function get_role($id = 0)
-	{
-
-		$Aruna =& get_instance();
-
-		// $res = $Aruna->db->sql_prepare("select a.*, a.id as uid, r.* from ml_accounts as a join ml_roles as r on r.id = a.roles where r.code_name = a.role_code and a.id = :id");
-		$res = $Aruna->db->sql_prepare("select name from ml_roles where id = :id");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $id], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row['name'] = isset($row['name']) ? $row['name'] : NULL;
-	
-		return $row['name'];
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get Role
-	 * 
-	 * Berfungsi untuk mendapatkan atau menampilkan status atau peran akun pengguna.
-	 *
-	 * @return string
-	 */
-
-	function get_role_all($id = 0)
-	{
-
-		$Aruna =& get_instance();
-
-		// $res = $Aruna->db->sql_prepare("select a.*, a.id as uid, r.* from ml_accounts as a join ml_roles as r on r.id = a.roles where r.code_name = a.role_code and a.id = :id");
-		$res = $Aruna->db->sql_prepare("select * from ml_roles where id = :id");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $id], $res);
-		$row = $Aruna->db->sql_fetch($bindParam);
-
-		return $row[0];
-	}
-
-	// ------------------------------------------------------------------------
-
 	function get_list_role()
 	{
 
@@ -400,25 +279,6 @@
 		}
 	
 		return $output;
-	}
-
-// ------------------------------------------------------------------------
-
-	function get_menu_parent($id, $coloum)
-	{
-
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select * from ml_menu_parent where id = :id");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $id], $res);
-		$row = $Aruna->db->sql_fetch($bindParam);
-	
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
-
-		return $row[$coloum];
 	}
 
 	// ------------------------------------------------------------------------
@@ -480,107 +340,6 @@
 		{
 			return get_data_global('title').' - '.$row['site_name'];
 		}	
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get Client Value
-	 * 
-	 * Hampir sama fungsinya dengan fungsi get_client() fungsi ini menampilkan
-	 * informasi data pengguna nama kolom yang dimasukkan.
-	 * 
-	 * @return string
-	 */
-
-	function get_client_value($key = '', $value = '',  $coloum = '')
-	{
-
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select * from ml_accounts where $key = :$key");
-		$bindParam = $Aruna->db->sql_bindParam([$key => $value], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
-	
-		return $row[$coloum];
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get Client
-	 * 
-	 * Hampir sama fungsinya dengan fungsi get_user() fungsi ini menampilkan
-	 * informasi data pengguna per id akun bukan per session pengguna.
-	 * 
-	 * @return string
-	 */
-
-	function get_client($key = '',  $coloum = '')
-	{
-
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select * from ml_accounts where id = :id");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $key], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
-	
-		return $row[$coloum];
-	}
-
-	function get_info_client($key = '',  $coloum = '')
-	{
-		$Aruna =& get_instance();
-
-		$res = $Aruna->db->sql_prepare("select * from ml_user_information where user_id = :user_id");
-		$bindParam = $Aruna->db->sql_bindParam(['user_id' => $key], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row[$coloum] = isset($row[$coloum]) ? $row[$coloum] : NULL;
-	
-		return $row[$coloum];
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get User
-	 * 
-	 * Berfungsi untuk mendapatkan informasi data pengguna per session
-	 * 
-	 * @return string
-	 */
-
-	function get_user($key)
-	{
-		$Aruna 		=& get_instance();
-		$id 		= isset($_SESSION['id']) ? $_SESSION['id'] : NULL;
-		$token		= isset($_SESSION['token']) ? $_SESSION['token'] : NULL;
-		$username	= isset($_SESSION['username']) ? $_SESSION['username'] : NULL;
-
-		$res = $Aruna->db->sql_prepare("select * from ml_accounts where id = :id and username = :username and token = :token");
-		$bindParam = $Aruna->db->sql_bindParam(['id' => $id, 'username' => $username, 'token' => $token], $res);
-		$row = $Aruna->db->sql_fetch_single($bindParam);
-
-		// Prevent from Automatic conversion of false to array is deprecated
-		$row = ($row !== FALSE) ? $row : [];
-
-		$row[$key] = isset($row[$key]) ? $row[$key] : NULL;
-	
-		return $row[$key];
 	}
 
 	// ------------------------------------------------------------------------
@@ -909,7 +668,7 @@
 			$current_modules = explode(",", $row['roles']);
 		}
 
-		if (in_array(get_user('roles'), $current_modules))
+		if (in_array(user_function()->get_user('roles'), $current_modules))
 		{
 			return TRUE;
 		}	
@@ -940,45 +699,6 @@
 		}
 
 		return $row[$coloum];
-	}
-
-	// ------------------------------------------------------------------------
-
-	function check_active_page($module_name, $style = array())
-	{
-		if (get_module_actived($module_name) == 0)
-		{
-			ini_set('display_errors', 0);
-			
-			if (isset($style['style_class_name']))
-			{
-				section_notice('
-				<div class="bg-warning rounded p-3 '.$style['style_class_name'].' text-dark bg-opacity-25">
-					<i class="fad fa-exclamation-triangle fa-lg fa-fw me-1"></i> This page has been disabled.
-				</div>');
-
-			}
-			else
-			{
-				section_notice('
-				<div class="bg-warning rounded p-3 mb-3 text-dark bg-opacity-25">
-					<i class="fad fa-exclamation-triangle fa-lg fa-fw me-1"></i> This page has been disabled.
-				</div>');
-			}
-		}
-	}
-
-	// ------------------------------------------------------------------------
-
-	function check_role_page($page_name)
-	{
-		if (get_role_page($page_name) == FALSE)
-		{
-			section_notice('
-			<div class="bg-danger p-3 rounded mb-3 text-dark bg-opacity-25">
-				<i class="fad fa-exclamation-triangle fa-lg fa-fw me-1"></i> You do not have access to this page.
-			</div>');
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -1312,7 +1032,7 @@
 			    // Convert wildcards to RegEx
 			    $excluded = str_replace(array(':any', ':num'), array('[^/]+', '[0-9]+'), $excluded);
 			    
-				if (preg_match('#^'.$excluded.'$#i'.(UTF8_ENABLED ? 'u' : ''), uri_string()) || get_user('roles') == 99 || get_user('roles') == 98 || get_user('roles') == 97 || get_user('roles') == 96)
+				if (preg_match('#^'.$excluded.'$#i'.(UTF8_ENABLED ? 'u' : ''), uri_string()) || user_function()->get_user('roles') == 99 || user_function()->get_user('roles') == 98 || user_function()->get_user('roles') == 97 || user_function()->get_user('roles') == 96)
 				{
 					$target = TRUE;
 				}
@@ -1439,7 +1159,6 @@
 
 	function t($str, $att1 = '', $att2 = '', $att3 = '', $godb = 0) 
 	{
-
 		$Aruna =& get_instance();
 
 		$dbstr = addslashes($str);
@@ -1675,7 +1394,7 @@
 			{
 				if ($row_module['actived'] == 1)
 				{
-					if (in_array(get_user('roles'), explode(",", $row_parent['roles'])))
+					if (in_array(user_function()->get_user('roles'), explode(",", $row_parent['roles'])))
 					{
 						$output .= '<a href="'.site_url($row_parent['url']).'" class="list-group-item">'.$row_parent['icon'].' '.t($row_parent['menu_name']).'</a>';
 					}
@@ -1685,7 +1404,7 @@
 			{
 				if ($row_module['actived'] == 1)
 				{
-					if (in_array(get_user('roles'), explode(",", $row_parent['pm_roles'] ?? '')))
+					if (in_array(user_function()->get_user('roles'), explode(",", $row_parent['pm_roles'] ?? '')))
 					{
 						$output .= '										
 						<a href="javascript:void(0)" class="list-group-item list-group-item-action" data-bs-toggle="collapse" data-bs-target="#Collapse'.$row_parent['pm_code'].'" role="button" aria-expanded="false" aria-controls="Collapse'.$row_parent['pm_code'].'"><span class="text-truncate">'.$row_parent['pm_icon'].' '.t($row_parent['pm_name']).'</span></a>
@@ -1697,7 +1416,7 @@
 								$bindParam_menu = $Aruna->db->sql_bindParam(['menu_parent_id' => $row_parent['menu_parent_id']], $res_menu);
 								while ($row_menu = $Aruna->db->sql_fetch_single($bindParam_menu))
 								{
-									if (in_array(get_user('roles'), explode(",", $row_menu['roles'])))
+									if (in_array(user_function()->get_user('roles'), explode(",", $row_menu['roles'])))
 									{
 										$output .= '<a href="'.site_url($row_menu['url']).'" class="list-group-item list-group-item-action ps-5">'.$row_menu['icon'].' '.t($row_menu['menu_name']).'</a>';
 									}
@@ -2483,7 +2202,7 @@
 		$bindParam = $Aruna->db->sql_bindParam(['uri' => 'footer'], $res);
 		$row = $Aruna->db->sql_fetch_single($bindParam);
 
-		$get_vars = json_decode($row['vars'], true);
+		$get_vars = json_decode($row['vars_1'], true);
 
 		return $get_vars[$key];
 	}

@@ -24,7 +24,6 @@ class manage_appearance extends Aruna_Controller
 
 	protected $max_file_size_slideshow = 200000; // KB
 
-
 	protected $allowed_file_type_coverimage = 'png|jpg|jpeg|webp';
 
 	protected $max_file_size_coverimage = 24000; // KB
@@ -43,14 +42,11 @@ class manage_appearance extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check active page
-		check_active_page('manage_appearance');
+		page_function()->check_active_page();
 
-		// Only role page with role user
-		check_role_page('manage_appearance');
+		page_function()->check_access_page();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()
@@ -1368,7 +1364,7 @@ class manage_appearance extends Aruna_Controller
 						$get_vars['style']['position_mobile'] 		= $this->input->post('image_style')[$key]['position_mobile'];
 						$get_vars['style']['background_overlay'] 	= $this->input->post('image_style')[$key]['background_overlay'];
 
-						$this->db->sql_update(['uri' => $page, 'vars' => json_encode($get_vars)], 'ml_coverimage', ['id' => $row['id']]);
+						$this->db->sql_update(['uri' => $page, 'title' => $this->input->post('image_text')[$key]['title'], 'caption' => $this->input->post('image_text')[$key]['caption'], 'vars' => json_encode($get_vars)], 'ml_coverimage', ['id' => $row['id']]);
 					}
 
 					$layout_coverimage =

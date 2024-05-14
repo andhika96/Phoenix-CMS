@@ -102,9 +102,8 @@
 						<table class="table table-striped table-hover">
 							<thead>
 								<tr>
-									<th scope="col" style="width: 55%">Title</th>
+									<th scope="col" style="width: 35%">Title</th>
 									<th scope="col" style="width: 8%">Thumbnail</th>
-									<th scope="col" style="width: 40%">Content</th>
 									<th scope="col" style="width: 10%">Scheduled</th>
 									<th scope="col" style="width: 10%">Status</th>
 									<th scope="col" style="width: 10%">Created</th>
@@ -120,8 +119,6 @@
 									<td class="align-middle text-nowrap">
 										<img :src="\'\'+info.thumb_s2+\'\'" style="max-width: 50px;max-height: 50px">
 									</td>
-
-									<td class="align-middle text-nowrap">{{ info.content }}</td>
 									
 									<td class="align-middle text-nowrap">
 										<span v-html="info.scheduled"></span>

@@ -15,6 +15,8 @@ defined('MODULEPATH') OR exit('No direct script access allowed');
 class auth extends Aruna_Controller
 {
 	protected $csrf;
+
+	protected $auth_function;
 	
 	public function __construct() 
 	{
@@ -24,6 +26,8 @@ class auth extends Aruna_Controller
 			'name' => $this->security->get_csrf_token_name(),
 			'hash' => $this->security->get_csrf_hash()
 		];
+
+		$this->auth_function = auth_function();
 	}
 
 	public function index()
@@ -33,10 +37,7 @@ class auth extends Aruna_Controller
 
 	public function login()
 	{
-		if ($this->session->userdata('id') && $this->session->userdata('username') && $this->session->userdata('token'))
-		{
-			redirect('dashboard');
-		}
+		$this->auth_function->has_auth();
 
 		load_extend_view('default', ['header_auth_page', 'footer_auth_page']);
 
@@ -66,7 +67,9 @@ class auth extends Aruna_Controller
 					$this->session->set_userdata($set_session);
 					$this->db->sql_update(['token' => $generate_token], 'ml_accounts', ['id' => $row['id']]);
 
-					echo json_encode(['status' => 'success', 'url' => base_url('dashboard')]);
+					$auto_redirect_link = $this->session->userdata('redirect_to') ? site_url($this->session->userdata('redirect_to')) : site_url('dashboard');
+
+					echo json_encode(['status' => 'success', 'url' => $auto_redirect_link]);
 					exit;
 				}
 				else
@@ -77,8 +80,9 @@ class auth extends Aruna_Controller
 			}
 		}
 
-		$data['csrf_name'] = $this->csrf['name'];
-		$data['csrf_hash'] = $this->csrf['hash'];
+		$data['session']	= $this->session;
+		$data['csrf_name'] 	= $this->csrf['name'];
+		$data['csrf_hash'] 	= $this->csrf['hash'];
 
 		return view('login', $data);
 	}
@@ -103,10 +107,7 @@ class auth extends Aruna_Controller
 
 	public function forgotpassword()
 	{
-		if ($this->session->userdata('id') && $this->session->userdata('username') && $this->session->userdata('token'))
-		{
-			redirect('dashboard');
-		}
+		$this->auth_function->has_auth();
 
 		load_extend_view('default', ['header_auth_page', 'footer_auth_page']);
 
@@ -180,10 +181,7 @@ class auth extends Aruna_Controller
 
 	public function recoveryaccount()
 	{
-		if ($this->session->userdata('id') && $this->session->userdata('username') && $this->session->userdata('token'))
-		{
-			redirect('dashboard');
-		}
+		$this->auth_function->has_auth();
 
 		load_extend_view('default', ['header_auth_page', 'footer_auth_page']);
 
@@ -270,10 +268,7 @@ class auth extends Aruna_Controller
 
 	public function signup()
 	{
-		if ($this->session->userdata('id') && $this->session->userdata('username') && $this->session->userdata('token'))
-		{
-			redirect('dashboard');
-		}
+		$this->auth_function->has_auth();
 
 		load_extend_view('default', ['header_auth_page', 'footer_auth_page']);
 

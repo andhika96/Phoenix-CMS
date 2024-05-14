@@ -35,7 +35,7 @@
 								</div>
 								
 								<div class="flex-grow-1 ms-3">
-									<span class="h6 font-weight-bold mb-2">'.get_client($row['userid'], 'fullname').'</span>
+									<span class="h6 font-weight-bold mb-2">'.user_function()->get_other_user($row['userid'], 'fullname').'</span>
 									<span class="text-muted d-block">'.$row['get_date'].'</span>
 								</div>
 							</div>

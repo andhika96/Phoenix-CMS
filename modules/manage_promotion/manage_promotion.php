@@ -34,14 +34,11 @@ class manage_promotion extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check active page
-		check_active_page('manage_portofolio');
+		page_function()->check_active_page();
 
-		// Only role page with role user
-		check_role_page('manage_portofolio');
+		page_function()->check_access_page();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()
@@ -300,7 +297,7 @@ class manage_promotion extends Aruna_Controller
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
 					'status' 		=> $this->input->post('status'),
-					'userid'		=> get_user('id'),
+					'userid'		=> user_function()->get_user('id'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
@@ -1022,7 +1019,7 @@ class manage_promotion extends Aruna_Controller
 			$row['thumb_s2'] 	 = ( ! empty($row['thumb_s'])) ? (file_exists($row['thumb_s2']) ? base_url($row['thumb_s2']) : 'undefined') : '';
 			$row['content'] 	 = strip_tags(ellipsize($row['content'], 50, 1, '...'));
 			$row['content'] 	 = preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
-			$row['get_user']	 = get_client($row['userid'], 'fullname');
+			$row['get_user']	 = user_function()->get_other_user($row['userid'], 'fullname');
 			$row['get_created']  = get_date($row['created']);
 			$row['get_status']	 = get_status_article($row['status'], TRUE);
 			$row['scheduled']	 = ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';

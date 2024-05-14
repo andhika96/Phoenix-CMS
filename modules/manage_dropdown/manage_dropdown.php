@@ -34,14 +34,11 @@ class manage_dropdown extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check active page
-		check_active_page('manage_dropdown');
+		page_function()->check_active_page();
 
-		// Only role page with role user
-		check_role_page('manage_dropdown');
+		page_function()->check_access_page();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()

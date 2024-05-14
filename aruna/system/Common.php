@@ -1111,14 +1111,53 @@
 	if ( ! function_exists('set_title'))
 	{
 		/**
-		 * Set title per page
+		 * Set title per page (For backwards compatibility)
 		 * @param string
 		 * @return string
 		 */
 
 		function set_title($title)
 		{
-			$GLOBALS['title'] = $title;
+			set_page_title($title);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	if ( ! function_exists('set_page_title'))
+	{
+		/**
+		 * Set title per page
+		 * @param string
+		 * @return string
+		 */
+
+		function set_page_title(string $title)
+		{
+			$Aruna =& get_instance();
+
+			$GLOBALS['page_title'][$Aruna->uri->uri_string()] = $title;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	if ( ! function_exists('get_page_title'))
+	{
+		/**
+		 * Set title per page
+		 * @param string
+		 * @return string
+		 */
+
+		function get_page_title(string $page = '')
+		{
+			$Aruna =& get_instance();
+
+			// Ternary validation
+			$page = empty($page) ? $Aruna->uri->uri_string() : $page;
+
+			return isset($GLOBALS['page_title'][$page]) ? $GLOBALS['page_title'][$page] : NULL;
 		}
 	}
 

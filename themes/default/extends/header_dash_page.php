@@ -29,7 +29,7 @@
 			<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
 
 			<!-- Custom CSS -->
-			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css').'">
+			<link rel="stylesheet" href="'.base_url('assets/css/aruna-v3.css?v='.time()).'">
 			<link rel="stylesheet" href="'.base_url('assets/css/aruna-admin-v6.css?v=0.0.5').'">
 
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" integrity="sha256-r8T4Dlx/tdy6jNcFHplWaDHs7ob/Y9bKoJgjNFlYxY4=" crossorigin="anonymous" />

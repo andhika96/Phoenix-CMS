@@ -34,14 +34,11 @@ class manage_news extends Aruna_Controller
 			'hash' => $this->security->get_csrf_hash()
 		];
 
-		// Check active page
-		check_active_page('manage_news');
+		page_function()->check_active_page();
 
-		// Only role page with role user
-		check_role_page('manage_news');
+		page_function()->check_access_page();
 
-		// Check user has login or not
-		has_login();
+		auth_function()->do_auth();
 	}
 
 	public function index()
@@ -51,6 +48,8 @@ class manage_news extends Aruna_Controller
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
 		$data['db'] = $this->db;
+		$data['csrf_name'] = $this->csrf['name'];
+		$data['csrf_hash'] = $this->csrf['hash'];
 		
 		return view('index', $data);
 	}
@@ -300,7 +299,7 @@ class manage_news extends Aruna_Controller
 					'cid'	 		=> $this->input->post('category'),
 					'content' 		=> $this->input->post('content', FALSE),
 					'status' 		=> $this->input->post('status'),
-					'userid'		=> get_user('id'),
+					'userid'		=> user_function()->get_user('id'),
 					'thumb_s'		=> $thumb_s,
 					'thumb_s2'		=> $thumb_s2,
 					'thumb_l'		=> $thumb_l,
@@ -1052,7 +1051,7 @@ class manage_news extends Aruna_Controller
 			$row['thumb_s2'] 	 = ( ! empty($row['thumb_s'])) ? (file_exists($row['thumb_s2']) ? base_url($row['thumb_s2']) : 'undefined') : '';
 			$row['content'] 	 = strip_tags(ellipsize($row['content'], 50, 1, '...'));
 			$row['content'] 	 = preg_replace("/&#?[a-z0-9]+;/i",'', $row['content']);
-			$row['get_user']	 = get_client($row['userid'], 'fullname');
+			$row['get_user']	 = user_function()->get_other_user($row['userid'], 'fullname');
 			$row['get_created']  = get_date($row['created']);
 			$row['get_status']	 = get_status_article($row['status'], TRUE);
 			$row['scheduled']	 = ($row['schedule_pub'] !== 0) ? '<span class="badge bg-success">'.gmdate("M jS Y, g:i a", $row['schedule_pub']+$timezone*3600).'</span>' : '-';
@@ -1122,6 +1121,7 @@ class manage_news extends Aruna_Controller
 
 	public function deletepost($id)
 	{
+		/*
 		load_extend_view('default', ['header_dash_page', 'footer_dash_page']);
 
 		$check = $this->db->num_rows("ml_news_article", "", ['id' => $id]);
@@ -1161,7 +1161,7 @@ class manage_news extends Aruna_Controller
 
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode(['status' => 'success'], JSON_PRETTY_PRINT))
+					 ->set_output(json_encode(['status' => 'success', 'message' => 'Successfully deleted item'], JSON_PRETTY_PRINT))
 					 ->_display();
 			exit;
 		}
@@ -1169,9 +1169,27 @@ class manage_news extends Aruna_Controller
 		{
 			$this->output->set_content_type('application/json', 'utf-8')
 					 ->set_header('Access-Control-Allow-Origin: '.site_url())
-					 ->set_output(json_encode(['status' => 'failed'], JSON_PRETTY_PRINT))
+					 ->set_output(json_encode(['status' => 'failed', 'message' => 'Failed to delete item'], JSON_PRETTY_PRINT))
 					 ->_display();
 			exit;
+		}
+		*/
+
+		if ( ! empty($id))
+		{
+				$this->output->set_content_type('application/json', 'utf-8')
+						 ->set_header('Access-Control-Allow-Origin: '.site_url())
+						 ->set_output(json_encode(['status' => 'success', 'message' => 'Successfully deleted item'], JSON_PRETTY_PRINT))
+						 ->_display();
+				exit;
+		}
+		else
+		{
+			$this->output->set_content_type('application/json', 'utf-8')
+					 ->set_header('Access-Control-Allow-Origin: '.site_url())
+					 ->set_output(json_encode(['status' => 'failed', 'message' => 'Invalid Article ID'], JSON_PRETTY_PRINT))
+					 ->_display();
+			exit;	
 		}
 	}
 

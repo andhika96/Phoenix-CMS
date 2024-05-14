@@ -16,7 +16,11 @@
 	<div class="arv6-box bg-white rounded shadow-sm d-flex justify-content-center align-items-center p-5">
 		<div>
 			<img src="'.base_url('assets/images/undraw_a_whole_year_vnfm.svg').'" class="img-fluid mb-4" style="width: 300px">
-			<div class="h3 text-center">Welcome, '.get_user('fullname').'</div>
+			<div class="h3 text-center">Welcome, '.user_function()->get_user('fullname').'</div>
+
+			<div class="mt-3">
+				'.$_SESSION['id'].' - '.$_SESSION['username'].' - '.$_SESSION['token'].'
+			</div>
 		</div>
 	</div>');
 
